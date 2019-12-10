@@ -1,0 +1,89 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Domain", "PoeCrafting.Domain\PoeCrafting.Domain.csproj", "{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Data", "PoeCrafting.Data\PoeCrafting.Data.csproj", "{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Entities", "PoeCrafting.Entities\PoeCrafting.Entities.csproj", "{2F3E944E-78E3-40C6-85B2-197CF43429AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{E33B68C5-21FE-4D84-B092-54AB4B8F062D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Currency", "PoeCrafting.Currency\PoeCrafting.Currency.csproj", "{56788108-8DBD-4B47-B629-66BC3B0B928F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Crafting", "PoeCrafting.CraftingSim\PoeCrafting.Crafting.csproj", "{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.CurrencyTest", "PoeCrafting.CurrencyTest\PoeCrafting.CurrencyTest.csproj", "{01194807-14EA-4A3A-AA89-AB9FE39EB036}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.CraftingTest", "PoeCrafting.CraftingProcessTest\PoeCrafting.CraftingTest.csproj", "{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2A339672-304C-4119-B183-1E516C87C07C}"
+	ProjectSection(SolutionItems) = preProject
+		Data\base_items.json = Data\base_items.json
+		Data\crafting_bench_options.json = Data\crafting_bench_options.json
+		Data\essences.json = Data\essences.json
+		Data\fossils.json = Data\fossils.json
+		Data\item_classes.json = Data\item_classes.json
+		Data\mod_types.json = Data\mod_types.json
+		Data\mods.json = Data\mods.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.DataTest", "PoeCrafting.DataTest\PoeCrafting.DataTest.csproj", "{316BDC61-4802-4951-9608-6418959AEA7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.DomainTest", "PoeCrafting.DomainTest\PoeCrafting.DomainTest.csproj", "{FD87DD0E-E507-40F5-861A-52CD42255838}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3E944E-78E3-40C6-85B2-197CF43429AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3E944E-78E3-40C6-85B2-197CF43429AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3E944E-78E3-40C6-85B2-197CF43429AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3E944E-78E3-40C6-85B2-197CF43429AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56788108-8DBD-4B47-B629-66BC3B0B928F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56788108-8DBD-4B47-B629-66BC3B0B928F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56788108-8DBD-4B47-B629-66BC3B0B928F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56788108-8DBD-4B47-B629-66BC3B0B928F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01194807-14EA-4A3A-AA89-AB9FE39EB036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01194807-14EA-4A3A-AA89-AB9FE39EB036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01194807-14EA-4A3A-AA89-AB9FE39EB036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01194807-14EA-4A3A-AA89-AB9FE39EB036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{316BDC61-4802-4951-9608-6418959AEA7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{316BDC61-4802-4951-9608-6418959AEA7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{316BDC61-4802-4951-9608-6418959AEA7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{316BDC61-4802-4951-9608-6418959AEA7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD87DD0E-E507-40F5-861A-52CD42255838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD87DD0E-E507-40F5-861A-52CD42255838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD87DD0E-E507-40F5-861A-52CD42255838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD87DD0E-E507-40F5-861A-52CD42255838}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2A339672-304C-4119-B183-1E516C87C07C} = {E33B68C5-21FE-4D84-B092-54AB4B8F062D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9CA7B48-654C-41E1-9163-353C80CEF030}
+	EndGlobalSection
+EndGlobal
