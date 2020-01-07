@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F3E944E-78E3-40C6-85B2-197CF43429AA}</ProjectGuid>
+    <ProjectGuid>{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoeCrafting.Entities</RootNamespace>
-    <AssemblyName>PoeCrafting.Entities</AssemblyName>
+    <RootNamespace>PoeCrafting.Domain</RootNamespace>
+    <AssemblyName>PoeCrafting.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,58 +31,58 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.3\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.3\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crafting\TierType.cs" />
-    <Compile Include="Items\AccessoryEntity.cs" />
-    <Compile Include="Crafting\AffixRestriction.cs" />
-    <Compile Include="Crafting\CraftingConfig.cs" />
-    <Compile Include="IRandom.cs" />
-    <Compile Include="ItemStatus.cs" />
-    <Compile Include="Items\Essence.cs" />
-    <Compile Include="Items\Fossil.cs" />
-    <Compile Include="Items\ItemConfig.cs" />
-    <Compile Include="Constants\AffixGroupings.cs" />
-    <Compile Include="Constants\AffixNames.cs" />
-    <Compile Include="Crafting\AffixType.cs" />
-    <Compile Include="Items\ArmourEntity.cs" />
-    <Compile Include="Crafting\ConditionAffix.cs" />
-    <Compile Include="ConditionContainer.cs" />
-    <Compile Include="Crafting\ConditionResolution.cs" />
-    <Compile Include="Constants\CurrencyNames.cs" />
-    <Compile Include="Constants\TypeInfo.cs" />
-    <Compile Include="Constants\ItemProperties.cs" />
-    <Compile Include="Crafting\CraftingCondition.cs" />
-    <Compile Include="Crafting\CraftingStepStatus.cs" />
-    <Compile Include="Crafting\CraftingSubcondition.cs" />
-    <Compile Include="Items\Equipment.cs" />
-    <Compile Include="Items\EquipmentRarity.cs" />
-    <Compile Include="Items\EquipmentType.cs" />
-    <Compile Include="Items\ItemBase.cs" />
-    <Compile Include="Affix.cs" />
-    <Compile Include="Items\ItemProperty.cs" />
-    <Compile Include="Items\CraftingTarget.cs" />
-    <Compile Include="Items\MasterMod.cs" />
-    <Compile Include="Items\Stat.cs" />
-    <Compile Include="Crafting\SubconditionAggregateType.cs" />
-    <Compile Include="Crafting\StatValueType.cs" />
-    <Compile Include="Items\WeaponEntity.cs" />
+    <Compile Include="CraftingSimulator.cs" />
+    <Compile Include="Entities\SimBaseItemInfo.cs" />
+    <Compile Include="Entities\SimCraftingInfo.cs" />
+    <Compile Include="Entities\SimFinanceInfo.cs" />
+    <Compile Include="Entities\SimulationArtifacts.cs" />
+    <Compile Include="Entities\SimulationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CraftingSim\Crafting.csproj">
+      <Project>{02d6c6a0-9c17-4fc9-bbda-df480089af07}</Project>
+      <Name>Crafting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Currency\Currency.csproj">
+      <Project>{56788108-8dbd-4b47-b629-66bc3b0b928f}</Project>
+      <Name>Currency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{7e67e2a6-da5f-46a0-824c-a537db11b3ac}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
