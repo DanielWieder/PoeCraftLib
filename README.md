@@ -40,10 +40,10 @@ There are 3 required fields.
 * financeInfo.BudgetInChaos
 * craftingInfo.CraftingSteps
 
-You can adjust the parameters of the simulation with [arguments](crafting-simulation-arguments) objects.
-The output can be read from the [results](crafting-results) object.
-The current status of the simulation can be checked with the [metadata](simulator-metadata) object.
-It can be cancelled early with the [cancellation](simulator-cancellation) object.
+You can adjust the parameters of the simulation with [arguments](#crafting-simulation-arguments) objects.
+The output can be read from the [results](#crafting-results) object.
+The current status of the simulation can be checked with the [metadata](#simulator-metadata) object.
+It can be cancelled early with the [cancellation](#simulator-cancellation) object.
 
 ```
 SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
@@ -55,9 +55,9 @@ var sim = craftingSimulator.Start();
 
 ### Crafting simulation arguments
 
-[SimBaseItemInfo]((#base-item-info)): Contains information about the base item you are crafting.
+[SimBaseItemInfo](#base-item-info): Contains information about the base item you are crafting.
 
-[SimFinanceInfo](#finance-item-info): Contains financial information about craft.
+[SimFinanceInfo](#finance-info): Contains financial information about craft.
 
 [SimCraftingInfo](#crafting-info): Contains information about the crafting process.
 
