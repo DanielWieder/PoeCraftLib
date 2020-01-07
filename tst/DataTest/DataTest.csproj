@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AffixFactoryTest.cs" />
-    <Compile Include="DataJsonTest.cs" />
+    <Compile Include="DataAssetTest.cs" />
     <Compile Include="PoeNinjaTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

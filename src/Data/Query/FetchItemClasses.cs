@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using DataJson.Entities;
 using Newtonsoft.Json;
+using PoeCrafting.Data.Query;
 using PoeCraftLib.Entities;
 
 namespace DataJson.Query
@@ -18,8 +20,8 @@ namespace DataJson.Query
 
         public List<ItemClassJson> Execute()
         {
-            var json = File.ReadAllText(
-                "C:\\Users\\danie\\Documents\\GitHub\\PoeSimCraft\\PoeCrafting\\Data\\item_classes.json");
+            Assembly assem = this.GetType().Assembly;
+            var json = FetchHelper.GetEmbeddedResource("Assets\\item_classes.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(json);
 
             return deserialized

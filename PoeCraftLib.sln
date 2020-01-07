@@ -3,19 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{E33B68C5-21FE-4D84-B092-54AB4B8F062D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2A339672-304C-4119-B183-1E516C87C07C}"
-	ProjectSection(SolutionItems) = preProject
-		Data\base_items.json = Data\base_items.json
-		Data\crafting_bench_options.json = Data\crafting_bench_options.json
-		Data\essences.json = Data\essences.json
-		Data\fossils.json = Data\fossils.json
-		Data\item_classes.json = Data\item_classes.json
-		Data\mod_types.json = Data\mod_types.json
-		Data\mods.json = Data\mods.json
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crafting", "src\CraftingSim\Crafting.csproj", "{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Currency", "src\Currency\Currency.csproj", "{56788108-8DBD-4B47-B629-66BC3B0B928F}"
@@ -85,7 +72,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2A339672-304C-4119-B183-1E516C87C07C} = {E33B68C5-21FE-4D84-B092-54AB4B8F062D}
 		{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07} = {492A318D-4230-4F86-BE69-093C9FB9DFFA}
 		{56788108-8DBD-4B47-B629-66BC3B0B928F} = {492A318D-4230-4F86-BE69-093C9FB9DFFA}
 		{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC} = {492A318D-4230-4F86-BE69-093C9FB9DFFA}

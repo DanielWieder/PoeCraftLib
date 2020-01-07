@@ -72,6 +72,7 @@
     <Compile Include="Query\FetchEssenceValues.cs" />
     <Compile Include="Query\FetchFossilValues.cs" />
     <Compile Include="Query\FetchCurrencyValues.cs" />
+    <Compile Include="Query\FetchHelper.cs" />
     <Compile Include="Query\FetchResonatorValues.cs" />
     <Compile Include="IQueryObject.cs" />
     <Compile Include="PoeNinjaHelper.cs" />
@@ -93,6 +94,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Assets\base_items.json" />
+    <EmbeddedResource Include="Assets\crafting_bench_options.json" />
+    <EmbeddedResource Include="Assets\essences.json" />
+    <EmbeddedResource Include="Assets\fossils.json" />
+    <EmbeddedResource Include="Assets\item_classes.json" />
+    <EmbeddedResource Include="Assets\mods.json" />
+    <EmbeddedResource Include="Assets\mod_types.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

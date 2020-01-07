@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using DataJson.Entities;
 using Newtonsoft.Json;
+using PoeCrafting.Data.Query;
 
 namespace DataJson.Query
 {
@@ -13,13 +15,12 @@ namespace DataJson.Query
     {
         public List<CraftingBenchJson> Execute()
         {
-            var json = File.ReadAllText(
-                "C:\\Users\\danie\\Documents\\GitHub\\PoeSimCraft\\PoeCrafting\\Data\\MasterMods.json");
-            var deserialized = JsonConvert.DeserializeObject<Dictionary<string, CraftingBenchJson>>(json);
+            Assembly assem = this.GetType().Assembly;
+            var json = FetchHelper.GetEmbeddedResource($"Assets\\crafting_bench_options.json", assem);
+            var deserialized = JsonConvert.DeserializeObject<List<CraftingBenchJson>>(json);
 
             return deserialized
-                .Select(x => { x.Value.FullName = x.Key; return x; })
-                .Select(x => x.Value)
+                .Select(x => { x.FullName = x.ModId; return x; })
                 .ToList();
         }
     }

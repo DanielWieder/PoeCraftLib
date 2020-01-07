@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using DataJson.Entities;
 using Newtonsoft.Json;
+using PoeCrafting.Data.Query;
 
 namespace DataJson.Query
 {
@@ -10,8 +12,8 @@ namespace DataJson.Query
     {
         public List<EssenceJson> Execute()
         {
-            var json = File.ReadAllText(
-                "C:\\Users\\danie\\Documents\\GitHub\\PoeSimCraft\\PoeCrafting\\Data\\essences.json");
+            Assembly assem = this.GetType().Assembly;
+            var json = FetchHelper.GetEmbeddedResource("Assets\\essences.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, EssenceJson>>(json);
 
             return deserialized

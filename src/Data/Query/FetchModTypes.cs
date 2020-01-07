@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using DataJson.Entities;
 using Newtonsoft.Json;
+using PoeCrafting.Data.Query;
 
 namespace DataJson.Query
 {
@@ -10,8 +12,8 @@ namespace DataJson.Query
     {
         public List<ModTypeJson> Execute()
         {
-            var json = File.ReadAllText(
-                "C:\\Users\\danie\\Documents\\GitHub\\PoeSimCraft\\PoeCrafting\\Data\\mod_types.json");
+            Assembly assem = this.GetType().Assembly;
+            var json = FetchHelper.GetEmbeddedResource("Assets\\mod_types.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, ModTypeJson>>(json);
 
             return deserialized
