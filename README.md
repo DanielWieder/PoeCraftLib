@@ -35,17 +35,15 @@ sim.Wait();
 ## Getting started
 
 Start with the code below.
-There are 2 required fields.
+There are 3 required fields.
 * baseItemInfo.ItemName
 * financeInfo.BudgetInChaos
+* craftingInfo.CraftingSteps
 
-You will also probably want to add a crafting step or it will only produce normal items
-    * craftingInfo.CraftingSteps
-
-You can adjust the parameters of the simulation by [arguments](crafting-simulation-arguments).
-You can check the output with the [results](crafting-results)
-The current status of the simulation can be check with [metadata](simulator-metadata).
-It can be cancelled early with [cancellation](simulator-cancellation).
+You can adjust the parameters of the simulation with [arguments](crafting-simulation-arguments) objects.
+The output can be read from the [results](crafting-results) object.
+The current status of the simulation can be checked with the [metadata](simulator-metadata) object.
+It can be cancelled early with the [cancellation](simulator-cancellation) object.
 
 ```
 SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
@@ -57,11 +55,11 @@ var sim = craftingSimulator.Start();
 
 ### Crafting simulation arguments
 
-SimBaseItemInfo: Contains information about the base item you are crafting. [Details Below](#base-item-info)
+[SimBaseItemInfo]((#base-item-info)): Contains information about the base item you are crafting.
 
-SimFinanceInfo: Contains information about the base item you are crafting. [Details Below](#finance-item-info)
+[SimFinanceInfo](#finance-item-info): Contains financial information about craft.
 
-SimCraftingInfo: Contains information about the base item you are crafting. [Details Below](#crafting-info)
+[SimCraftingInfo](#crafting-info): Contains information about the crafting process.
 
 #### Base item info
 
@@ -81,9 +79,9 @@ League: The current league. Options are Standard, Hardcore, or the current leagu
 
 #### Crafting info
 
-CraftingSteps: The crafting process. (Default Empty) [Details Below](#crafting-steps)
+[CraftingSteps](#crafting-steps): The crafting process. (Default Empty)
 
-CraftingTargets: The list of items that you are attempting to craft. (Default Empty) [Details Below](#crafting-targets)
+[CraftingTargets](#crafting-targets): The list of items that you are attempting to craft. (Default Empty)
 
 MaximumDurationInSeconds: The maximum duration of the simulation in seconds before it cancels. (Default 60)
 
@@ -117,9 +115,9 @@ The simulation executes in the Task that is returned when the simulation is star
 
 ## Crafting steps
 
-Each crafting step will be executed in sequence. There are 4 main types of crafting steps
+Each crafting step will be executed sequentially. There are 4 main types of crafting steps
 
-* CurrencyCraftingStep: This crafting step will attempt to modify the item according to the [currency](#currency) it contains. If the currency is inapplicable to the item based on the current status then it will not modify the item. 
+* CurrencyCraftingStep: This crafting step will attempt to modify the item according to the [currency](#currency) it contains. If the currency cannot be used on the item due to the item's current status then it will not modify the item. 
 
 * IfCraftingStep: This crafting step will execute the crafting steps in it's Children property if the [CraftingCondition](#conditions) is matched.
 
