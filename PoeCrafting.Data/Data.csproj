@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}</ProjectGuid>
+    <ProjectGuid>{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoeCrafting.CraftingSim</RootNamespace>
-    <AssemblyName>PoeCrafting.CraftingSim</AssemblyName>
+    <RootNamespace>PoeCrafting.Data</RootNamespace>
+    <AssemblyName>PoeCrafting.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,8 +32,14 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PetaPoco, Version=5.1.280.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PetaPoco.Core.Compiled.5.1.280\lib\net45\PetaPoco.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,31 +49,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AffixValueCalculator.cs" />
-    <Compile Include="ConditionResolver.cs" />
-    <Compile Include="CraftingSteps\CurrencyCraftingStep.cs" />
-    <Compile Include="CraftingSteps\EndCraftingStep.cs" />
-    <Compile Include="CraftingSteps\ICraftingStep.cs" />
-    <Compile Include="CraftingSteps\IfCraftingStep.cs" />
-    <Compile Include="StatusManager.cs" />
-    <Compile Include="CraftManager.cs" />
-    <Compile Include="MetaAffixValueCalculator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CraftingSteps\WhileCraftingStep.cs" />
+    <Compile Include="Entities\BaseItemJson.cs" />
+    <Compile Include="Entities\CraftingBenchJson.cs" />
+    <Compile Include="Entities\EssenceJson.cs" />
+    <Compile Include="Entities\FossilJson.cs" />
+    <Compile Include="Entities\ItemClassJson.cs" />
+    <Compile Include="Entities\ModsJson.cs" />
+    <Compile Include="Entities\ModTypeJson.cs" />
+    <Compile Include="Factory\AffixFactory.cs" />
+    <Compile Include="Factory\CurrencyValueFactory.cs" />
+    <Compile Include="Factory\EssenceFactory.cs" />
+    <Compile Include="Factory\FossilFactory.cs" />
+    <Compile Include="Factory\ItemFactory.cs" />
+    <Compile Include="Factory\MasterModFactory.cs" />
+    <Compile Include="Query\FetchEssenceValues.cs" />
+    <Compile Include="Query\FetchFossilValues.cs" />
+    <Compile Include="Query\FetchCurrencyValues.cs" />
+    <Compile Include="Query\FetchResonatorValues.cs" />
+    <Compile Include="IQueryObject.cs" />
+    <Compile Include="PoeNinjaHelper.cs" />
+    <Compile Include="Query\FetchAffixes.cs" />
+    <Compile Include="Query\FetchEssences.cs" />
+    <Compile Include="Query\FetchFossils.cs" />
+    <Compile Include="Query\FetchItemClasses.cs" />
+    <Compile Include="Query\FetchItems.cs" />
+    <Compile Include="Query\FetchMasterMods.cs" />
+    <Compile Include="Query\FetchModTypes.cs" />
+    <Compile Include="Query\IQueryObject.cs" />
+    <Compile Include="Random.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoeCrafting.Currency\PoeCrafting.Currency.csproj">
-      <Project>{56788108-8dbd-4b47-b629-66bc3b0b928f}</Project>
-      <Name>PoeCrafting.Currency</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoeCrafting.Data\PoeCrafting.Data.csproj">
-      <Project>{7e67e2a6-da5f-46a0-824c-a537db11b3ac}</Project>
-      <Name>PoeCrafting.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoeCrafting.Entities\PoeCrafting.Entities.csproj">
+    <ProjectReference Include="..\PoeCrafting.Entities\Entities.csproj">
       <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
-      <Name>PoeCrafting.Entities</Name>
+      <Name>Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

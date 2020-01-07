@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Domain", "PoeCrafting.Domain\PoeCrafting.Domain.csproj", "{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "PoeCrafting.Domain\Domain.csproj", "{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Data", "PoeCrafting.Data\PoeCrafting.Data.csproj", "{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "PoeCrafting.Data\Data.csproj", "{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Entities", "PoeCrafting.Entities\PoeCrafting.Entities.csproj", "{2F3E944E-78E3-40C6-85B2-197CF43429AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "PoeCrafting.Entities\Entities.csproj", "{2F3E944E-78E3-40C6-85B2-197CF43429AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{E33B68C5-21FE-4D84-B092-54AB4B8F062D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Currency", "PoeCrafting.Currency\PoeCrafting.Currency.csproj", "{56788108-8DBD-4B47-B629-66BC3B0B928F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Currency", "PoeCrafting.Currency\Currency.csproj", "{56788108-8DBD-4B47-B629-66BC3B0B928F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.Crafting", "PoeCrafting.CraftingSim\PoeCrafting.Crafting.csproj", "{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crafting", "PoeCrafting.CraftingSim\Crafting.csproj", "{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.CurrencyTest", "PoeCrafting.CurrencyTest\PoeCrafting.CurrencyTest.csproj", "{01194807-14EA-4A3A-AA89-AB9FE39EB036}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyTest", "PoeCrafting.CurrencyTest\CurrencyTest.csproj", "{01194807-14EA-4A3A-AA89-AB9FE39EB036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.CraftingTest", "PoeCrafting.CraftingProcessTest\PoeCrafting.CraftingTest.csproj", "{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CraftingTest", "PoeCrafting.CraftingProcessTest\CraftingTest.csproj", "{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2A339672-304C-4119-B183-1E516C87C07C}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,9 +30,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2A339672-3
 		Data\mods.json = Data\mods.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.DataTest", "PoeCrafting.DataTest\PoeCrafting.DataTest.csproj", "{316BDC61-4802-4951-9608-6418959AEA7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTest", "PoeCrafting.DataTest\DataTest.csproj", "{316BDC61-4802-4951-9608-6418959AEA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeCrafting.DomainTest", "PoeCrafting.DomainTest\PoeCrafting.DomainTest.csproj", "{FD87DD0E-E507-40F5-861A-52CD42255838}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainTest", "PoeCrafting.DomainTest\DomainTest.csproj", "{FD87DD0E-E507-40F5-861A-52CD42255838}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1159D49-D1D5-41D7-90AF-A5004621BD1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tst", "tst", "{E491C9E7-CB3C-457D-A46D-E667AFE91642}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,7 +85,16 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{F222175A-5DBA-43FD-A47F-771D2D0AA2AF} = {C1159D49-D1D5-41D7-90AF-A5004621BD1E}
+		{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC} = {C1159D49-D1D5-41D7-90AF-A5004621BD1E}
+		{2F3E944E-78E3-40C6-85B2-197CF43429AA} = {C1159D49-D1D5-41D7-90AF-A5004621BD1E}
+		{56788108-8DBD-4B47-B629-66BC3B0B928F} = {C1159D49-D1D5-41D7-90AF-A5004621BD1E}
+		{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07} = {C1159D49-D1D5-41D7-90AF-A5004621BD1E}
+		{01194807-14EA-4A3A-AA89-AB9FE39EB036} = {E491C9E7-CB3C-457D-A46D-E667AFE91642}
+		{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D} = {E491C9E7-CB3C-457D-A46D-E667AFE91642}
 		{2A339672-304C-4119-B183-1E516C87C07C} = {E33B68C5-21FE-4D84-B092-54AB4B8F062D}
+		{316BDC61-4802-4951-9608-6418959AEA7E} = {E491C9E7-CB3C-457D-A46D-E667AFE91642}
+		{FD87DD0E-E507-40F5-861A-52CD42255838} = {E491C9E7-CB3C-457D-A46D-E667AFE91642}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9CA7B48-654C-41E1-9163-353C80CEF030}

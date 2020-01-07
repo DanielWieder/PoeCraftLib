@@ -3,15 +3,15 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PoeCrafting.CraftingSim;
-using PoeCrafting.CraftingSim.CraftingSteps;
-using PoeCrafting.Currency;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Crafting;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.CraftingSim;
+using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingProcessTest
+namespace PoeCraftLib.CraftingProcessTest
 {
     [TestClass]
     public class CraftManagerTest

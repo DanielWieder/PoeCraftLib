@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PoeCrafting.Entities.Crafting
+namespace PoeCraftLib.Entities.Crafting
 {
     public class CraftingConfig
     {

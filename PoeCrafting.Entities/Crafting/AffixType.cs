@@ -1,4 +1,4 @@
-﻿namespace PoeCrafting.Entities.Constants
+﻿namespace PoeCraftLib.Entities.Constants
 {
     public enum AffixType
     {

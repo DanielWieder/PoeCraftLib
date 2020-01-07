@@ -51,21 +51,21 @@
     <Compile Include="Entities\SimulationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoeCrafting.CraftingSim\PoeCrafting.Crafting.csproj">
+    <ProjectReference Include="..\PoeCrafting.CraftingSim\Crafting.csproj">
       <Project>{02d6c6a0-9c17-4fc9-bbda-df480089af07}</Project>
-      <Name>PoeCrafting.Crafting</Name>
+      <Name>Crafting</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PoeCrafting.Currency\PoeCrafting.Currency.csproj">
+    <ProjectReference Include="..\PoeCrafting.Currency\Currency.csproj">
       <Project>{56788108-8dbd-4b47-b629-66bc3b0b928f}</Project>
-      <Name>PoeCrafting.Currency</Name>
+      <Name>Currency</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PoeCrafting.Data\PoeCrafting.Data.csproj">
+    <ProjectReference Include="..\PoeCrafting.Data\Data.csproj">
       <Project>{7e67e2a6-da5f-46a0-824c-a537db11b3ac}</Project>
-      <Name>PoeCrafting.Data</Name>
+      <Name>Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PoeCrafting.Entities\PoeCrafting.Entities.csproj">
+    <ProjectReference Include="..\PoeCrafting.Entities\Entities.csproj">
       <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
-      <Name>PoeCrafting.Entities</Name>
+      <Name>Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

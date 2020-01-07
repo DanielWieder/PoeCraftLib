@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.Currency.Currency
+namespace PoeCraftLib.Currency.Currency
 {
     public class MasterCraft : ICurrency
     {

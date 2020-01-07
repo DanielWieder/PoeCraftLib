@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace PoeCrafting.Entities.Items
+namespace PoeCraftLib.Entities.Items
 {
     public class ItemConfig : IDataErrorInfo, ICloneable
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using PoeCrafting.Entities;
+using PoeCraftLib.Entities;
 
 namespace DataJson.Entities
 {

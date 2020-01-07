@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoeCrafting.CraftingSim;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Crafting;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.CraftingSim;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingProcessTest
+namespace PoeCraftLib.CraftingProcessTest
 {
     [TestClass]
     public class ConditionResolverTest

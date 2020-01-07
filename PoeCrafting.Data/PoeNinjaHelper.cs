@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace PoeCrafting.Data
+namespace PoeCraftLib.Data
 {
     public class PoeNinjaHelper
     {

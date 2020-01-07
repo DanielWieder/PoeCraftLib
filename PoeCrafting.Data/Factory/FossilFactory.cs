@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DataJson.Entities;
 using DataJson.Query;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
 namespace DataJson.Factory
 {

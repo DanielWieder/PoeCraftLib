@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoeCrafting.Data;
+using PoeCraftLib.Data;
 
-namespace PoeCrafting.DataTest
+namespace PoeCraftLib.DataTest
 {
     [TestClass]
     public class PoeNinjaTest

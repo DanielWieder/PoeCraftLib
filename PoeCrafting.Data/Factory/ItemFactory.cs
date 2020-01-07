@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using DataJson.Entities;
 using DataJson.Query;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
 namespace DataJson.Factory
 {

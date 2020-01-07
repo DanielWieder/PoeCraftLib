@@ -1,4 +1,4 @@
-﻿namespace PoeCrafting.Entities.Crafting
+﻿namespace PoeCraftLib.Entities.Crafting
 {
     public class ConditionAffix
     {

@@ -1,4 +1,4 @@
-﻿namespace PoeCrafting.Entities.Items
+﻿namespace PoeCraftLib.Entities.Items
 {
     public class AccessoryEntity 
     {

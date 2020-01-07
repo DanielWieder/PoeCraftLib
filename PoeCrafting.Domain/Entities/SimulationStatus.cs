@@ -1,4 +1,4 @@
-﻿namespace PoeCrafting.Domain.Entities
+﻿namespace PoeCraftLib.Domain.Entities
 {
     public enum SimulationStatus
     {

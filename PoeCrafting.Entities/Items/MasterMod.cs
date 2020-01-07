@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PoeCrafting.Entities.Items
+namespace PoeCraftLib.Entities.Items
 {
     public class MasterMod
     {

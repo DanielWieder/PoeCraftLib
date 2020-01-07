@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataJson.Factory;
-using PoeCrafting.CraftingSim;
-using PoeCrafting.Currency;
-using PoeCrafting.Data.Factory;
-using PoeCrafting.Domain.Entities;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.CraftingSim;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Data.Factory;
+using PoeCraftLib.Domain.Entities;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.Domain
+namespace PoeCraftLib.Domain
 {
     public class CraftingSimulator
     {

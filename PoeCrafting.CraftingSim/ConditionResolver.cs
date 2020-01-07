@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Crafting;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingSim
+namespace PoeCraftLib.CraftingSim
 {
     public class ConditionResolver
     {

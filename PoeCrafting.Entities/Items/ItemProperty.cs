@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using PoeCrafting.Entities.Constants;
+using PoeCraftLib.Entities.Constants;
 
-namespace PoeCrafting.Entities.Items
+namespace PoeCraftLib.Entities.Items
 {
     public class ItemProperty
     {

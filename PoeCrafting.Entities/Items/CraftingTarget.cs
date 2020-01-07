@@ -1,6 +1,6 @@
-﻿using PoeCrafting.Entities.Crafting;
+﻿using PoeCraftLib.Entities.Crafting;
 
-namespace PoeCrafting.Entities.Items
+namespace PoeCraftLib.Entities.Items
 {
     public class CraftingTarget
     {

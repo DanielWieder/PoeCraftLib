@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.Entities.Crafting
+namespace PoeCraftLib.Entities.Crafting
 {
     public class CraftingSubcondition
     {

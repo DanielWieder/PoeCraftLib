@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using PoeCrafting.Currency;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Crafting;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Crafting;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingSim.CraftingSteps
+namespace PoeCraftLib.CraftingSim.CraftingSteps
 {
     public class EndCraftingStep : ICraftingStep
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PoeCrafting.Currency;
-using PoeCrafting.Currency.Currency;
-using PoeCrafting.Entities;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Currency.Currency;
+using PoeCraftLib.Entities;
 
-namespace PoeCrafting.CurrencyTest.Currency
+namespace PoeCraftLib.CurrencyTest.Currency
 {
     [TestClass]
     public class AugmentationTest

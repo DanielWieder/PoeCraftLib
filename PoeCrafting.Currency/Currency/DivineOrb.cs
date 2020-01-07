@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Constants;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.Currency.Currency
+namespace PoeCraftLib.Currency.Currency
 {
     public class DivineOrb : ICurrency
     {

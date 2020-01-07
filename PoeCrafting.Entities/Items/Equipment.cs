@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace PoeCrafting.Entities.Items
+namespace PoeCraftLib.Entities.Items
 {
     public class Equipment
     {

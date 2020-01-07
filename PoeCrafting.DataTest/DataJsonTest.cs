@@ -7,7 +7,7 @@ using DataJson.Query;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace PoeCrafting.DataJsonTest
+namespace PoeCraftLib.DataJsonTest
 {
     [TestClass]
     public class DataJsonTest

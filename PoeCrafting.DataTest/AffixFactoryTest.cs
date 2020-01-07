@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using DataJson.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CurrencyTest
+namespace PoeCraftLib.CurrencyTest
 {
     [TestClass]
     public class AffixFactoryTest

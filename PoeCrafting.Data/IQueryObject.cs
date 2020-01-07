@@ -1,4 +1,4 @@
-﻿namespace PoeCrafting.Data
+﻿namespace PoeCraftLib.Data
 {
     public interface IQueryObject<T>
     {

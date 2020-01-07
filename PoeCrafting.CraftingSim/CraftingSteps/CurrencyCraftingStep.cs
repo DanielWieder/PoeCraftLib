@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using PoeCrafting.Currency;
-using PoeCrafting.Entities.Crafting;
-using PoeCrafting.Entities.Items;
-using ItemStatus = PoeCrafting.Entities.ItemStatus;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Entities.Crafting;
+using PoeCraftLib.Entities.Items;
+using ItemStatus = PoeCraftLib.Entities.ItemStatus;
 
-namespace PoeCrafting.CraftingSim.CraftingSteps
+namespace PoeCraftLib.CraftingSim.CraftingSteps
 {
     public class CurrencyCraftingStep : ICraftingStep
     {
@@ -34,12 +34,12 @@ namespace PoeCrafting.CraftingSim.CraftingSteps
         }
 
         public bool ShouldVisitChildren(Equipment equipment, int times) => false;
-        public void UpdateStatus(ItemStatus metadataCurrentStatus)
+        public void UpdateStatus(Entities.ItemStatus metadataCurrentStatus)
         { 
             _currency.GetNextStatus(metadataCurrentStatus);
         }
 
-        public bool ShouldVisitChildren(ItemStatus previousStatus, ItemStatus metadataCurrentStatus)
+        public bool ShouldVisitChildren(Entities.ItemStatus previousStatus, Entities.ItemStatus metadataCurrentStatus)
         {
             return false;
         }

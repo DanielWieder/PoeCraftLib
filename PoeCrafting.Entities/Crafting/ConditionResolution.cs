@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PoeCrafting.Entities.Crafting
+namespace PoeCraftLib.Entities.Crafting
 {
     public class ConditionResolution
     {

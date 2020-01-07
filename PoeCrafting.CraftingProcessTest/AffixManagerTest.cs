@@ -10,13 +10,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Language;
 using Newtonsoft.Json;
-using PoeCrafting.CraftingSim;
-using PoeCrafting.Currency;
-using PoeCrafting.Data;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.CraftingSim;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Data;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingProcessTest
+namespace PoeCraftLib.CraftingProcessTest
 {
     [TestClass]
     public class AffixManagerTest

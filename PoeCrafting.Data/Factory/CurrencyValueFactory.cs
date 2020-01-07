@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PoeCrafting.Data;
+using PoeCraftLib.Data;
 
-namespace PoeCrafting.Data.Factory
+namespace PoeCraftLib.Data.Factory
 {
     public class CurrencyValueFactory
     {

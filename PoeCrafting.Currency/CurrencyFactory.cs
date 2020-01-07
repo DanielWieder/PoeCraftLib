@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoeCrafting.Currency.Currency;
-using PoeCrafting.Data;
-using PoeCrafting.Entities;
+using PoeCraftLib.Currency.Currency;
+using PoeCraftLib.Data;
+using PoeCraftLib.Entities;
 
-namespace PoeCrafting.Currency
+namespace PoeCraftLib.Currency
 {
     public class CurrencyFactory
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using DataJson.Entities;
 using Newtonsoft.Json;
-using PoeCrafting.Entities;
+using PoeCraftLib.Entities;
 
 namespace DataJson.Query
 {

@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PoeCrafting.CraftingSim;
-using PoeCrafting.CraftingSim.CraftingSteps;
-using PoeCrafting.Currency;
-using PoeCrafting.Currency.Currency;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.CraftingSim;
+using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Currency.Currency;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingProcessTest
+namespace PoeCraftLib.CraftingProcessTest
 {
     [TestClass]
     public class StatusManagerTest

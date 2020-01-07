@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
 
-namespace PoeCrafting.Currency
+namespace PoeCraftLib.Currency
 {
     public interface ICurrency
     {

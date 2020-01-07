@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PoeCrafting.Data
+namespace PoeCraftLib.Data
 {
     public class FetchFossilValues : IFetchFossilValues
     {

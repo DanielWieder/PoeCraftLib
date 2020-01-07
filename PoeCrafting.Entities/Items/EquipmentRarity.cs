@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PoeCrafting.Entities.Items
+namespace PoeCraftLib.Entities.Items
 {
     [Flags]
     public enum EquipmentRarity

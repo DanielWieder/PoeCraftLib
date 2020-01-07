@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CurrencyTest
+namespace PoeCraftLib.CurrencyTest
 {
     public class TestEquipmentFactory
     {

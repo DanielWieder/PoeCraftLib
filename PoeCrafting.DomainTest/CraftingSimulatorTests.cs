@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataJson.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoeCrafting.CraftingSim;
-using PoeCrafting.CraftingSim.CraftingSteps;
-using PoeCrafting.Currency.Currency;
-using PoeCrafting.Data;
-using PoeCrafting.Domain;
-using PoeCrafting.Domain.Entities;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Constants;
+using PoeCraftLib.CraftingSim;
+using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Currency.Currency;
+using PoeCraftLib.Data;
+using PoeCraftLib.Domain;
+using PoeCraftLib.Domain.Entities;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Constants;
 
-namespace PoeCrafting.DomainTest
+namespace PoeCraftLib.DomainTest
 {
     [TestClass]
     public class CraftingSimulatorTests

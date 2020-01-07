@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using PoeCrafting.CraftingSim.CraftingSteps;
-using PoeCrafting.Currency;
-using PoeCrafting.Entities;
-using PoeCrafting.Entities.Items;
+using PoeCraftLib.Entities;
+using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCrafting.CraftingSim
+namespace PoeCraftLib.CraftingSim
 {
     public class CraftManager
     {

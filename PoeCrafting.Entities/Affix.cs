@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using PoeCrafting.Entities.Constants;
+using PoeCraftLib.Entities.Constants;
 
-namespace PoeCrafting.Entities
+namespace PoeCraftLib.Entities
 {
     public enum Influence
     {
