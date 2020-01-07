@@ -34,7 +34,7 @@ namespace PoeCrafting.CraftingProcessTest
             int count = 1000;
 
             int ilvl = 75;
-            Faction faction = Faction.Shaper;
+            var influence = Influence.Shaper;
             String item = "Murderous Eye Jewel";
 
             List<Affix> affixes = new List<Affix>()
@@ -45,7 +45,7 @@ namespace PoeCrafting.CraftingProcessTest
 
             var fossilAffixes = new List<Affix>();
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
-            var allAffixes = _affixFactory.GetAffixesForItem(testItem.Tags, testItem.ItemClass, ilvl, faction).ToList();
+            var allAffixes = _affixFactory.GetAffixesForItem(testItem.Tags, testItem.ItemClass, ilvl, new List<Influence> { influence }).ToList();
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
 
@@ -60,7 +60,7 @@ namespace PoeCrafting.CraftingProcessTest
             var description = new
             {
                 Item = item,
-                Faction = Enum.GetName(typeof(Faction), faction),
+                Faction = Enum.GetName(typeof(Influence), influence),
                 Ilvl = ilvl,
                 Count = count,
                 Affixes = affixes.Select(x => new {x.Group, x.AddsTags}),

@@ -45,7 +45,7 @@ namespace DataJson.Factory
             Jewel = Items.Where(x => x.ItemClass == "AbyssJewel" || x.ItemClass == "Jewel").ToList();
         }
 
-        public Equipment ToEquipment(ItemBase itemBase, int itemLevel, Faction faction = Faction.None)
+        public Equipment ToEquipment(ItemBase itemBase, int itemLevel, List<Influence> influence)
         {
             if (itemBase == null) throw new InvalidOperationException("The equipment factory must be initialized before it can produce equipment");
 
@@ -53,7 +53,7 @@ namespace DataJson.Factory
             {
                 ItemLevel = itemLevel,
                 ItemBase = (ItemBase)itemBase.Clone(),
-                Faction = faction
+                Influence = influence
                 //     Implicit = _itemBase != null ? StatFactory.AffixToStat(_random, _baseImplicit) : null,
             };
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataJson.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,30 +19,32 @@ namespace PoeCrafting.CurrencyTest
         public void ShaperItemHasShaperMods()
         {
             var item = GetTestItem();
-            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, Faction.Shaper);
+            var influence = new List<Influence> { Influence.Shaper };
+            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, influence);
             
-            Assert.IsTrue(affixes.Count(x => x.Faction == Faction.Shaper) > 0);
-            Assert.IsTrue(affixes.Count(x => x.Faction == Faction.Elder) == 0);
+            Assert.IsTrue(affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("shaper"))));
+            Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("elder"))));
         }
 
         [TestMethod]
         public void ElderItemHasShaperMods()
         {
             var item = GetTestItem();
-            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, Faction.Elder);
+            var influence = new List<Influence> { Influence.Elder };
+            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, influence);
 
-            Assert.IsTrue(affixes.Count(x => x.Faction == Faction.Elder) > 0);
-            Assert.IsTrue(affixes.Count(x => x.Faction == Faction.Shaper) == 0);
+            Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("shaper"))));
+            Assert.IsTrue(affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("elder"))));
         }
 
         [TestMethod]
         public void FactionlessItemHasNoShaperOrElderMods()
         {
             var item = GetTestItem();
-            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, Faction.None);
+            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, new List<Influence>());
 
-            Assert.IsTrue(affixes.Count(x => x.Faction == Faction.Elder) == 0);
-            Assert.IsTrue(affixes.Count(x => x.Faction == Faction.Shaper) == 0);
+            Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("shaper"))));
+            Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("elder"))));
         }
 
         [TestMethod]

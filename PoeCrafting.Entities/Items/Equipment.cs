@@ -24,6 +24,6 @@ namespace PoeCrafting.Entities.Items
         public EquipmentRarity Rarity { get; set; } = EquipmentRarity.Normal;
         public bool Corrupted { get; set; } = false;
 
-        public Faction Faction { get; set; }
+        public List<Influence> Influence { get; set; }
     }
 }

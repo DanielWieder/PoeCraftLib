@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using DataJson.Entities;
 using DataJson.Query;
 using PoeCrafting.Entities;
@@ -26,22 +27,17 @@ namespace DataJson.Factory
             _modTypeToTags = _fetchModType.Execute().ToDictionary(x => x.FullName, x => new HashSet<string>(x.ModTags));
         }
 
-        public List<Affix> GetAffixesForItem(List<string> itemTags, String itemClass, int itemLevel = 84, Faction faction = Faction.None)
+        public List<Affix> GetAffixesForItem(List<string> itemTags, String itemClass, int itemLevel = 84, List<Influence> influence = null)
         {
-            if (faction == Faction.Elder && _itemClass[itemClass].ElderTag != null)
-            {
-                itemTags.Add(_itemClass[itemClass].ElderTag);
-            }
-
-            if (faction == Faction.Shaper && _itemClass[itemClass].ShaperTag != null)
-            {
-                itemTags.Add(_itemClass[itemClass].ShaperTag);
-            }
+            List<string> factionTags = GetFactionTags(influence, itemClass);
 
             HashSet<string> itemTagSet = new HashSet<string>(itemTags);
+            itemTagSet.UnionWith(factionTags);
+
+            var itemDomain = itemClass == "AbyssJewel" ? "abyss_jewel" : "item";
 
             var initialFilter = _mods
-                .Where(x => x.Value.Domain == "item" || x.Value.Domain == "abyss_jewel" || x.Value.Domain == "delve")
+                .Where(x => x.Value.Domain == itemDomain)
                 .Where(x => !x.Value.IsEssenceOnly)
                 .Select(x => x.Value)
                 .ToList();
@@ -84,10 +80,19 @@ namespace DataJson.Factory
                 .ToList();
 
             var affixesForItem = modsFilteredByLevel
-                .Select(x => ModJsonToAffix(x, itemTagSet, modTiers, faction))
+                .Select(x => ModJsonToAffix(x, itemTagSet, modTiers))
                 .ToList();
 
             return affixesForItem;
+        }
+
+        private List<string> GetFactionTags(List<Influence> influence, string itemClass)
+        {
+            if (influence == null || !_itemClass.ContainsKey(itemClass)) return new List<string>();
+
+            if (influence.Count > 2) throw new ArgumentException("Items cannot have more than two types of influence");
+
+            return influence.Select(x => _itemClass[itemClass].InfluenceTags[x]).ToList();
         }
 
         private Dictionary<string, int> GetModTiers(List<ModsJson> itemMods)
@@ -118,8 +123,7 @@ namespace DataJson.Factory
         private Affix ModJsonToAffix(
             ModsJson modsJson,
             int modTier,
-            TierType tierType,
-            Faction faction = Faction.None)
+            TierType tierType)
         {
             Affix affix = new Affix();
             affix.GenerationType = modsJson.GenerationType;
@@ -130,7 +134,6 @@ namespace DataJson.Factory
             affix.Type = modsJson.Type;
             affix.Tier = modTier;
             affix.TierType = tierType;
-            affix.Faction = faction;
             affix.Tags = _modTypeToTags[modsJson.Type];
             affix.AddsTags = modsJson.AddsTags;
             affix.SpawnWeights = modsJson.SpawnWeights.ToDictionary(x => x.Tag, x => (int)x.Weight);
@@ -170,13 +173,11 @@ namespace DataJson.Factory
         private Affix ModJsonToAffix(
             ModsJson modsJson,
             HashSet<string> itemTags,
-            Dictionary<string, int> modTiers,
-            Faction faction)
+            Dictionary<string, int> modTiers)
         {
             return ModJsonToAffix(modsJson,
                 modTiers[modsJson.FullName],
-                TierType.Default,
-                faction);
+                TierType.Default);
         }
 
         private bool ItemCanHaveAffix(ModsJson modsJsons, HashSet<string> tags)

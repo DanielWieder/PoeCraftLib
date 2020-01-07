@@ -1,4 +1,5 @@
-﻿using PoeCrafting.Entities;
+﻿using System.Collections.Generic;
+using PoeCrafting.Entities;
 
 namespace PoeCrafting.Domain.Entities
 {
@@ -6,7 +7,7 @@ namespace PoeCrafting.Domain.Entities
     {
         public string ItemName { get; set; }
         public int ItemLevel { get; set; } = 84;
-        public Faction Faction { get; set; } = Faction.None;
+        public List<Influence> Influence { get; set; } = new List<Influence>();
         public double ItemCost { get; set; } = 0;
     }
 }

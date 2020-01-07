@@ -4,11 +4,14 @@ using PoeCrafting.Entities.Constants;
 
 namespace PoeCrafting.Entities
 {
-    public enum Faction
+    public enum Influence
     {
         Elder,
         Shaper,
-        None
+        Crusader,
+        Redeemer,
+        Warlord,
+        Hunter
     }
 
     public class Affix
@@ -52,11 +55,6 @@ namespace PoeCrafting.Entities
         /// The minimum item level for the affix to spawn
         /// </summary>
         public int RequiredLevel { get; set; }
-
-        /// <summary>
-        /// The faction of the item (Elder/shaper)
-        /// </summary>
-        public Faction Faction { get; set; }
 
         /// <summary>
         /// The frequency that the affix occurs

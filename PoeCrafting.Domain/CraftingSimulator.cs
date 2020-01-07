@@ -59,7 +59,7 @@ namespace PoeCrafting.Domain
             _baseItemInfo = baseItemInfo;
 
             _baseItem = _itemFactory.Items.First(x => x.Name == _baseItemInfo.ItemName);
-            var itemAffixes = _affixFactory.GetAffixesForItem(_baseItem.Tags, _baseItem.ItemClass, _baseItemInfo.ItemLevel, _baseItemInfo.Faction);
+            var itemAffixes = _affixFactory.GetAffixesForItem(_baseItem.Tags, _baseItem.ItemClass, _baseItemInfo.ItemLevel, _baseItemInfo.Influence);
             var fossilAffixes = _fossilFactory.Fossils.SelectMany(x => x.AddedAffixes).ToList();
             _affixManager = new AffixManager(_baseItem, itemAffixes, fossilAffixes);
             _currencyValues = _currencyValueFactory.GetCurrencyValues(financeInfo.League);
@@ -90,7 +90,7 @@ namespace PoeCrafting.Domain
             for (Progress = 0; Progress < 100; Progress = GetSimulationProgress())
             {
                 // Craft item
-                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, _baseItemInfo.Faction);
+                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, _baseItemInfo.Influence);
                 var results = _craftingManager.Craft(_craftingInfo.CraftingSteps, item, _affixManager, ct, _financeInfo.BudgetInChaos - _simulationArtifacts.CostInChaos);
 
                 bool saved = false;

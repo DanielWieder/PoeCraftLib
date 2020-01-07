@@ -18,6 +18,7 @@ namespace PoeCrafting.Currency
 
         private readonly List<Affix> _itemAffixes;
         private readonly List<string> _baseTags;
+        private readonly int _baseLevel;
 
         private readonly Dictionary<PoolKey, AffixPool> _poolDic = new Dictionary<PoolKey, AffixPool>();
         private Dictionary<string, Affix> _allAffixes;
@@ -27,6 +28,7 @@ namespace PoeCrafting.Currency
             _allAffixes = itemAffixes.Union(fossilAffixes).GroupBy(x => x.FullName).Select(x => x.First()).ToDictionary(x => x.FullName, x => x);
             _itemAffixes = itemAffixes;
             _baseTags = itemBase.Tags;
+            _baseLevel = itemBase.RequiredLevel;
         }
 
         public Affix GetAffix(List<Affix> affixes, EquipmentRarity rarity, IRandom random, List<Fossil> fossils = null)
@@ -156,14 +158,12 @@ namespace PoeCrafting.Currency
 
         private AffixPool GenerateAffixPool(List<string> addedTags, List<Fossil> fossils, List<string> masterMods)
         {
-            // TODO: refactor to remove this required level hack.
-
             var tags = new HashSet<string>(_baseTags.Union(addedTags));
             var masterModSet = new HashSet<string>(masterMods);
             var fossilAffixes = fossils
                 .SelectMany(x => x.AddedAffixes)
                 .Distinct()
-                .Where(x =>  _itemAffixes.Any(y => y.RequiredLevel >= x.RequiredLevel))
+                .Where(x => x.RequiredLevel <= _baseLevel)
                 .ToList();
 
             var affixesToEvaluate = _itemAffixes.Union(fossilAffixes).ToList();

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using PoeCrafting.Entities;
 
 namespace DataJson.Entities
 {
@@ -6,13 +8,9 @@ namespace DataJson.Entities
     {
         public string FullName { get; set; }
 
-        [JsonProperty("elder_tag")]
-        public string ElderTag { get; set; }
+        public Dictionary<Influence, string> InfluenceTags { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("shaper_tag")]
-        public string ShaperTag { get; set; }
     }
 }
