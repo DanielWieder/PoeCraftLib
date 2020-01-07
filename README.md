@@ -113,6 +113,13 @@ The simulation executes in the Task that is returned when the simulation is star
 
 ## Getting Data
 
+This section will be added at a later date.
+
+A TLDR is that the PoeCrafting.Data project has a lot of factories that can get you properly structured data. The ones that provide information that can be passed into the simulator are listed below
+* EssenceFactory
+* FossilFactory
+* MasterModFactory
+
 ## Crafting steps
 
 Each crafting step will be executed sequentially. There are 4 main types of crafting steps
