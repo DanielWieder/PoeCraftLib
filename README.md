@@ -211,9 +211,11 @@ Max3: The maximum value of the third stat in the affix
 
 # Unsupported Features
 
-This library does not currently support
+This library does not currently support the following. However they are on the shortlist for new features.
 * Implicits
 * Item Quality: All items are treated as having 20% quality for meta affix Defense calculations
+* Beastcrafting
+* Elderslayer Currency
 
 # Thanks
 
