@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace PoeCraftLib.Data
+namespace PoeCraftLib.Data.Query
 {
     public class FetchResonatorValues : IFetchResonatorValues
     {
@@ -31,7 +27,7 @@ namespace PoeCraftLib.Data
         }
     }
 
-    public interface IFetchResonatorValues : IQueryObject<Dictionary<string, double>>
+    public interface IFetchResonatorValues : Data.IQueryObject<Dictionary<string, double>>
     {
         string League { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿namespace DataJson.Query
+﻿namespace PoeCraftLib.Data.Query
 {
     public interface IQueryObject<T>
     {

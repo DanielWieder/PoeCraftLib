@@ -7,8 +7,8 @@
     <ProjectGuid>{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoeCrafting.Domain</RootNamespace>
-    <AssemblyName>PoeCrafting.Domain</AssemblyName>
+    <RootNamespace>PoeCraftLib.Simulator</RootNamespace>
+    <AssemblyName>PoeCraftLib.Simulator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

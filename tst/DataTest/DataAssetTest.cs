@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using DataJson;
-using DataJson.Entities;
-using DataJson.Query;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PoeCraftLib.Data.Query;
 
-namespace PoeCraftLib.DataJsonTest
+namespace PoeCraftLib.DataTest
 {
     [TestClass]
     public class DataAssetTest

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoeCraftLib.Data;
+using PoeCraftLib.Data.Query;
 
 namespace PoeCraftLib.DataTest
 {

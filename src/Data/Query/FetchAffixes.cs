@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using DataJson.Entities;
 using Newtonsoft.Json;
-using PoeCrafting.Data.Query;
+using PoeCraftLib.Data.Entities;
 
-namespace DataJson.Query
+namespace PoeCraftLib.Data.Query
 {
     public class FetchAffixes : IFetchAffixes
     {

@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
-using System.Net.NetworkInformation;
-using DataJson;
-using DataJson.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Language;
 using Newtonsoft.Json;
-using PoeCraftLib.CraftingSim;
 using PoeCraftLib.Currency;
 using PoeCraftLib.Data;
+using PoeCraftLib.Data.Factory;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CraftingProcessTest
+namespace PoeCraftLib.CraftingTest
 {
     [TestClass]
     public class AffixManagerTest

@@ -1,4 +1,4 @@
-﻿namespace PoeCraftLib.Domain.Entities
+﻿namespace PoeCraftLib.Simulator.Entities
 {
     public class SimFinanceInfo
     {

@@ -4,7 +4,7 @@ using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CraftingSim.CraftingSteps
+namespace PoeCraftLib.Crafting.CraftingSteps
 {
     public class EndCraftingStep : ICraftingStep
     {

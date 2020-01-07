@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Entities;
 
-namespace PoeCraftLib.CraftingSim
+namespace PoeCraftLib.Crafting
 {
     public class StatusManager
     {

@@ -1,4 +1,4 @@
-﻿namespace PoeCraftLib.Entities.Items
+﻿namespace PoeCraftLib.Entities.Crafting
 {
     public enum StatValueType
     {

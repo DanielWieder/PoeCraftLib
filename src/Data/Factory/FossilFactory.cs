@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataJson.Entities;
-using DataJson.Query;
-using PoeCraftLib.Entities;
+using PoeCraftLib.Data.Entities;
+using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities.Items;
 
-namespace DataJson.Factory
+namespace PoeCraftLib.Data.Factory
 {
     public class FossilFactory
     {

@@ -8,8 +8,8 @@
     <ProjectGuid>{FD87DD0E-E507-40F5-861A-52CD42255838}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoeCrafting.DomainTest</RootNamespace>
-    <AssemblyName>PoeCrafting.DomainTest</AssemblyName>
+    <RootNamespace>PoeCraftLib.SimulatorTest</RootNamespace>
+    <AssemblyName>PoeCraftLib.SimulatorTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -59,13 +59,13 @@
       <Project>{7e67e2a6-da5f-46a0-824c-a537db11b3ac}</Project>
       <Name>Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Domain\Domain.csproj">
-      <Project>{f222175a-5dba-43fd-a47f-771d2d0aa2af}</Project>
-      <Name>Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Entities\Entities.csproj">
       <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
       <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Simulator\Simulator.csproj">
+      <Project>{f222175a-5dba-43fd-a47f-771d2d0aa2af}</Project>
+      <Name>Simulator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

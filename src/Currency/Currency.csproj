@@ -7,8 +7,8 @@
     <ProjectGuid>{56788108-8DBD-4B47-B629-66BC3B0B928F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoeCrafting.Currency</RootNamespace>
-    <AssemblyName>PoeCrafting.Currency</AssemblyName>
+    <RootNamespace>PoeCraftLib.Currency</RootNamespace>
+    <AssemblyName>PoeCraftLib.Currency</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

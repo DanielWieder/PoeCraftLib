@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
-using PoeCraftLib.Entities;
-using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CraftingSim
+namespace PoeCraftLib.Crafting
 {
     public class CraftManager
     {

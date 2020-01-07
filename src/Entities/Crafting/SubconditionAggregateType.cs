@@ -1,4 +1,4 @@
-﻿namespace PoeCraftLib.Entities.Constants
+﻿namespace PoeCraftLib.Entities.Crafting
 {
     public enum SubconditionAggregateType
     {

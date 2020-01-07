@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using DataJson.Entities;
-using DataJson.Query;
+using PoeCraftLib.Data.Entities;
+using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities;
-using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
 
-namespace DataJson.Factory
+namespace PoeCraftLib.Data.Factory
 {
     public class AffixFactory
     {

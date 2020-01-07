@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using PoeCraftLib.CraftingSim;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PoeCraftLib.Crafting;
 using PoeCraftLib.Entities;
-using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CraftingProcessTest
+namespace PoeCraftLib.CraftingTest
 {
     [TestClass]
     public class AffixValueCalculatorTest

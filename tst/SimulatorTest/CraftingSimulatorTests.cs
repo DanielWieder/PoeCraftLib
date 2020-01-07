@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using DataJson.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoeCraftLib.CraftingSim;
-using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data;
-using PoeCraftLib.Domain;
-using PoeCraftLib.Domain.Entities;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Simulator;
+using PoeCraftLib.Simulator.Entities;
 
-namespace PoeCraftLib.DomainTest
+namespace PoeCraftLib.SimulatorTest
 {
     [TestClass]
     public class CraftingSimulatorTests

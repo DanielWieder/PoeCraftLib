@@ -3,9 +3,8 @@ using Newtonsoft.Json;
 using PoeCraftLib.Currency;
 using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
-using ItemStatus = PoeCraftLib.Entities.ItemStatus;
 
-namespace PoeCraftLib.CraftingSim.CraftingSteps
+namespace PoeCraftLib.Crafting.CraftingSteps
 {
     public class CurrencyCraftingStep : ICraftingStep
     {

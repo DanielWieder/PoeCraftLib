@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Currency.Currency

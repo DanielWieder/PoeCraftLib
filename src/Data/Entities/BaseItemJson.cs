@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace DataJson.Entities
+namespace PoeCraftLib.Data.Entities
 {
     public partial class BaseItemJson
     {

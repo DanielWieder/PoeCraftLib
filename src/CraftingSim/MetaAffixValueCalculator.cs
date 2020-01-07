@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CraftingSim
+namespace PoeCraftLib.Crafting
 {
     public class MetaAffixValueCalculator
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataJson.Entities;
-using DataJson.Query;
+using PoeCraftLib.Data.Entities;
+using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
-namespace DataJson.Factory
+namespace PoeCraftLib.Data.Factory
 {
     public class ItemFactory
     {

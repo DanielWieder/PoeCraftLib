@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using PoeCraftLib.Entities;
 
-namespace DataJson.Entities
+namespace PoeCraftLib.Data.Entities
 {
     public partial class ItemClassJson
     {

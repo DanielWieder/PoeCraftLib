@@ -2,6 +2,7 @@
 using System.Linq;
 using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data;
+using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities;
 
 namespace PoeCraftLib.Currency

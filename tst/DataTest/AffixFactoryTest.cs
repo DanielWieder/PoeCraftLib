@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataJson.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PoeCraftLib.Data.Factory;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CurrencyTest
+namespace PoeCraftLib.DataTest
 {
     [TestClass]
     public class AffixFactoryTest

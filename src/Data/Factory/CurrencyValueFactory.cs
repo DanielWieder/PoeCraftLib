@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PoeCraftLib.Data;
+using PoeCraftLib.Data.Query;
 
 namespace PoeCraftLib.Data.Factory
 {

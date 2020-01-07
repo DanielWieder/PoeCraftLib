@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PoeCraftLib.CraftingSim;
-using PoeCraftLib.CraftingSim.CraftingSteps;
+using PoeCraftLib.Crafting;
+using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
 using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.CraftingProcessTest
+namespace PoeCraftLib.CraftingTest
 {
     [TestClass]
     public class StatusManagerTest
