@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using PoeCraftLib.Crafting.CraftingSteps;
-using PoeCraftLib.Entities.Items;
+using PoeCraftLib.Simulator.Model.Crafting;
+using PoeCraftLib.Simulator.Model.Crafting.Steps;
 
-namespace PoeCraftLib.Simulator.Entities
+namespace PoeCraftLib.Simulator.Model.Simulation
 {
     public class SimCraftingInfo
     {

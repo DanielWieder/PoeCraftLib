@@ -12,7 +12,20 @@ namespace PoeCraftLib.Currency
     {
         private static String PrefixesCannotBeChanged = "ItemGenerationCannotChangePrefixes";
         private static String SuffixesCannotBeChanged = "ItemGenerationCannotChangeSuffixes";
- 
+
+        public static readonly Dictionary<int, int> RareAffixCountOdds = new Dictionary<int, int>()
+        {
+            {4, 8},
+            {5, 3},
+            {6, 1}
+        };
+
+        public static readonly Dictionary<int, int> MagicAffixCountOdds = new Dictionary<int, int>()
+        {
+            {1, 1},
+            {2, 1}
+        };
+
         public static void RemoveExplicit(IRandom random, Equipment item)
         {
             bool cannotChangePrefixes = ItemHasGroup(item, PrefixesCannotBeChanged);
@@ -64,6 +77,35 @@ namespace PoeCraftLib.Currency
         private static bool ItemHasGroup(List<Stat> stats, string affix)
         {
             return ItemHasGroup(stats.Select(x => x.Affix).ToList(), affix);
+        }
+
+        /*
+         * Add explicits until the item has an amount equal to the selected count
+         */
+        public static void AddExplicits(IRandom random, Equipment item, AffixManager affixManager, Dictionary<int, int> affixCountOdds, List<Fossil> fossils = null)
+        {
+            var sum = affixCountOdds.Sum(x => x.Value);
+            var roll = random.Next(sum);
+
+            var affixCount = 0;
+            int count = 0;
+            foreach (var weight in affixCountOdds)
+            {
+                count += weight.Value;
+
+                if (roll < count)
+                {
+                    affixCount = weight.Key;
+                    break;
+                }
+            }
+
+            while (item.Stats.Count < affixCount)
+            {
+                bool successful = StatFactory.AddExplicit(random, item, affixManager, fossils);
+
+                if (!successful) break;
+            }
         }
 
         public static bool AddExplicit(IRandom random, Equipment item, AffixManager affixManager, List<Fossil> fossils = null)

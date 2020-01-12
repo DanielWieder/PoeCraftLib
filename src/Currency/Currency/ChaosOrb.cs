@@ -8,42 +8,27 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class ChaosOrb : ICurrency
     {
-        private IRandom Random { get; }
+        private readonly IRandom _random;
 
         public string Name => CurrencyNames.ChaosOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.ChaosOrb, 1 } };
 
         public ChaosOrb(IRandom random)
         {
-            Random = random;
+            _random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted || item.Rarity != EquipmentRarity.Rare)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
-
-            int fourMod = 8;
-            int fiveMod = 3;
-            int sixMod = 1;
-
-            var sum = fourMod + fiveMod + sixMod;
-
-            var roll = Random.Next(sum);
-            int modCount = roll < fourMod ? 4 : 
-                           roll < fourMod + fiveMod ? 5 : 
-                           6;
 
             item.Stats.Clear();
-            for (int i = 0; i < modCount; i++)
-            {
-                StatFactory.AddExplicit(Random, item, affixManager);
-            }
-
-            return true;
+            StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

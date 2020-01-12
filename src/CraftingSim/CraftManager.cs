@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
@@ -45,8 +46,8 @@ namespace PoeCraftLib.Crafting
                     ct.ThrowIfCancellationRequested();
                 }
 
-                bool isModified = craftingStep.Craft(equipment, affixManager);
-                UpdateMetadataOnCraft(craftingStep, metadata, isModified);
+                var currency = craftingStep.Craft(equipment, affixManager);
+                UpdateMetadataOnCraft(craftingStep, metadata, currency);
 
                 var times = 0;
                 while (craftingStep.ShouldVisitChildren(equipment, times))
@@ -60,17 +61,17 @@ namespace PoeCraftLib.Crafting
             return metadata;
         }
 
-        private CraftMetadata UpdateMetadataOnCraft(ICraftingStep craftingStep, CraftMetadata craftMetadata, bool isModified)
+        private CraftMetadata UpdateMetadataOnCraft(ICraftingStep craftingStep, CraftMetadata craftMetadata, Dictionary<string, int> currencyAmounts)
         {
             if (!craftMetadata.CraftingStepMetadata.ContainsKey(craftingStep))
             {
-                CraftingStepMetadata stepMetadata = new CraftingStepMetadata {TimesVisited = 0, CurrencyAmounts = craftingStep.GetCurrency};
+                CraftingStepMetadata stepMetadata = new CraftingStepMetadata {TimesVisited = 0, CurrencyAmounts = currencyAmounts };
                 craftMetadata.CraftingStepMetadata.Add(craftingStep, stepMetadata);
             }
 
             craftMetadata.CraftingStepMetadata[craftingStep].TimesVisited++;
 
-            if (isModified)
+            if (currencyAmounts.Any())
             {
                 craftMetadata.CraftingStepMetadata[craftingStep].TimesModified++;
             }

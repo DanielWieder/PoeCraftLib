@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using PoeCraftLib.Entities.Items;
+using PoeCraftLib.Simulator.Model.Items;
+using PoeCraftLib.Simulator.Model.Crafting;
 
-namespace PoeCraftLib.Simulator.Entities
+namespace PoeCraftLib.Simulator.Model.Simulation
 {
     public class SimulationArtifacts
     {

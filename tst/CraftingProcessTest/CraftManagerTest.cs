@@ -73,6 +73,9 @@ namespace PoeCraftLib.CraftingTest
 
             mockChildStep.Setup(x => x.ShouldVisitChildren(It.IsAny<Equipment>(), It.IsAny<int>())).Returns(false);
 
+            mockChildStep.Setup(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()))
+                .Returns(new Dictionary<string, int>());
+
             craftManager.Craft(craftingSteps, equipment, affixManager, token, null);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Once);
@@ -129,7 +132,9 @@ namespace PoeCraftLib.CraftingTest
 
             int calls = 0;
 
-            mockChildStep.Setup(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>())).Callback(() =>
+            mockChildStep.Setup(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()))
+                .Returns(new Dictionary<string, int>())
+                .Callback(() =>
             {
                 if (calls >= 3)
                 {
@@ -138,6 +143,7 @@ namespace PoeCraftLib.CraftingTest
 
                 calls++;
             });
+
 
             mockChildStep.Setup(x => x.ShouldVisitChildren(It.IsAny<Equipment>(), It.IsAny<int>())).Returns(false);
 

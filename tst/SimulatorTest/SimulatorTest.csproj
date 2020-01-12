@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CraftingSimulatorTests.cs" />
+    <Compile Include="MapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -47,10 +48,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CraftingSim\Crafting.csproj">
-      <Project>{02d6c6a0-9c17-4fc9-bbda-df480089af07}</Project>
-      <Name>Crafting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Currency\Currency.csproj">
       <Project>{56788108-8dbd-4b47-b629-66bc3b0b928f}</Project>
       <Name>Currency</Name>
@@ -69,6 +66,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>

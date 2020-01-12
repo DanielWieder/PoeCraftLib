@@ -26,7 +26,7 @@ namespace PoeCraftLib.Data.Query
         }
     }
 
-    public interface IFetchEssenceValues : Data.IQueryObject<Dictionary<string, double>>
+    public interface IFetchEssenceValues : IQueryObject<Dictionary<string, double>>
     {
         string League { get; set; }
     }

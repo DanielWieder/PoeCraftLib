@@ -14,43 +14,53 @@ namespace PoeCraftLib.Currency.Currency
     {
         private static String Metamod = "ItemGenerationCanHaveMultipleCraftedMods";
 
-        private readonly MasterMod _masterMod;
+        private readonly Dictionary<string, MasterMod> _masterMods;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>()
-        {
-            {
-                _masterMod.CurrencyType, _masterMod.CurrencyCost
-            }
-        };
+        private Dictionary<string, int> _currency;
+        private readonly string _generationType;
 
         private IRandom Random { get; set; }
 
-        public MasterCraft(MasterMod masterMod, IRandom random)
+        public MasterCraft(Dictionary<string, MasterMod> masterMods, IRandom random)
         {
-            _masterMod = masterMod;
+            // All master mods in the map should have the same name and generation type since it's for the same affix on different item classes
+            Name = masterMods.First().Value.Name;
+            _generationType = masterMods.First().Value.Affix.GenerationType;
+
+            _masterMods = masterMods;
             Random = random;
         }
-        public string Name => _masterMod.Name;
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public string Name { get; }
+
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
-            if (!_masterMod.ItemClasses.Contains(item.ItemBase.ItemClass))
+            if (!_masterMods.ContainsKey(item.ItemBase.ItemClass))
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             if (!ItemHasGroup(item, Metamod) && item.Stats.Any(x => x.Affix.TierType == TierType.Craft))
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             if (item.Corrupted || item.Rarity == EquipmentRarity.Normal)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
-            StatFactory.AddExplicit(Random, item, _masterMod.Affix);
+            var masterMod = _masterMods[item.ItemBase.ItemClass];
 
-            return true;
+            _currency = new Dictionary<string, int>()
+            {
+                {
+                    masterMod.CurrencyType, masterMod.CurrencyCost
+                }
+            };
+
+            StatFactory.AddExplicit(Random, item, masterMod.Affix);
+
+            return _currency;
 
         }
 
@@ -58,7 +68,7 @@ namespace PoeCraftLib.Currency.Currency
         {
             if (IsError(status)) return false;
 
-            if (_masterMod.Affix.GenerationType == "prefix")
+            if (_generationType == "prefix")
             {
                 if (status.MightBeRarity(EquipmentRarity.Rare))
                 {
@@ -72,7 +82,7 @@ namespace PoeCraftLib.Currency.Currency
 
                 return false;
             }
-            else if (_masterMod.Affix.GenerationType == "suffix")
+            else if (_generationType == "suffix")
             {
                 if (status.MightBeRarity(EquipmentRarity.Rare))
                 {
@@ -97,7 +107,7 @@ namespace PoeCraftLib.Currency.Currency
                 return true;
             }
 
-            if (_masterMod.Affix.GenerationType == "prefix")
+            if (_generationType == "prefix")
             {
                 if (status.IsRarity(EquipmentRarity.Rare))
                 {
@@ -111,7 +121,7 @@ namespace PoeCraftLib.Currency.Currency
 
                 return false;
             }
-            else if (_masterMod.Affix.GenerationType == "suffix")
+            else if (_generationType == "suffix")
             {
                 if (status.IsRarity(EquipmentRarity.Rare))
                 {
@@ -134,12 +144,12 @@ namespace PoeCraftLib.Currency.Currency
             if (IsError(status))
                 return status;
 
-            if (_masterMod.Affix.GenerationType == "prefix")
+            if (_generationType == "prefix")
             {
                 status.MinPrefixes = Math.Min(status.MinPrefixes + 1, 3);
                 status.MaxPrefixes = Math.Max(status.MinPrefixes, status.MaxPrefixes);
             }
-            if (_masterMod.Affix.GenerationType == "suffix")
+            if (_generationType == "suffix")
             {
                 status.MinSuffixes = Math.Min(status.MinSuffixes + 1, 3);
                 status.MaxSuffixes = Math.Max(status.MinSuffixes, status.MaxSuffixes);

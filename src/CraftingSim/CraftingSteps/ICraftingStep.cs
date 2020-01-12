@@ -12,9 +12,8 @@ namespace PoeCraftLib.Crafting.CraftingSteps
 
         List<ICraftingStep> Children { get; }
         CraftingCondition Condition { get; }
-        Dictionary<string, int> GetCurrency { get; }
 
-        bool Craft(Equipment equipment, AffixManager affixManager);
+        Dictionary<string, int> Craft(Equipment equipment, AffixManager affixManager);
 
         bool ShouldVisitChildren(Equipment equipment, int times);
         void UpdateStatus(ItemStatus metadataCurrentStatus);

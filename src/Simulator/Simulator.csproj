@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoeCraftLib.Simulator</RootNamespace>
     <AssemblyName>PoeCraftLib.Simulator</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -52,12 +56,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainToClientMapper.cs" />
     <Compile Include="CraftingSimulator.cs" />
-    <Compile Include="Entities\SimBaseItemInfo.cs" />
-    <Compile Include="Entities\SimCraftingInfo.cs" />
-    <Compile Include="Entities\SimFinanceInfo.cs" />
-    <Compile Include="Entities\SimulationArtifacts.cs" />
-    <Compile Include="Entities\SimulationStatus.cs" />
+    <Compile Include="ClientToDomainMapper.cs" />
+    <Compile Include="Model\Crafting\AffixRestriction.cs" />
+    <Compile Include="Model\Crafting\AffixType.cs" />
+    <Compile Include="Model\Crafting\ConditionAffix.cs" />
+    <Compile Include="Model\Crafting\ConditionResolution.cs" />
+    <Compile Include="Model\Crafting\CraftingCondition.cs" />
+    <Compile Include="Model\Crafting\CraftingStepStatus.cs" />
+    <Compile Include="Model\Crafting\CraftingSubcondition.cs" />
+    <Compile Include="Model\Crafting\CraftingTarget.cs" />
+    <Compile Include="Model\Crafting\Currency\CraftingEventType.cs" />
+    <Compile Include="Model\Crafting\Currency\CraftingEvent.cs" />
+    <Compile Include="Model\Crafting\StatValueType.cs" />
+    <Compile Include="Model\Crafting\Steps\CraftingEventStep.cs" />
+    <Compile Include="Model\Crafting\Steps\EndCraftingStep.cs" />
+    <Compile Include="Model\Crafting\Steps\ICraftingStep.cs" />
+    <Compile Include="Model\Crafting\Steps\IfCraftingStep.cs" />
+    <Compile Include="Model\Crafting\Steps\WhileCraftingStep.cs" />
+    <Compile Include="Model\Crafting\SubconditionAggregateType.cs" />
+    <Compile Include="Model\Crafting\TierType.cs" />
+    <Compile Include="Model\Items\Affix.cs" />
+    <Compile Include="Model\Items\Equipment.cs" />
+    <Compile Include="Model\Items\EquipmentRarity.cs" />
+    <Compile Include="Model\Items\Influence.cs" />
+    <Compile Include="Model\Items\ItemBase.cs" />
+    <Compile Include="Model\Items\Stat.cs" />
+    <Compile Include="Model\Simulation\SimBaseItemInfo.cs" />
+    <Compile Include="Model\Simulation\SimCraftingInfo.cs" />
+    <Compile Include="Model\Simulation\SimFinanceInfo.cs" />
+    <Compile Include="Model\Simulation\SimulationArtifacts.cs" />
+    <Compile Include="Model\Simulation\SimulationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

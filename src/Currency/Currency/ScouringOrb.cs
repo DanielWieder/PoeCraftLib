@@ -11,23 +11,23 @@ namespace PoeCraftLib.Currency.Currency
     {
         public string Name => CurrencyNames.ScouringOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.ScouringOrb, 1 } };
 
         public ScouringOrb(IRandom random)
         { }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted || item.Rarity == EquipmentRarity.Normal || item.Rarity == EquipmentRarity.Unique)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             StatFactory.RemoveAllExplicits(item);
 
             if (!item.Stats.Any()) item.Rarity = EquipmentRarity.Normal;
 
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

@@ -4,6 +4,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using PoeCraftLib.Data.Entities;
 using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Data.Query
 {

@@ -163,8 +163,8 @@ namespace PoeCraftLib.CraftingTest
         {
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             AddOrb(craftingSteps, new TransmutationOrb(_random.Object));
-            AddOrb(craftingSteps, new AnullmentOrb(_random.Object));
-            AddOrb(craftingSteps, new AnullmentOrb(_random.Object));
+            AddOrb(craftingSteps, new AnnulmentOrb(_random.Object));
+            AddOrb(craftingSteps, new AnnulmentOrb(_random.Object));
             return craftingSteps;
         }
 
@@ -172,10 +172,10 @@ namespace PoeCraftLib.CraftingTest
         {
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             AddOrb(craftingSteps, new TransmutationOrb(_random.Object));
-            AddOrb(craftingSteps, new AnullmentOrb(_random.Object));
-            AddOrb(craftingSteps, new AnullmentOrb(_random.Object));
+            AddOrb(craftingSteps, new AnnulmentOrb(_random.Object));
+            AddOrb(craftingSteps, new AnnulmentOrb(_random.Object));
             AddOrb(craftingSteps, new RegalOrb(_random.Object));
-            AddOrb(craftingSteps, new AnullmentOrb(_random.Object));
+            AddOrb(craftingSteps, new AnnulmentOrb(_random.Object));
             return craftingSteps;
         }
 

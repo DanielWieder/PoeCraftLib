@@ -9,13 +9,11 @@ namespace PoeCraftLib.Currency
     {
         string Name { get; }
 
-        bool Execute(Equipment equipment, AffixManager affixManager);
+        Dictionary<string, int> Execute(Equipment equipment, AffixManager affixManager);
 
         bool IsWarning(ItemStatus status);
 
         bool IsError(ItemStatus status);
 
-        ItemStatus GetNextStatus(ItemStatus status);
-        Dictionary<string, int> GetCurrency();
-    }
+        ItemStatus GetNextStatus(ItemStatus status); }
 }

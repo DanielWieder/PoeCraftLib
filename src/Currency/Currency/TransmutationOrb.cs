@@ -8,27 +8,27 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class TransmutationOrb : ICurrency
     {
-        private ICurrency Alteration { get; }
-
         public string Name => CurrencyNames.TransmuationOrb;
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.TransmuationOrb, 1 } };
+        private IRandom _random;
 
         public TransmutationOrb(IRandom random)
         {
-            Alteration = new AlterationOrb(random);
+            _random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
 
             if (item.Corrupted || item.Rarity != EquipmentRarity.Normal)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             item.Rarity = EquipmentRarity.Magic;
+            StatFactory.AddExplicits(_random, item, affixManager, StatFactory.MagicAffixCountOdds);
 
-            return Alteration.Execute(item, affixManager);
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

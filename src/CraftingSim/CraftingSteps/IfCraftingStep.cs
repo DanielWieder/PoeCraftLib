@@ -13,9 +13,9 @@ namespace PoeCraftLib.Crafting.CraftingSteps
         public string Name => "If";
 
         public Dictionary<string, int> GetCurrency => new Dictionary<string, int>();
-        public List<ICraftingStep> Children { get; } = new List<ICraftingStep>();
+        public List<ICraftingStep> Children { get; set; } = new List<ICraftingStep>();
         public CraftingCondition Condition { get; set; } = new CraftingCondition();
-        public bool Craft(Equipment equipment, AffixManager affixManager) => false;
+        public Dictionary<string, int> Craft(Equipment equipment, AffixManager affixManager) => new Dictionary<string, int>();
 
         public bool ShouldVisitChildren(Equipment equipment, int times)
         {

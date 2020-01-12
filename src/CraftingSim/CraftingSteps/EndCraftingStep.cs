@@ -17,10 +17,10 @@ namespace PoeCraftLib.Crafting.CraftingSteps
         public CraftingCondition Condition => null;
         public Dictionary<string, int> GetCurrency => new Dictionary<string, int>();
 
-        public bool Craft(Equipment equipment, AffixManager affixManager)
+        public Dictionary<string, int> Craft(Equipment equipment, AffixManager affixManager)
         {
             equipment.Completed = true;
-            return true;
+            return new Dictionary<string, int>();
         }
         public void UpdateStatus(ItemStatus metadataCurrentStatus)
         {

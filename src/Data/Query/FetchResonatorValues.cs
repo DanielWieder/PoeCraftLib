@@ -27,7 +27,7 @@ namespace PoeCraftLib.Data.Query
         }
     }
 
-    public interface IFetchResonatorValues : Data.IQueryObject<Dictionary<string, double>>
+    public interface IFetchResonatorValues : IQueryObject<Dictionary<string, double>>
     {
         string League { get; set; }
     }

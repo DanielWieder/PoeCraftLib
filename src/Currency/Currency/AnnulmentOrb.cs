@@ -6,29 +6,29 @@ using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Currency.Currency
 {
-    public class AnullmentOrb : ICurrency
+    public class AnnulmentOrb : ICurrency
     {
-        public string Name => CurrencyNames.AnullmentOrb;
+        public string Name => CurrencyNames.AnnulmentOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.AnnulmentOrb, 1 } };
 
         private readonly IRandom _random;
 
-        public AnullmentOrb(IRandom random)
+        public AnnulmentOrb(IRandom random)
         {
             _random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted || item.Rarity == EquipmentRarity.Normal || item.Rarity == EquipmentRarity.Unique || item.Stats.Count == 0)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             StatFactory.RemoveExplicit(_random, item);
 
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

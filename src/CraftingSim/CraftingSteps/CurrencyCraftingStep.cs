@@ -18,8 +18,6 @@ namespace PoeCraftLib.Crafting.CraftingSteps
         [JsonIgnore]
         public CraftingCondition Condition => null;
 
-        public Dictionary<string, int> GetCurrency => _currency.GetCurrency();
-
         public double Value { get; }
 
         public CurrencyCraftingStep(ICurrency currency)
@@ -27,7 +25,7 @@ namespace PoeCraftLib.Crafting.CraftingSteps
             this._currency = currency;
         }
 
-        public bool Craft(Equipment equipment, AffixManager affixManager)
+        public Dictionary<string, int> Craft(Equipment equipment, AffixManager affixManager)
         {
             return _currency.Execute(equipment, affixManager);
         }

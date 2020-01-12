@@ -7,49 +7,38 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class EssenceCraft : ICurrency
     {
-        private IRandom Random { get; }
+        private readonly IRandom _random;
 
         private const int LevelToReroll = 6;
 
         private Essence _essence;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency;
 
         public EssenceCraft(IRandom random, Essence essence)
         {
+            this._random = random;
             this._essence = essence;
+            _currency = new Dictionary<string, int>() { { _essence.Name, 1 } };
         }
 
         public string Name => _essence.Name;
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
-            if (item.Corrupted || item.Rarity != EquipmentRarity.Rare)
-            {
-                return false;
-            }
 
-            int fourMod = 8;
-            int fiveMod = 3;
-            int sixMod = 1;
+            if (item.Corrupted) return new Dictionary<string, int>();
 
-            var sum = fourMod + fiveMod + sixMod;
+            if (_essence.Level < LevelToReroll && item.Rarity == EquipmentRarity.Rare) return new Dictionary<string, int>();
 
-            var roll = Random.Next(sum);
-            int modCount = roll < fourMod ? 4 :
-                roll < fourMod + fiveMod ? 5 :
-                6;
+            if (item.Rarity != EquipmentRarity.Normal) return new Dictionary<string, int>();
 
             item.Stats.Clear();
 
             var mod = _essence.ItemClassToMod[item.ItemBase.ItemClass];
-            StatFactory.AffixToStat(Random, item, mod);
+            StatFactory.AffixToStat(_random, item, mod);
+            StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
 
-            for (int i = 1; i < modCount; i++)
-            {
-                StatFactory.AddExplicit(Random, item, affixManager);
-            }
-
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

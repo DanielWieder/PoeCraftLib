@@ -11,29 +11,57 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class FossilCraft : ICurrency
     {
-        private IRandom Random { get; }
+        private Dictionary<string, int> _normalCurrency;
+        private Dictionary<string, int> _rareCurrency;
+
+
+        private readonly IRandom _random;
 
         public string Name => "Fossil";
 
         public List<Fossil> Fossils { get; set; }
 
-        public Dictionary<string, int> GetCurrency() => Fossils.ToDictionary(x => x.Name, x => 1);
+        private List<Essence> _corruptionOnlyEssences;
 
-        private List<Essence> _corruptionOnlyEssences { get; }
+        private Dictionary<int, String> _chaoticResonators = new Dictionary<int, string>()
+        {
+            {1, "Primitive Chaotic Resonator"},
+            {2, "Potent Chaotic Resonator"},
+            {3, "Powerful Chaotic Resonator"},
+            {4, "Prime Chaotic Resonator"}
+        };
+
+        private Dictionary<int, String> _alchemicalResonators = new Dictionary<int, string>()
+        {
+            {1, "Primitive Alchemical Resonator"},
+            {2, "Potent Alchemical Resonator"},
+            {3, "Powerful Alchemical Resonator"},
+            {4, "Prime Alchemical Resonator"}
+        };
 
         public FossilCraft(IRandom random, List<Fossil> fossils, List<Essence> essences)
         {
-            Random = random;
+            _random = random;
             this.Fossils = fossils;
             this._corruptionOnlyEssences = essences.Where(x => x.Tier == 6).ToList();
+
+            if (Fossils.Count <= 0 || Fossils.Count > 4) throw new ArgumentException("A FossilCraft must have between 1-4 fossils");
+
+            this._normalCurrency = Fossils.ToDictionary(x => x.Name, x => 1);
+            this._normalCurrency.Add(_alchemicalResonators[Fossils.Count], 1);
+
+            this._rareCurrency = Fossils.ToDictionary(x => x.Name, x => 1);
+            this._normalCurrency.Add(_chaoticResonators[Fossils.Count], 1);
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
-            if (item.Corrupted || item.Rarity != EquipmentRarity.Rare)
+            if (item.Corrupted || item.Rarity == EquipmentRarity.Magic || item.Rarity == EquipmentRarity.Unique)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
+
+            var currency = item.Rarity == EquipmentRarity.Normal ? _normalCurrency : _rareCurrency;
 
             var corruptedEssenceChance = Fossils.Max(x => x.CorruptedEssenceChance);
 
@@ -45,42 +73,25 @@ namespace PoeCraftLib.Currency.Currency
             }
             else if (corruptedEssenceChance > 0)
             {
-                var chance = Random.Next(100);
+                var chance = _random.Next(100);
                 if (chance >= corruptedEssenceChance)
                 {
                     addCorruptedEssence = true;
                 }
             }
 
-            int addedAffixes = 0;
+            item.Stats.Clear();
 
             if (addCorruptedEssence)
             {
-                var essence = _corruptionOnlyEssences[Random.Next(_corruptionOnlyEssences.Count)];
+                var essence = _corruptionOnlyEssences[_random.Next(_corruptionOnlyEssences.Count)];
 
-                StatFactory.AddExplicit(Random, item, essence.ItemClassToMod[item.ItemBase.ItemClass]);
-
-                addedAffixes = 1;
+                StatFactory.AddExplicit(_random, item, essence.ItemClassToMod[item.ItemBase.ItemClass]);
             }
 
-            int fourMod = 8;
-            int fiveMod = 3;
-            int sixMod = 1;
+            StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
 
-            var sum = fourMod + fiveMod + sixMod;
-
-            var roll = Random.Next(sum);
-            int modCount = roll < fourMod ? 4 :
-                           roll < fourMod + fiveMod ? 5 :
-                           6;
-
-            item.Stats.Clear();
-            for (int i = addedAffixes; i < modCount; i++)
-            {
-                StatFactory.AddExplicit(Random, item, affixManager, Fossils);
-            }
-
-            return true;
+            return currency;
         }
 
         public bool IsWarning(ItemStatus status)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoeCraftLib.Data.Factory;
-using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.DataTest

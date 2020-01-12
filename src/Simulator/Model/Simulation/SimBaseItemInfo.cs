@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using PoeCraftLib.Entities;
+using PoeCraftLib.Simulator.Model.Items;
 
-namespace PoeCraftLib.Simulator.Entities
+namespace PoeCraftLib.Simulator.Model.Simulation
 {
     public class SimBaseItemInfo
     {

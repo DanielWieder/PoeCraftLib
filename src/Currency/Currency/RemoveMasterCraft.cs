@@ -13,16 +13,16 @@ namespace PoeCraftLib.Currency.Currency
     {
         public string Name => "Remove Master Craft";
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { CurrencyNames.ScouringOrb, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.ScouringOrb, 1 } };
 
-        public bool Execute(Equipment equipment, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment equipment, AffixManager affixManager)
         {
             var crafted = equipment.Stats.Where(x => x.Affix.GenerationType == "crafted").ToList();
 
-            if (!crafted.Any()) return false;
+            if (!crafted.Any()) return new Dictionary<string, int>();
 
             equipment.Stats = equipment.Stats.Except(crafted).ToList();
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

@@ -8,39 +8,41 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class ChanceOrb : ICurrency
     {
-        private IRandom Random { get; }
-        private ICurrency Alchemy { get; }
-        private ICurrency Transmutation { get; }
+        private readonly IRandom _random;
 
         public string Name => CurrencyNames.ChanceOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.ChanceOrb, 1 } };
 
         public ChanceOrb(IRandom random)
         {
-            Random = random;
-            Alchemy = new AlchemyOrb(random);
-            Transmutation = new TransmutationOrb(random);
+            _random = random;
+
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted || item.Rarity != EquipmentRarity.Normal)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             // Unique items are not currently handled
-            var roll = Random.Next(5);
+            var roll = _random.Next(5);
 
             if (roll == 0)
             {
-                return Alchemy.Execute(item, affixManager);
+                item.Rarity = EquipmentRarity.Rare;
+                StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
+
             }
             else
             {
-                return Transmutation.Execute(item, affixManager);
+                item.Rarity = EquipmentRarity.Magic;
+                StatFactory.AddExplicits(_random, item, affixManager, StatFactory.MagicAffixCountOdds);
             }
+
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

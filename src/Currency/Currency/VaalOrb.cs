@@ -13,7 +13,7 @@ namespace PoeCraftLib.Currency.Currency
 
         public string Name => CurrencyNames.VaalOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.VaalOrb, 1 } };
 
         public VaalOrb(IRandom random)
         {
@@ -21,11 +21,11 @@ namespace PoeCraftLib.Currency.Currency
             Chaos = new ChaosOrb(random);
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             var roll = Random.Next(4);
@@ -42,7 +42,7 @@ namespace PoeCraftLib.Currency.Currency
 
             item.Corrupted = true;
 
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

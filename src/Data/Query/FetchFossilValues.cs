@@ -27,7 +27,7 @@ namespace PoeCraftLib.Data.Query
         }
     }
 
-    public interface IFetchFossilValues : Data.IQueryObject<Dictionary<string, double>>
+    public interface IFetchFossilValues : IQueryObject<Dictionary<string, double>>
     {
         string League { get; set; }
     }

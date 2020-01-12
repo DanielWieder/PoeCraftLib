@@ -5,16 +5,6 @@ using PoeCraftLib.Entities.Crafting;
 
 namespace PoeCraftLib.Entities
 {
-    public enum Influence
-    {
-        Elder,
-        Shaper,
-        Crusader,
-        Redeemer,
-        Warlord,
-        Hunter
-    }
-
     public class Affix
     {
         /// <summary>

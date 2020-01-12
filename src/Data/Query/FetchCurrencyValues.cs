@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoeCraftLib.Entities.Constants;
 
 namespace PoeCraftLib.Data.Query
 {
@@ -23,11 +24,13 @@ namespace PoeCraftLib.Data.Query
                 values.Add(name, value);
             }
 
+            values.Add(CurrencyNames.ChaosOrb, 1);
+
             return values;
         }
     }
 
-    public interface IFetchCurrencyValues : Data.IQueryObject<Dictionary<string, double>>
+    public interface IFetchCurrencyValues : IQueryObject<Dictionary<string, double>>
     {
         string League { get; set; }
     }

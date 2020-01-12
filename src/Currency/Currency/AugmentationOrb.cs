@@ -12,22 +12,23 @@ namespace PoeCraftLib.Currency.Currency
 
         public string Name => CurrencyNames.AugmentationOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.AugmentationOrb, 1 } };
+        
         public AugmentationOrb(IRandom random)
         {
             Random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted || item.Rarity != EquipmentRarity.Magic || item.Prefixes.Count + item.Suffixes.Count != 1)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             StatFactory.AddExplicit(Random, item, affixManager);
 
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

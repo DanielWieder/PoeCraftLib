@@ -12,14 +12,14 @@ namespace PoeCraftLib.Currency.Currency
 
         public string Name => CurrencyNames.BlessedOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.BlessedOrb, 1 } };
 
         public BlessedOrb(IRandom random)
         {
             Random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (Random == null)
             {
@@ -28,12 +28,12 @@ namespace PoeCraftLib.Currency.Currency
 
             if (item.Corrupted || item.Implicit == null)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             StatFactory.Reroll(Random, item, item.Implicit);
 
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

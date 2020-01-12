@@ -20,6 +20,6 @@ namespace PoeCraftLib.Entities.Constants
         public const string ScouringOrb = "Orb of Scouring";
         public const string TransmuationOrb = "Orb of Transmutation";
         public const string VaalOrb = "Vaal Orb";
-        public static string AnullmentOrb = "Orb of Anullment";
+        public static string AnnulmentOrb = "Orb of Annulment";
     }
 }

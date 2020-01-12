@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoeCraftLib.Currency</RootNamespace>
     <AssemblyName>PoeCraftLib.Currency</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,12 +44,14 @@
     <Compile Include="AffixManager.cs" />
     <Compile Include="Currency\AlchemyOrb.cs" />
     <Compile Include="Currency\AlterationOrb.cs" />
-    <Compile Include="Currency\AnullmentOrb.cs" />
+    <Compile Include="Currency\AnnulmentOrb.cs" />
     <Compile Include="Currency\AugmentationOrb.cs" />
     <Compile Include="Currency\BlessedOrb.cs" />
     <Compile Include="Currency\ChanceOrb.cs" />
     <Compile Include="Currency\ChaosOrb.cs" />
     <Compile Include="CurrencyFactory.cs" />
+    <Compile Include="Currency\CurrencyRequirementsHelper.cs" />
+    <Compile Include="Currency\CurrencyStatusHelper.cs" />
     <Compile Include="Currency\DivineOrb.cs" />
     <Compile Include="Currency\EssenceCraft.cs" />
     <Compile Include="Currency\ExaltedOrb.cs" />

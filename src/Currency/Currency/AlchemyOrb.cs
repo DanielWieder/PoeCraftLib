@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities.Items;
@@ -7,26 +9,27 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class AlchemyOrb : ICurrency
     {
-        private ICurrency Chaos { get; }
 
         public string Name => CurrencyNames.AlchemyOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.AlchemyOrb, 1 } };
+        private readonly IRandom _random;
 
         public AlchemyOrb(IRandom random)
         {
-            Chaos = new ChaosOrb(random);
+            _random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (item.Corrupted || item.Rarity != EquipmentRarity.Normal)
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             item.Rarity = EquipmentRarity.Rare;
-            return Chaos.Execute(item, affixManager);
+            StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)
@@ -54,7 +57,28 @@ namespace PoeCraftLib.Currency.Currency
                 status.Rarity = EquipmentRarity.Rare;
             }
 
-            return Chaos.GetNextStatus(status);
+            if (IsWarning(status))
+            {
+                status.MinPrefixes = Math.Min(0, status.MinPrefixes);
+                status.MinSuffixes = Math.Min(0, status.MinSuffixes);
+                status.MinAffixes = Math.Min(0, status.MinAffixes);
+
+                status.MaxPrefixes = Math.Max(0, status.MaxPrefixes);
+                status.MaxSuffixes = Math.Max(0, status.MaxSuffixes);
+                status.MaxAffixes = Math.Max(0, status.MaxAffixes);
+            }
+            else
+            {
+                status.MinPrefixes = 1;
+                status.MinSuffixes = 1;
+                status.MinAffixes = 4;
+
+                status.MaxPrefixes = 3;
+                status.MaxSuffixes = 3;
+                status.MaxAffixes = 6;
+            }
+
+            return status;
         }
     }
 }

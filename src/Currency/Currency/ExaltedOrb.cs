@@ -12,14 +12,14 @@ namespace PoeCraftLib.Currency.Currency
 
         public string Name => CurrencyNames.ExaltedOrb;
 
-        public Dictionary<string, int> GetCurrency() => new Dictionary<string, int>() { { Name, 1 } };
+        private readonly Dictionary<string, int> _currency = new Dictionary<string, int>() { { CurrencyNames.ExaltedOrb, 1 } };
 
         public ExaltedOrb(IRandom random)
         {
             Random = random;
         }
 
-        public bool Execute(Equipment item, AffixManager affixManager)
+        public Dictionary<string, int> Execute(Equipment item, AffixManager affixManager)
         {
             if (Random == null)
             {
@@ -28,12 +28,12 @@ namespace PoeCraftLib.Currency.Currency
 
             if (item.Corrupted || item.Rarity != EquipmentRarity.Rare || (item.Prefixes.Count >= 3 && item.Suffixes.Count >= 3))
             {
-                return false;
+                return new Dictionary<string, int>();
             }
 
             StatFactory.AddExplicit(Random, item, affixManager);
 
-            return true;
+            return _currency;
         }
 
         public bool IsWarning(ItemStatus status)

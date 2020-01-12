@@ -8,6 +8,12 @@ namespace PoeCraftLib.Data.Query
 {
     public class FetchMasterMods : IFetchMasterMods
     {
+        private static readonly HashSet<string> MasterBlacklist = new HashSet<string>()
+        {
+            { "Zana" }
+        };
+
+
         public List<CraftingBenchJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
@@ -15,6 +21,7 @@ namespace PoeCraftLib.Data.Query
             var deserialized = JsonConvert.DeserializeObject<List<CraftingBenchJson>>(json);
 
             return deserialized
+                .Where(x => !MasterBlacklist.Contains(x.Master))
                 .Select(x => { x.FullName = x.ModId; return x; })
                 .ToList();
         }
