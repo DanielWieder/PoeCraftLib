@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PoeCraftLib.Simulator</RootNamespace>
+    <AssemblyName>PoeCraftLib.Simulator</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+    <PropertyGroup>
+    <Title>PoeCraftLib</Title>
+    <Description>Path of Exile crafting library</Description>
+    <Version>1.0.0</Version>
+    <ReleaseNotes>New package system</ReleaseNotes>
+    <Authors>Daniel Wieder</Authors>
+    <Owners>Daniel Wieder</Owners>
+    <Copyright>MIT</Copyright>
+    <PackageOutputPath>bin\Package</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+ <ItemGroup>
+  <!-- ... -->
+  <PackageReference Include="NuGet.Build.Tasks.Pack" Version="5.2.0"/>
+  <!-- ... -->
+</ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.3\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.3\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DomainToClientMapper.cs" />
+    <Compile Include="CraftingSimulator.cs" />
+    <Compile Include="ClientToDomainMapper.cs" />
+    <Compile Include="Model\Crafting\AffixRestriction.cs" />
+    <Compile Include="Model\Crafting\AffixType.cs" />
+    <Compile Include="Model\Crafting\ConditionAffix.cs" />
+    <Compile Include="Model\Crafting\ConditionResolution.cs" />
+    <Compile Include="Model\Crafting\CraftingCondition.cs" />
+    <Compile Include="Model\Crafting\CraftingStepStatus.cs" />
+    <Compile Include="Model\Crafting\CraftingSubcondition.cs" />
+    <Compile Include="Model\Crafting\CraftingTarget.cs" />
+    <Compile Include="Model\Crafting\Currency\CraftingEventType.cs" />
+    <Compile Include="Model\Crafting\Currency\CraftingEvent.cs" />
+    <Compile Include="Model\Crafting\StatValueType.cs" />
+    <Compile Include="Model\Crafting\Steps\CraftingEventStep.cs" />
+    <Compile Include="Model\Crafting\Steps\EndCraftingStep.cs" />
+    <Compile Include="Model\Crafting\Steps\ICraftingStep.cs" />
+    <Compile Include="Model\Crafting\Steps\IfCraftingStep.cs" />
+    <Compile Include="Model\Crafting\Steps\WhileCraftingStep.cs" />
+    <Compile Include="Model\Crafting\SubconditionAggregateType.cs" />
+    <Compile Include="Model\Crafting\TierType.cs" />
+    <Compile Include="Model\Items\Affix.cs" />
+    <Compile Include="Model\Items\Equipment.cs" />
+    <Compile Include="Model\Items\EquipmentRarity.cs" />
+    <Compile Include="Model\Items\Influence.cs" />
+    <Compile Include="Model\Items\ItemBase.cs" />
+    <Compile Include="Model\Items\Stat.cs" />
+    <Compile Include="Model\Simulation\SimBaseItemInfo.cs" />
+    <Compile Include="Model\Simulation\SimCraftingInfo.cs" />
+    <Compile Include="Model\Simulation\SimFinanceInfo.cs" />
+    <Compile Include="Model\Simulation\SimulationArtifacts.cs" />
+    <Compile Include="Model\Simulation\SimulationStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CraftingSim\Crafting.csproj">
+      <Project>{02d6c6a0-9c17-4fc9-bbda-df480089af07}</Project>
+      <Name>Crafting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Currency\Currency.csproj">
+      <Project>{56788108-8dbd-4b47-b629-66bc3b0b928f}</Project>
+      <Name>Currency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{7e67e2a6-da5f-46a0-824c-a537db11b3ac}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PoeCraftLib.Data</RootNamespace>
+    <AssemblyName>PoeCraftLib.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PetaPoco, Version=5.1.306.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PetaPoco.Core.Compiled.5.1.306\lib\net45\PetaPoco.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.3\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.3\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\BaseItemJson.cs" />
+    <Compile Include="Entities\CraftingBenchJson.cs" />
+    <Compile Include="Entities\EssenceJson.cs" />
+    <Compile Include="Entities\FossilJson.cs" />
+    <Compile Include="Entities\ItemClassJson.cs" />
+    <Compile Include="Entities\ModsJson.cs" />
+    <Compile Include="Entities\ModTypeJson.cs" />
+    <Compile Include="Factory\AffixFactory.cs" />
+    <Compile Include="Factory\BeastFactory.cs" />
+    <Compile Include="Factory\CurrencyValueFactory.cs" />
+    <Compile Include="Factory\EssenceFactory.cs" />
+    <Compile Include="Factory\FossilFactory.cs" />
+    <Compile Include="Factory\ItemFactory.cs" />
+    <Compile Include="Factory\MasterModFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\FetchEssenceValues.cs" />
+    <Compile Include="Query\FetchFossilValues.cs" />
+    <Compile Include="Query\FetchCurrencyValues.cs" />
+    <Compile Include="Query\FetchHelper.cs" />
+    <Compile Include="Query\FetchResonatorValues.cs" />
+    <Compile Include="IQueryObject.cs" />
+    <Compile Include="PoeNinjaHelper.cs" />
+    <Compile Include="Query\FetchAffixes.cs" />
+    <Compile Include="Query\FetchEssences.cs" />
+    <Compile Include="Query\FetchFossils.cs" />
+    <Compile Include="Query\FetchItemClasses.cs" />
+    <Compile Include="Query\FetchItems.cs" />
+    <Compile Include="Query\FetchMasterMods.cs" />
+    <Compile Include="Query\FetchModTypes.cs" />
+    <Compile Include="Query\IQueryObject.cs" />
+    <Compile Include="Random.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <EmbeddedResource Include="Assets\base_items.json" />
+    <EmbeddedResource Include="Assets\crafting_bench_options.json" />
+    <EmbeddedResource Include="Assets\essences.json" />
+    <EmbeddedResource Include="Assets\fossils.json" />
+    <EmbeddedResource Include="Assets\item_classes.json" />
+    <EmbeddedResource Include="Assets\mods.json" />
+    <EmbeddedResource Include="Assets\mod_types.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

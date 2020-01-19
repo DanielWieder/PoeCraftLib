@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{56788108-8DBD-4B47-B629-66BC3B0B928F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PoeCraftLib.Currency</RootNamespace>
+    <AssemblyName>PoeCraftLib.Currency</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AffixManager.cs" />
+    <Compile Include="Currency\Beasts\CraicicChimeraBeastImprint.cs" />
+    <Compile Include="Currency\Beasts\CraicicChimeraBeast.cs" />
+    <Compile Include="Currency\Beasts\FarricFrostHellionAlphaBeast.cs" />
+    <Compile Include="Currency\Beasts\FarricLynxAlphaBeast.cs" />
+    <Compile Include="Currency\Beasts\FarricWolfAlphaBeast.cs" />
+    <Compile Include="Currency\Orbs\AlchemyOrb.cs" />
+    <Compile Include="Currency\Orbs\AlterationOrb.cs" />
+    <Compile Include="Currency\Orbs\AnnulmentOrb.cs" />
+    <Compile Include="Currency\Orbs\AugmentationOrb.cs" />
+    <Compile Include="Currency\Orbs\BlessedOrb.cs" />
+    <Compile Include="Currency\Orbs\ChanceOrb.cs" />
+    <Compile Include="Currency\Orbs\ChaosOrb.cs" />
+    <Compile Include="CurrencyFactory.cs" />
+    <Compile Include="Currency\Orbs\DivineOrb.cs" />
+    <Compile Include="Currency\EssenceCraft.cs" />
+    <Compile Include="Currency\Orbs\ExaltedOrb.cs" />
+    <Compile Include="Currency\FossilCraft.cs" />
+    <Compile Include="Currency\MasterCraft.cs" />
+    <Compile Include="Currency\RemoveMasterCraft.cs" />
+    <Compile Include="Currency\Orbs\VaalOrb.cs" />
+    <Compile Include="ICurrency.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Currency\Orbs\RegalOrb.cs" />
+    <Compile Include="Currency\Orbs\ScouringOrb.cs" />
+    <Compile Include="Currency\Orbs\TransmutationOrb.cs" />
+    <Compile Include="StatFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{7e67e2a6-da5f-46a0-824c-a537db11b3ac}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{2f3e944e-78e3-40c6-85b2-197cf43429aa}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

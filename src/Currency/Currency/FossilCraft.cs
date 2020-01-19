@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
@@ -17,7 +18,18 @@ namespace PoeCraftLib.Currency.Currency
 
         private readonly IRandom _random;
 
-        public string Name => "Fossil";
+        public string Name
+        {
+            get
+            {
+                if (Fossils.Count == 1)
+                {
+                    return Fossils[0].Name;
+                }
+
+                return "Multiple Fossils";
+            }
+        }
 
         public List<Fossil> Fossils { get; set; }
 
@@ -81,6 +93,7 @@ namespace PoeCraftLib.Currency.Currency
             }
 
             item.Stats.Clear();
+            item.Rarity = EquipmentRarity.Rare;
 
             if (addCorruptedEssence)
             {

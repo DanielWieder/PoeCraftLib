@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using PoeCraftLib.Crafting.CraftingSteps;
@@ -14,11 +15,11 @@ namespace PoeCraftLib.Crafting
             Equipment equipment,
             AffixManager affixManager,
             CancellationToken ct,
-            double? currencyLimit)
+            ProgressManager progressManager)
         {
             CraftMetadata metadata = new CraftMetadata();
             metadata.Result = equipment;
-            return this.Craft(craftingSteps, equipment, affixManager, ct, metadata, currencyLimit);
+            return this.Craft(craftingSteps, equipment, affixManager, ct, metadata, progressManager);
         }
 
         public CraftMetadata Craft(
@@ -27,7 +28,7 @@ namespace PoeCraftLib.Crafting
             AffixManager affixManager,
             CancellationToken ct,
             CraftMetadata metadata,
-            double? currencyLimit)
+            ProgressManager progressManager)
         {
             foreach (var craftingStep in craftingSteps)
             {
@@ -36,7 +37,7 @@ namespace PoeCraftLib.Crafting
                     return metadata;
                 }
 
-                if (currencyLimit.HasValue && metadata.SpentCurrency > currencyLimit)
+                if (progressManager.Progress >= 100)
                 {
                     return metadata;
                 }
@@ -47,21 +48,37 @@ namespace PoeCraftLib.Crafting
                 }
 
                 var currency = craftingStep.Craft(equipment, affixManager);
-                UpdateMetadataOnCraft(craftingStep, metadata, currency);
+                UpdateMetadataOnCraft(craftingStep, metadata, currency, progressManager);
 
                 var times = 0;
+                double previousProgress = 0;
                 while (craftingStep.ShouldVisitChildren(equipment, times))
                 {
-                    metadata = Craft(craftingStep.Children, equipment, affixManager, ct, metadata, currencyLimit);
+                    metadata = Craft(craftingStep.Children, equipment, affixManager, ct, metadata, progressManager);
                     UpdateMetadataOnChildrenVisit(craftingStep, metadata);
                     times++;
+
+                    if (times > 1)
+                    {
+                        // Check for no crafting steps
+                        if (Math.Abs(previousProgress - progressManager.Progress) < double.Epsilon)
+                        {
+                            throw new ArgumentException("Crafting steps do not spend currency");
+                        }
+
+                        previousProgress = progressManager.Progress;
+                    }
                 }
             }
 
             return metadata;
         }
 
-        private CraftMetadata UpdateMetadataOnCraft(ICraftingStep craftingStep, CraftMetadata craftMetadata, Dictionary<string, int> currencyAmounts)
+        private CraftMetadata UpdateMetadataOnCraft(
+            ICraftingStep craftingStep, 
+            CraftMetadata craftMetadata, 
+            Dictionary<string, int> currencyAmounts,
+            ProgressManager progressManager)
         {
             if (!craftMetadata.CraftingStepMetadata.ContainsKey(craftingStep))
             {
@@ -76,6 +93,10 @@ namespace PoeCraftLib.Crafting
                 craftMetadata.CraftingStepMetadata[craftingStep].TimesModified++;
             }
 
+            foreach (var currency in currencyAmounts)
+            {
+                progressManager.SpendCurrency(currency.Key, currency.Value);
+            }
 
             return craftMetadata;
         }

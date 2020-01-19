@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
-using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data.Factory;
 using PoeCraftLib.Entities.Crafting;
-using PoeCraftLib.Entities.Items;
-using PoeCraftLib.Simulator.Model.Crafting.Currency;
-using PoeCraftLib.Simulator.Model.Crafting.Steps;
 using EndCraftingStep = PoeCraftLib.Crafting.CraftingSteps.EndCraftingStep;
 using ICraftingStep = PoeCraftLib.Crafting.CraftingSteps.ICraftingStep;
 using IfCraftingStep = PoeCraftLib.Crafting.CraftingSteps.IfCraftingStep;
@@ -52,8 +47,6 @@ namespace PoeCraftLib.Simulator
                 cfg.CreateMap<Model.Crafting.SubconditionAggregateType, Entities.Crafting.SubconditionAggregateType>();
                 cfg.CreateMap<Model.Crafting.TierType, Entities.Crafting.TierType>();
                 cfg.CreateMap<Model.Crafting.CraftingTarget, Entities.Items.CraftingTarget>();
-
-                cfg.CreateMap<Model.Crafting.Currency.CraftingEvent, Currency.ICurrency>();
             });
 
             return configuration.CreateMapper();
@@ -95,45 +88,23 @@ namespace PoeCraftLib.Simulator
                     {
                         return new EndCraftingStep();
                     }
-                    case Model.Crafting.Steps.CraftingEventStep step:
+                    case Model.Crafting.Steps.CurrencyCraftingStep step:
                     {
-                        var currency = GetCraftingEvent(step.CraftingEvent);
-                        return new CurrencyCraftingStep(currency);
+                        var currency = GetCraftingEvent(step);
+                        return new Crafting.CraftingSteps.CurrencyCraftingStep(currency);
                     }
                     default: throw new ArgumentException("Unknown type of crafting step");
                 }
             }
 
-            public ICurrency GetCraftingEvent(CraftingEvent craftingEvent)
+            public ICurrency GetCraftingEvent(Model.Crafting.Steps.CurrencyCraftingStep craftingStep)
             {
-                switch (craftingEvent.Type)
+                if (craftingStep.SocketedCurrency != null)
                 {
-                    case CraftingEventType.Currency:
-                    {
-                        return _currencyFactory.GetCurrencyByName(craftingEvent.Name);
-                    }
-                    case CraftingEventType.BeastCraft:
-                    {
-                        throw new NotImplementedException("Beast-crafting has not yet been implemented");
-                    }
-                    case CraftingEventType.Essence:
-                    {
-                        return _currencyFactory.GetEssenceByName(craftingEvent.Name);
-                    }
-                    case CraftingEventType.Fossil:
-                    {
-                        return _currencyFactory.GetFossilCraftByNames(craftingEvent.Children);
-                        }
-                    case CraftingEventType.MasterCraft:
-                    {
-                        return _currencyFactory.GetMasterCraftByName(craftingEvent.Name);
-                    }
-                    case CraftingEventType.RemoveMasterCraft:
-                    {
-                        return new RemoveMasterCraft();
-                    }
-                    default: throw new ArgumentException("Unknown type of craft");
+                    return _currencyFactory.GetFossilCraftByNames(craftingStep.SocketedCurrency);
                 }
+
+                return _currencyFactory.GetCurrencyByName(craftingStep.Name);
             }
         }
     }

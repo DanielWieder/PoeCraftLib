@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoeCraftLib.Simulator;
-using PoeCraftLib.Simulator.Model.Crafting.Currency;
 using PoeCraftLib.Simulator.Model.Crafting.Steps;
 using PoeCraftLib.Simulator.Model.Simulation;
 
@@ -32,9 +32,9 @@ namespace PoeCraftLib.SimulatorTest
 
             craftingInfo.CraftingSteps = new List<ICraftingStep>()
             {
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = alchemyName, Type = CraftingEventType.Currency }
+                    Name = alchemyName
                 }
             };
 
@@ -45,10 +45,10 @@ namespace PoeCraftLib.SimulatorTest
             start.Wait();
 
             Assert.IsTrue(start.Result.AllGeneratedItems.All(x => x != null));
-            Assert.IsTrue( 10 < start.Result.AllGeneratedItems.Count);
+            Assert.IsTrue(10 < start.Result.AllGeneratedItems.Count);
             Assert.IsTrue(10 <= start.Result.CostInChaos);
             Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(alchemyName));
-            Assert.IsTrue(10 < start.Result.CurrencyUsed[alchemyName] );
+            Assert.IsTrue(10 < start.Result.CurrencyUsed[alchemyName]);
         }
 
         [TestMethod]
@@ -63,9 +63,9 @@ namespace PoeCraftLib.SimulatorTest
 
             craftingInfo.CraftingSteps = new List<ICraftingStep>()
             {
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = essenceName, Type = CraftingEventType.Essence }
+                    Name = essenceName
                 }
             };
 
@@ -94,9 +94,9 @@ namespace PoeCraftLib.SimulatorTest
 
             craftingInfo.CraftingSteps = new List<ICraftingStep>()
             {
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = "Fossil", Children = new List<string> {fossilName}, Type = CraftingEventType.Fossil }
+                    Name = "Fossil", SocketedCurrency = new List<string> {fossilName}
                 }
             };
 
@@ -125,21 +125,21 @@ namespace PoeCraftLib.SimulatorTest
 
             craftingInfo.CraftingSteps = new List<ICraftingStep>()
             {
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = transmutationName, Type = CraftingEventType.Currency }
+                    Name = transmutationName
                 },
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = annulmentName, Type = CraftingEventType.Currency }
+                    Name = annulmentName
                 },
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = annulmentName, Type = CraftingEventType.Currency }
+                    Name = annulmentName
                 },
-                new CraftingEventStep()
+                new CurrencyCraftingStep()
                 {
-                    CraftingEvent = new CraftingEvent() { Name = masterModName, Type = CraftingEventType.MasterCraft }
+                    Name = masterModName
                 }
             };
 
@@ -155,6 +155,64 @@ namespace PoeCraftLib.SimulatorTest
             Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(annulmentName));
             Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(transmutationName));
             Assert.IsTrue(start.Result.CurrencyUsed.Any(x => x.Key != transmutationName && x.Key != annulmentName));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AggregateException))]
+        public void InfiniteRecursionTest() {
+            SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
+            SimCraftingInfo craftingInfo = new SimCraftingInfo();
+            SimFinanceInfo financeInfo = new SimFinanceInfo();
+
+            baseItemInfo.ItemName = "Fencer Helm";
+            financeInfo.BudgetInChaos = 100;
+
+            var recursiveCraftingStep = new WhileCraftingStep();
+            recursiveCraftingStep.Children.Add(recursiveCraftingStep);
+
+            craftingInfo.CraftingSteps = new List<ICraftingStep>()
+            {
+                recursiveCraftingStep,
+                new CurrencyCraftingStep()
+                {
+                    Name = transmutationName
+                }
+            };
+
+            CraftingSimulator craftingSimulator = new CraftingSimulator(baseItemInfo, financeInfo, craftingInfo);
+
+            var task = craftingSimulator.Start();
+            task.Wait();
+
+            throw task.Exception;
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AggregateException))]
+        public void NoCurrencyTest()
+        {
+            SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
+            SimCraftingInfo craftingInfo = new SimCraftingInfo();
+            SimFinanceInfo financeInfo = new SimFinanceInfo();
+
+            baseItemInfo.ItemName = "Fencer Helm";
+            financeInfo.BudgetInChaos = 100;
+
+            var flowControlCraftingStep = new WhileCraftingStep();
+
+            craftingInfo.CraftingSteps = new List<ICraftingStep>()
+            {
+                flowControlCraftingStep,
+            };
+
+            CraftingSimulator craftingSimulator = new CraftingSimulator(baseItemInfo, financeInfo, craftingInfo);
+
+            var task = craftingSimulator.Start();
+            task.Wait();
+
+            throw task.Exception;
+
         }
     }
 }

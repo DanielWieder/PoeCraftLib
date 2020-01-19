@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoeCraftLib.Currency.Currency;
-using PoeCraftLib.Data;
 using PoeCraftLib.Data.Factory;
-using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities;
-using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Currency
@@ -16,7 +13,6 @@ namespace PoeCraftLib.Currency
         private readonly IRandom _random;
         private readonly Dictionary<string, Essence> _essences;
         private readonly Dictionary<string, Fossil> _fossils;
-        private readonly Dictionary<string, Dictionary<string, MasterMod>> _masterMods;
         private readonly Dictionary<string, ICurrency> _currency;
 
         public CurrencyFactory(
@@ -26,56 +22,60 @@ namespace PoeCraftLib.Currency
             MasterModFactory masterModFactory)
         {
             _random = random;
-            _currency = new Dictionary<string, ICurrency>()
+
+            var currency = new List<ICurrency>()
             {
-                { CurrencyNames.TransmuationOrb, new TransmutationOrb(random) },
-                { CurrencyNames.AlterationOrb, new AlterationOrb(random) },
-                { CurrencyNames.AugmentationOrb, new AugmentationOrb(random) },
-                { CurrencyNames.AlchemyOrb, new AlchemyOrb(random) },
-                { CurrencyNames.ChaosOrb, new ChaosOrb(random) },
-                { CurrencyNames.RegalOrb, new RegalOrb(random) },
-                { CurrencyNames.BlessedOrb, new BlessedOrb(random) },
-                { CurrencyNames.ChanceOrb, new ChanceOrb(random) },
-                { CurrencyNames.DivineOrb, new DivineOrb(random) },
-                { CurrencyNames.ExaltedOrb, new ExaltedOrb(random) },
-                { CurrencyNames.ScouringOrb, new ScouringOrb(random) },
-                { CurrencyNames.AnnulmentOrb, new AnnulmentOrb(random) }
+                { new TransmutationOrb(random) },
+                { new AlterationOrb(random) },
+                { new AugmentationOrb(random) },
+                { new AlchemyOrb(random) },
+                { new ChaosOrb(random) },
+                { new RegalOrb(random) },
+                { new BlessedOrb(random) },
+                { new ChanceOrb(random) },
+                { new DivineOrb(random) },
+                { new ExaltedOrb(random) },
+                { new ScouringOrb(random) },
+                { new AnnulmentOrb(random) }
             };
 
-            var bad1 = masterModFactory.MasterMod.GroupBy(x => x.Name).ToList();
-                var bad2 = bad1.Where(x => x.Count() > 1).ToList();
+            var fossilCurrency = fossilFactory.Fossils.Select(x => new FossilCraft(_random, new List<Fossil>() {x}, essenceFactory.Essence));
+            var essenceCurrency = essenceFactory.Essence.Select(x => new EssenceCraft(_random, x));
+            var masterCraftCurrency = GetMasterModsByName(masterModFactory).Select(x => new MasterCraft(x.Value, random));
+
+            _currency = currency.Union(fossilCurrency)
+                .Union(essenceCurrency)
+                .Union(masterCraftCurrency)
+                .ToDictionary(x => x.Name, x => x);
 
             _fossils = fossilFactory.Fossils.ToDictionary(x => x.Name, x => x);
             _essences = essenceFactory.Essence.ToDictionary(x => x.Name, x => x);
+        }
 
-            _masterMods = new Dictionary<string, Dictionary<string, MasterMod>>();
+        private static Dictionary<string, Dictionary<string, MasterMod>> GetMasterModsByName(MasterModFactory masterModFactory)
+        {
+            var masterMods = new Dictionary<string, Dictionary<string, MasterMod>>();
             foreach (var masterMod in masterModFactory.MasterMod)
             {
                 foreach (var itemClass in masterMod.ItemClasses)
                 {
-                   if (!_masterMods.ContainsKey(masterMod.Name))
-                   {
-                        _masterMods.Add(masterMod.Name, new Dictionary<string, MasterMod>());
-                   }
+                    if (!masterMods.ContainsKey(masterMod.Name))
+                    {
+                        masterMods.Add(masterMod.Name, new Dictionary<string, MasterMod>());
+                    }
 
-                   _masterMods[masterMod.Name].Add(itemClass, masterMod);
+                    masterMods[masterMod.Name].Add(itemClass, masterMod);
                 }
             }
+
+            return masterMods;
         }
 
         public ICurrency GetCurrencyByName(string name)
         {
+            if (!_currency.ContainsKey(name)) throw new ArgumentException("Unknown type of currency" + name);
+
             return _currency[name];
-        }
-
-        public ICurrency GetMasterCraftByName(string name)
-        {
-            return new MasterCraft(_masterMods[name], _random);
-        }
-
-        public ICurrency GetEssenceByName(string name)
-        {
-            return new EssenceCraft(_random, _essences[name]);
         }
 
         public ICurrency GetFossilCraftByNames(List<string> names)

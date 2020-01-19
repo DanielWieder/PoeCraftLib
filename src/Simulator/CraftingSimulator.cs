@@ -44,7 +44,7 @@ namespace PoeCraftLib.Simulator
 
         // Simulation Control
         private Task<SimulationArtifacts> _task;
-        private readonly TimeSpan _timeout = TimeSpan.FromSeconds(60);
+        private const int DefaultTimeout = 60;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         //Mappings
@@ -53,6 +53,9 @@ namespace PoeCraftLib.Simulator
 
         // Public
         public double Progress { get; set; } = 0;
+
+
+
         public SimulationStatus Status { get; set; } = SimulationStatus.Stopped;
         public delegate void ProgressUpdateEventHandler(ProgressUpdateEventArgs e);
         public ProgressUpdateEventHandler OnProgressUpdate;
@@ -96,7 +99,7 @@ namespace PoeCraftLib.Simulator
             _currencyValues = _currencyValueFactory.GetCurrencyValues(financeInfo.League);
         }
 
-        public Task<SimulationArtifacts> Start()
+        public Task<SimulationArtifacts> Start(CancellationToken token)
         {
             if (Status != SimulationStatus.Stopped)
             {
@@ -104,26 +107,41 @@ namespace PoeCraftLib.Simulator
             }
 
             Status = SimulationStatus.Running;
-            _cancellationTokenSource = new CancellationTokenSource();
-            _cancellationTokenSource.CancelAfter(_timeout);
-            var token = _cancellationTokenSource.Token;
+
             token.Register(() => Status = SimulationStatus.Cancelled);
             _task = new Task<SimulationArtifacts>(() => Run(token), token);
             _task.Start();
             return _task;
         }
 
+        public Task<SimulationArtifacts> Start(int timeout = DefaultTimeout)
+        {
+            _cancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(timeout));
+            var token = _cancellationTokenSource.Token;
+
+            return Start(token);
+        }
+
         private SimulationArtifacts Run(CancellationToken ct)
         {
+            // Check for recursive/duplicate crafting steps
+            if (RecursionCheck(new HashSet<Model.Crafting.Steps.ICraftingStep>(),  _craftingInfo.CraftingSteps))
+            {
+                throw new ArgumentException("Crafting steps are infinitely recursive");
+            }
+
             // Pay for the first item
             _simulationArtifacts.CostInChaos += _baseItemInfo.ItemCost;
 
-            for (Progress = 0; Progress < 100; Progress = GetSimulationProgress())
+            double previousProgress = -1;
+
+            for (ProgressManager progressManager = GetProgressManager(); progressManager.Progress < 100; previousProgress = progressManager.Progress)
             {
 
-                      // Craft item
-                      var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, InfluenceToDomain(_baseItemInfo.Influence));
-                      var results = _craftingManager.Craft(CraftingStepsToDomain(_craftingInfo.CraftingSteps), item, _affixManager, ct, _financeInfo.BudgetInChaos - _simulationArtifacts.CostInChaos);
+                // Craft item
+                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, InfluenceToDomain(_baseItemInfo.Influence));
+                      var results = _craftingManager.Craft(CraftingStepsToDomain(_craftingInfo.CraftingSteps), item, _affixManager, ct, progressManager);
       
                       bool saved = false;
                       // Update item results
@@ -136,9 +154,13 @@ namespace PoeCraftLib.Simulator
                               break;
                           }
                       }
-      
-                      _simulationArtifacts.AllGeneratedItems.Add(EquipmentToClient(results.Result));
-      
+
+                      // No normal items in the generated items list because that just adds to the clutter
+                      if (results.Result.Rarity != EquipmentRarity.Normal)
+                      {
+                          _simulationArtifacts.AllGeneratedItems.Add(EquipmentToClient(results.Result));
+                      }
+
                       // Update crafting cost
                       foreach (var result in results.CraftingStepMetadata)
                       {
@@ -148,14 +170,14 @@ namespace PoeCraftLib.Simulator
                               {
                                   _simulationArtifacts.CurrencyUsed.Add(currency.Key, 0);
                               }
-      
+                              // The progress manager is updated with this information in the craft manager
                               int amountOfCurrencyUsed = currency.Value * result.Value.TimesModified;
                               _simulationArtifacts.CurrencyUsed[currency.Key] += amountOfCurrencyUsed;
                               _simulationArtifacts.CostInChaos += amountOfCurrencyUsed * _currencyValues[currency.Key];
                           }
                       }
       
-                      if (GetSimulationProgress() < 100)
+                      if (progressManager.Progress < 100)
                       {
                           // Get a new item ready. 
                           if (saved ||
@@ -164,23 +186,20 @@ namespace PoeCraftLib.Simulator
                               _baseItemInfo.ItemCost <= _currencyValues[CurrencyNames.ScouringOrb])
                           {
                               _simulationArtifacts.CostInChaos += _baseItemInfo.ItemCost;
+                              progressManager.AddCost(_baseItemInfo.ItemCost);
                           }
                           else if (results.Result.Rarity != EquipmentRarity.Normal)
                           {
                               _simulationArtifacts.CostInChaos += _currencyValues[CurrencyNames.ScouringOrb];
+                              progressManager.SpendCurrency(CurrencyNames.ScouringOrb, 1);
                           }
                       }
 
-                // Update progress results
-                if (OnProgressUpdate != null)
-                {
-                    var args = new ProgressUpdateEventArgs
-                    {
-                        Progress = Progress
-                    };
-
-                    OnProgressUpdate(args);
-                }
+                      // Check for no crafting steps
+                      if (Math.Abs(previousProgress - progressManager.Progress) < double.Epsilon)
+                      {
+                          throw new ArgumentException("Crafting steps do not spend currency");
+                      }
             }
 
             if (OnSimulationComplete != null)
@@ -198,9 +217,20 @@ namespace PoeCraftLib.Simulator
             return _simulationArtifacts;
         }
 
-        private double GetSimulationProgress()
+        private ProgressManager GetProgressManager()
         {
-            return _simulationArtifacts.CostInChaos / _financeInfo.BudgetInChaos * 100;
+            return new ProgressManager(_currencyValues, _financeInfo.BudgetInChaos, i =>
+            {
+                if (OnProgressUpdate != null)
+                {
+                    var args = new ProgressUpdateEventArgs
+                    {
+                        Progress = Progress
+                    };
+
+                    OnProgressUpdate(args);
+                }
+            });
         }
 
         public void Cancel()
@@ -210,6 +240,27 @@ namespace PoeCraftLib.Simulator
                 _cancellationTokenSource.Cancel();
             }
         }
+
+        private bool RecursionCheck(
+            HashSet<Model.Crafting.Steps.ICraftingStep> parents,
+                List<Model.Crafting.Steps.ICraftingStep> children)
+        {
+            foreach (var child in children)
+            {
+                if (parents.Contains(child)) return true;
+
+                if (child.Children != null && child.Children.Any())
+                {
+                    var childHash = parents.ToHashSet();
+                    childHash.Add(child);
+
+                    if (RecursionCheck(childHash, child.Children)) return true;
+                }
+            }
+
+            return false;
+        }
+
         private List<Influence> InfluenceToDomain(List<Model.Items.Influence> influence)
         {
             return influence.Select(x => _clientToDomain.Map<Model.Items.Influence, Entities.Items.Influence>(x)).ToList();

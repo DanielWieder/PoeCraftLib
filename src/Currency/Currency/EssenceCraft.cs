@@ -34,8 +34,9 @@ namespace PoeCraftLib.Currency.Currency
 
             item.Stats.Clear();
 
+            item.Rarity = EquipmentRarity.Rare;
             var mod = _essence.ItemClassToMod[item.ItemBase.ItemClass];
-            StatFactory.AffixToStat(_random, item, mod);
+            StatFactory.AddExplicit(_random, item, mod);
             StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
 
             return _currency;
