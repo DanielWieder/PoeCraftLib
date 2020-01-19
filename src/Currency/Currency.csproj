@@ -42,28 +42,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AffixManager.cs" />
-    <Compile Include="Currency\AlchemyOrb.cs" />
-    <Compile Include="Currency\AlterationOrb.cs" />
-    <Compile Include="Currency\AnnulmentOrb.cs" />
-    <Compile Include="Currency\AugmentationOrb.cs" />
-    <Compile Include="Currency\BlessedOrb.cs" />
-    <Compile Include="Currency\ChanceOrb.cs" />
-    <Compile Include="Currency\ChaosOrb.cs" />
+    <Compile Include="Currency\Beasts\CraicicChimeraBeastImprint.cs" />
+    <Compile Include="Currency\Beasts\CraicicChimeraBeast.cs" />
+    <Compile Include="Currency\Beasts\FarricFrostHellionAlphaBeast.cs" />
+    <Compile Include="Currency\Beasts\FarricLynxAlphaBeast.cs" />
+    <Compile Include="Currency\Beasts\FarricWolfAlphaBeast.cs" />
+    <Compile Include="Currency\Orbs\AlchemyOrb.cs" />
+    <Compile Include="Currency\Orbs\AlterationOrb.cs" />
+    <Compile Include="Currency\Orbs\AnnulmentOrb.cs" />
+    <Compile Include="Currency\Orbs\AugmentationOrb.cs" />
+    <Compile Include="Currency\Orbs\BlessedOrb.cs" />
+    <Compile Include="Currency\Orbs\ChanceOrb.cs" />
+    <Compile Include="Currency\Orbs\ChaosOrb.cs" />
     <Compile Include="CurrencyFactory.cs" />
-    <Compile Include="Currency\CurrencyRequirementsHelper.cs" />
-    <Compile Include="Currency\CurrencyStatusHelper.cs" />
-    <Compile Include="Currency\DivineOrb.cs" />
+    <Compile Include="Currency\Orbs\DivineOrb.cs" />
     <Compile Include="Currency\EssenceCraft.cs" />
-    <Compile Include="Currency\ExaltedOrb.cs" />
+    <Compile Include="Currency\Orbs\ExaltedOrb.cs" />
     <Compile Include="Currency\FossilCraft.cs" />
     <Compile Include="Currency\MasterCraft.cs" />
     <Compile Include="Currency\RemoveMasterCraft.cs" />
-    <Compile Include="Currency\VaalOrb.cs" />
+    <Compile Include="Currency\Orbs\VaalOrb.cs" />
     <Compile Include="ICurrency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Currency\RegalOrb.cs" />
-    <Compile Include="Currency\ScouringOrb.cs" />
-    <Compile Include="Currency\TransmutationOrb.cs" />
+    <Compile Include="Currency\Orbs\RegalOrb.cs" />
+    <Compile Include="Currency\Orbs\ScouringOrb.cs" />
+    <Compile Include="Currency\Orbs\TransmutationOrb.cs" />
     <Compile Include="StatFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +82,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

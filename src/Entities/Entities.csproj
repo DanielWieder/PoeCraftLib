@@ -77,10 +77,9 @@
     <Compile Include="Crafting\SubconditionAggregateType.cs" />
     <Compile Include="Crafting\StatValueType.cs" />
     <Compile Include="Items\WeaponEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

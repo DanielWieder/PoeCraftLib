@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PoeCraftLib.Currency.Currency
+namespace PoeCraftLib.Data.Factory
 {
-    public class CurrencyStatusHelper
+    public class BeastFactory
     {
 
     }

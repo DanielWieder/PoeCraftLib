@@ -233,7 +233,7 @@ namespace PoeCraftLib.Simulator
 
     public class SimulationCompleteEventArgs
     {
-        public object SimulationArtifacts { get; set; }
+        public SimulationArtifacts SimulationArtifacts { get; set; }
     }
 
     public class ProgressUpdateEventArgs

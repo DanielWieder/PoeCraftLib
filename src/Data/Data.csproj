@@ -65,11 +65,13 @@
     <Compile Include="Entities\ModsJson.cs" />
     <Compile Include="Entities\ModTypeJson.cs" />
     <Compile Include="Factory\AffixFactory.cs" />
+    <Compile Include="Factory\BeastFactory.cs" />
     <Compile Include="Factory\CurrencyValueFactory.cs" />
     <Compile Include="Factory\EssenceFactory.cs" />
     <Compile Include="Factory\FossilFactory.cs" />
     <Compile Include="Factory\ItemFactory.cs" />
     <Compile Include="Factory\MasterModFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\FetchEssenceValues.cs" />
     <Compile Include="Query\FetchFossilValues.cs" />
     <Compile Include="Query\FetchCurrencyValues.cs" />
@@ -90,9 +92,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <EmbeddedResource Include="Assets\base_items.json" />
