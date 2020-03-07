@@ -16,11 +16,11 @@ namespace PoeCraftLib.CraftingTest
     [TestClass]
     public class CraftManagerTest
     {
-        readonly CraftManager craftManager = new CraftManager();
+        private readonly CraftManager _craftManager = new CraftManager();
 
-        private ProgressManager progressManager;
+        private ProgressManager _progressManager;
 
-        Dictionary<string, double> _testCurrencyValues;
+        private Dictionary<string, double> _testCurrencyValues;
 
         [TestInitialize]
         public void Initialize()
@@ -30,19 +30,19 @@ namespace PoeCraftLib.CraftingTest
                 {"TestCurrency", 1}
             };
 
-            progressManager = new ProgressManager(_testCurrencyValues, 100, i => {});
+            _progressManager = new ProgressManager(_testCurrencyValues, 100, i => {});
         }
 
         [TestMethod]
         public void NoCraftingStepsTest()
         {
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
-            Equipment equipment = getTestEquipment(true);
+            Equipment equipment = GetTestEquipment(true);
 
             CancellationToken token = new CancellationToken(false);
 
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             Assert.IsFalse(equipment.Completed);
         }
@@ -54,11 +54,11 @@ namespace PoeCraftLib.CraftingTest
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(true);
+            Equipment equipment = GetTestEquipment(true);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
             CancellationToken token = new CancellationToken(false);
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             Assert.IsTrue(equipment.Completed);
         }
@@ -71,13 +71,13 @@ namespace PoeCraftLib.CraftingTest
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             IfCraftingStep ifStep = new IfCraftingStep();
             ifStep.Children.Add(mockChildStep.Object);
-            ifStep.Condition = getTestCondition();
+            ifStep.Condition = GetTestCondition();
             craftingSteps.Add(ifStep);
 
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(true);
+            Equipment equipment = GetTestEquipment(true);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
 
             CancellationToken token = new CancellationToken(false);
@@ -87,7 +87,7 @@ namespace PoeCraftLib.CraftingTest
             mockChildStep.Setup(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()))
                 .Returns(new Dictionary<string, int>());
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Once);
 
@@ -102,20 +102,20 @@ namespace PoeCraftLib.CraftingTest
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             IfCraftingStep ifStep = new IfCraftingStep();
             ifStep.Children.Add(mockChildStep.Object);
-            ifStep.Condition = getTestCondition();
+            ifStep.Condition = GetTestCondition();
             craftingSteps.Add(ifStep);
 
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(false);
+            Equipment equipment = GetTestEquipment(false);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
 
             CancellationToken token = new CancellationToken(false);
 
             mockChildStep.Setup(x => x.ShouldVisitChildren(It.IsAny<Equipment>(), It.IsAny<int>())).Returns(false);
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Never);
 
@@ -130,13 +130,13 @@ namespace PoeCraftLib.CraftingTest
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             WhileCraftingStep whileStep = new WhileCraftingStep();
             whileStep.Children.Add(mockChildStep.Object);
-            whileStep.Condition = getTestCondition();
+            whileStep.Condition = GetTestCondition();
             craftingSteps.Add(whileStep);
 
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(true);
+            Equipment equipment = GetTestEquipment(true);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
 
             CancellationToken token = new CancellationToken(false);
@@ -149,7 +149,7 @@ namespace PoeCraftLib.CraftingTest
             {
                 if (calls >= 3)
                 {
-                    updateEquipment(equipment, false);
+                    UpdateEquipment(equipment, false);
                 }
 
                 calls++;
@@ -158,7 +158,7 @@ namespace PoeCraftLib.CraftingTest
 
             mockChildStep.Setup(x => x.ShouldVisitChildren(It.IsAny<Equipment>(), It.IsAny<int>())).Returns(false);
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Exactly(4));
 
@@ -174,13 +174,13 @@ namespace PoeCraftLib.CraftingTest
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             WhileCraftingStep whileStep = new WhileCraftingStep();
             whileStep.Children.Add(mockChildStep.Object);
-            whileStep.Condition = getTestCondition();
+            whileStep.Condition = GetTestCondition();
             craftingSteps.Add(whileStep);
 
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(true);
+            Equipment equipment = GetTestEquipment(true);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
 
             CancellationToken token = new CancellationToken(false);
@@ -191,7 +191,7 @@ namespace PoeCraftLib.CraftingTest
 
             mockChildStep.Setup(x => x.ShouldVisitChildren(It.IsAny<Equipment>(), It.IsAny<int>())).Returns(false);
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Exactly(4));
 
@@ -206,18 +206,18 @@ namespace PoeCraftLib.CraftingTest
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             WhileCraftingStep whileStep = new WhileCraftingStep();
             whileStep.Children.Add(mockChildStep.Object);
-            whileStep.Condition = getTestCondition();
+            whileStep.Condition = GetTestCondition();
             craftingSteps.Add(whileStep);
 
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(false);
+            Equipment equipment = GetTestEquipment(false);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
 
             CancellationToken token = new CancellationToken(false);
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Never);
 
@@ -232,25 +232,25 @@ namespace PoeCraftLib.CraftingTest
             List<ICraftingStep> craftingSteps = new List<ICraftingStep>();
             WhileCraftingStep whileStep = new WhileCraftingStep();
             whileStep.Children.Add(mockChildStep.Object);
-            whileStep.Condition = getTestCondition();
+            whileStep.Condition = GetTestCondition();
             craftingSteps.Add(whileStep);
 
             EndCraftingStep endCrafting = new EndCraftingStep();
             craftingSteps.Add(endCrafting);
 
-            Equipment equipment = getTestEquipment(false);
+            Equipment equipment = GetTestEquipment(false);
             AffixManager affixManager = CreateAffixManager(equipment.ItemBase);
 
             CancellationToken token = new CancellationToken(false);
 
-            craftManager.Craft(craftingSteps, equipment, affixManager, token, progressManager);
+            _craftManager.Craft(craftingSteps, equipment, affixManager, token, _progressManager);
 
             mockChildStep.Verify(x => x.Craft(It.IsAny<Equipment>(), It.IsAny<AffixManager>()), Times.Never);
 
             Assert.IsTrue(equipment.Completed);
         }
 
-        public Equipment getTestEquipment(bool matchTestCondition)
+        public Equipment GetTestEquipment(bool matchTestCondition)
         {
             Equipment item = new Equipment();
 
@@ -281,7 +281,7 @@ namespace PoeCraftLib.CraftingTest
             for (int i = 0; i < 10; i++)
             {
                 var generationType = i < 5 ? "prefix" : "suffix";
-                Affix affix = getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }, generationType);
+                Affix affix = GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }, generationType);
                 allAffixes.Add(affix);
             }
 
@@ -289,17 +289,17 @@ namespace PoeCraftLib.CraftingTest
 
         }
 
-        private Affix getTestAffix(string name, string group, Dictionary<string, int> spawnTagWeights, string generationType, params string[] tags)
+        private Affix GetTestAffix(string name, string group, Dictionary<string, int> spawnTagWeights, string generationType, params string[] tags)
         {
             return new Affix { FullName = name, Name = name, Group = group, Tags = new HashSet<string>(), AddsTags = tags.ToList(), SpawnWeights = spawnTagWeights, GenerationWeights = new Dictionary<string, int>(), GenerationType = generationType };
         }
 
-        public void updateEquipment(Equipment equipment, bool matchTestCondition)
+        public void UpdateEquipment(Equipment equipment, bool matchTestCondition)
         {
             equipment.Stats.First().Value1 = matchTestCondition ? 5 : -1;
         }
 
-        public CraftingCondition getTestCondition()
+        public CraftingCondition GetTestCondition()
         {
             var subcondition = CreateCraftingSubcondition(
                 SubconditionAggregateType.Count,

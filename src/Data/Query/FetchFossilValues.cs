@@ -4,7 +4,7 @@ namespace PoeCraftLib.Data.Query
 {
     public class FetchFossilValues : IFetchFossilValues
     {
-        readonly PoeNinjaHelper _helper = new PoeNinjaHelper();
+        private readonly PoeNinjaHelper _helper = new PoeNinjaHelper();
 
         public string League { get; set; }
 

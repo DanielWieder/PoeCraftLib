@@ -5,7 +5,7 @@ namespace PoeCraftLib.Data
 {
     public class PoeRandom : IRandom
     {
-        readonly Random _random = new Random();
+        private readonly Random _random = new Random();
         public int Next()
         {
             return _random.Next();

@@ -14,23 +14,23 @@ namespace CurrencyTest
     [TestClass]
     public class CurrencyTest
     {
-        private readonly CurrencyFactory currencyFactory;
-        private readonly ItemFactory itemFactory;
-        private readonly AffixFactory affixFactory;
+        private readonly CurrencyFactory _currencyFactory;
+        private readonly ItemFactory _itemFactory;
+        private readonly AffixFactory _affixFactory;
 
-        private readonly int INVALID = -1;
+        private readonly int _invalid = -1;
 
         public CurrencyTest()
         {
-            itemFactory = new ItemFactory();
-            affixFactory = new AffixFactory();
+            _itemFactory = new ItemFactory();
+            _affixFactory = new AffixFactory();
 
             IRandom random = new PoeRandom();
-            currencyFactory = new CurrencyFactory(
+            _currencyFactory = new CurrencyFactory(
                 random,
-                new EssenceFactory(itemFactory, affixFactory), 
-                new FossilFactory(affixFactory), 
-                new MasterModFactory(affixFactory, itemFactory));
+                new EssenceFactory(_itemFactory, _affixFactory), 
+                new FossilFactory(_affixFactory), 
+                new MasterModFactory(_affixFactory, _itemFactory));
         }
 
         [TestMethod]
@@ -183,25 +183,25 @@ namespace CurrencyTest
 
         private void TestDivineOrb(Equipment equipment)
         {
-            equipment.Stats[0].Value1 = INVALID;
+            equipment.Stats[0].Value1 = _invalid;
 
             if (equipment.Stats[0].Value2 != null)
-                equipment.Stats[0].Value2 = INVALID;
+                equipment.Stats[0].Value2 = _invalid;
 
             if (equipment.Stats[0].Value3 != null)
-                equipment.Stats[0].Value3 = INVALID;
+                equipment.Stats[0].Value3 = _invalid;
 
             var spent = TestCurrency(CurrencyNames.DivineOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.DivineOrb]);
 
-            Assert.AreNotEqual(INVALID, equipment.Stats[0].Value1);
+            Assert.AreNotEqual(_invalid, equipment.Stats[0].Value1);
 
             if (equipment.Stats[0].Value2 != null)
-                Assert.AreNotEqual(INVALID, equipment.Stats[0].Value2);
+                Assert.AreNotEqual(_invalid, equipment.Stats[0].Value2);
 
             if (equipment.Stats[0].Value3 != null)
-                Assert.AreNotEqual(INVALID, equipment.Stats[0].Value3);
+                Assert.AreNotEqual(_invalid, equipment.Stats[0].Value3);
         }
 
         [TestMethod]
@@ -324,7 +324,7 @@ namespace CurrencyTest
 
         private Dictionary<string, int> TestCurrency(String currencyName, Equipment equipment)
         {
-            var currency = currencyFactory.GetCurrencyByName(currencyName);
+            var currency = _currencyFactory.GetCurrencyByName(currencyName);
             var affixManager = GetAffixManager(equipment);
             var spent = currency.Execute(equipment, affixManager);
             return spent;
@@ -332,15 +332,15 @@ namespace CurrencyTest
 
         private AffixManager GetAffixManager(Equipment equipment)
         {
-            var itemAffixes = affixFactory.GetAffixesForItem(equipment.ItemBase.Tags, equipment.ItemBase.ItemClass, 84);
+            var itemAffixes = _affixFactory.GetAffixesForItem(equipment.ItemBase.Tags, equipment.ItemBase.ItemClass, 84);
             AffixManager affixManager = new AffixManager(equipment.ItemBase, itemAffixes, new List<Affix>());
             return affixManager;
         }
 
         private Equipment GetTestItem()
         {
-            var itemBase = itemFactory.Armour.First();
-            return itemFactory.ToEquipment(itemBase, 84, new List<Influence>());
+            var itemBase = _itemFactory.Armour.First();
+            return _itemFactory.ToEquipment(itemBase, 84, new List<Influence>());
         }
 
         private void TestRaritiesForFailure(String currencyName, params EquipmentRarity[] rarities)

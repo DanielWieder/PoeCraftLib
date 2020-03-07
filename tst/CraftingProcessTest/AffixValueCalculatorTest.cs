@@ -11,7 +11,7 @@ namespace PoeCraftLib.CraftingTest
     [TestClass]
     public class AffixValueCalculatorTest
     {
-        readonly AffixValueCalculator _affixValueCalculator = new AffixValueCalculator();
+        private readonly AffixValueCalculator _affixValueCalculator = new AffixValueCalculator();
 
         [TestMethod]
         public void GetFlatPrefixValueTest()

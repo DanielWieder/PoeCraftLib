@@ -59,7 +59,7 @@ namespace PoeCraftLib.Simulator
         public SimulationCompleteEventHandler OnSimulationComplete;
 
         // Artifacts
-        private SimulationArtifacts _simulationArtifacts { get; } = new SimulationArtifacts();
+        private SimulationArtifacts SimulationArtifacts { get; } = new SimulationArtifacts();
 
         public CraftingSimulator(
             SimBaseItemInfo baseItemInfo,
@@ -134,7 +134,7 @@ namespace PoeCraftLib.Simulator
             }
 
             // Pay for the first item
-            _simulationArtifacts.CostInChaos += _baseItemInfo.ItemCost;
+            SimulationArtifacts.CostInChaos += _baseItemInfo.ItemCost;
 
             double previousProgress = -1;
 
@@ -162,19 +162,19 @@ namespace PoeCraftLib.Simulator
                       if (results.Result.Rarity != EquipmentRarity.Normal)
                       {
                           var equipment = EquipmentToClient(results.Result);
-                          _simulationArtifacts.AllGeneratedItems.Add(equipment);
+                          SimulationArtifacts.AllGeneratedItems.Add(equipment);
 
                           foreach (var craftingTarget in craftingTargets)
                           {
                               if (craftingTarget.Condition != null &&
                                   _conditionResolution.IsValid(craftingTarget.Condition, results.Result))
                               {
-                                  if (!_simulationArtifacts.MatchingGeneratedItems.ContainsKey(craftingTarget.Name))
+                                  if (!SimulationArtifacts.MatchingGeneratedItems.ContainsKey(craftingTarget.Name))
                                   {
-                                      _simulationArtifacts.MatchingGeneratedItems.Add(craftingTarget.Name, new List<Equipment>());
+                                      SimulationArtifacts.MatchingGeneratedItems.Add(craftingTarget.Name, new List<Equipment>());
                                   }
 
-                                  _simulationArtifacts.MatchingGeneratedItems[craftingTarget.Name].Add(equipment);
+                                  SimulationArtifacts.MatchingGeneratedItems[craftingTarget.Name].Add(equipment);
                                   saved = true;
                                   break;
                               }
@@ -186,14 +186,14 @@ namespace PoeCraftLib.Simulator
                       {
                           foreach (var currency in result.Value.CurrencyAmounts)
                           {
-                              if (!_simulationArtifacts.CurrencyUsed.ContainsKey(currency.Key))
+                              if (!SimulationArtifacts.CurrencyUsed.ContainsKey(currency.Key))
                               {
-                                  _simulationArtifacts.CurrencyUsed.Add(currency.Key, 0);
+                                  SimulationArtifacts.CurrencyUsed.Add(currency.Key, 0);
                               }
                               // The progress manager is updated with this information in the craft manager
                               int amountOfCurrencyUsed = currency.Value * result.Value.TimesModified;
-                              _simulationArtifacts.CurrencyUsed[currency.Key] += amountOfCurrencyUsed;
-                              _simulationArtifacts.CostInChaos += amountOfCurrencyUsed * _currencyValues[currency.Key];
+                              SimulationArtifacts.CurrencyUsed[currency.Key] += amountOfCurrencyUsed;
+                              SimulationArtifacts.CostInChaos += amountOfCurrencyUsed * _currencyValues[currency.Key];
                           }
                       }
       
@@ -205,12 +205,12 @@ namespace PoeCraftLib.Simulator
                               results.Result.Rarity != EquipmentRarity.Normal &&
                               _baseItemInfo.ItemCost <= _currencyValues[CurrencyNames.ScouringOrb])
                           {
-                              _simulationArtifacts.CostInChaos += _baseItemInfo.ItemCost;
+                              SimulationArtifacts.CostInChaos += _baseItemInfo.ItemCost;
                               progressManager.AddCost(_baseItemInfo.ItemCost);
                           }
                           else if (results.Result.Rarity != EquipmentRarity.Normal)
                           {
-                              _simulationArtifacts.CostInChaos += _currencyValues[CurrencyNames.ScouringOrb];
+                              SimulationArtifacts.CostInChaos += _currencyValues[CurrencyNames.ScouringOrb];
                               progressManager.SpendCurrency(CurrencyNames.ScouringOrb, 1);
                           }
                       }
@@ -228,13 +228,13 @@ namespace PoeCraftLib.Simulator
 
                 var args = new SimulationCompleteEventArgs
                 {
-                    SimulationArtifacts = _simulationArtifacts
+                    SimulationArtifacts = SimulationArtifacts
                 };
 
                 OnSimulationComplete(args);
             }
 
-            return _simulationArtifacts;
+            return SimulationArtifacts;
         }
 
         private ProgressManager GetProgressManager()

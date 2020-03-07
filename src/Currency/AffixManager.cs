@@ -8,18 +8,18 @@ namespace PoeCraftLib.Currency
 {
     public class AffixManager
     {
-        private static string NoAttackMods = "ItemGenerationCannotRollAttackAffixes";
-        private static string NoCasterMods = "ItemGenerationCannotRollCasterAffixes";
+        private static readonly string _noAttackMods = "ItemGenerationCannotRollAttackAffixes";
+        private static readonly string _noCasterMods = "ItemGenerationCannotRollCasterAffixes";
 
-        private static string CasterTag = "caster";
-        private static string AttackTag = "attack";
+        private static readonly string _casterTag = "caster";
+        private static readonly string _attackTag = "attack";
 
         private readonly List<Affix> _itemAffixes;
         private readonly List<string> _baseTags;
         private readonly int _baseLevel;
 
         private readonly Dictionary<PoolKey, AffixPool> _poolDic = new Dictionary<PoolKey, AffixPool>();
-        private Dictionary<string, Affix> _allAffixes;
+        private readonly Dictionary<string, Affix> _allAffixes;
 
         public AffixManager(ItemBase itemBase, List<Affix> itemAffixes, List<Affix> fossilAffixes)
         {
@@ -36,7 +36,7 @@ namespace PoeCraftLib.Currency
             var addedTags = affixes.SelectMany(x => x.AddsTags).Distinct().ToList();
             var fossilNames = fossils.Select(x => x.FullName).Distinct().ToList();
 
-            var masterMods = affixes.Where(x => x.Group.Contains(NoAttackMods) || x.Group.Contains(NoCasterMods)).Select(x => x.Group).ToList();
+            var masterMods = affixes.Where(x => x.Group.Contains(_noAttackMods) || x.Group.Contains(_noCasterMods)).Select(x => x.Group).ToList();
 
             PoolKey key = new PoolKey(addedTags, fossilNames, masterMods);
 
@@ -204,8 +204,8 @@ namespace PoeCraftLib.Currency
 
         private double GetAffixSpawnWeight(Affix affix, HashSet<string> tags, Dictionary<string, double> fossilWeightModifiers, HashSet<string> masterMods)
         {
-            if (masterMods.Contains(NoAttackMods) && affix.Tags.Contains(AttackTag)) return 0;
-            if (masterMods.Contains(NoCasterMods) && affix.Tags.Contains(CasterTag)) return 0;
+            if (masterMods.Contains(_noAttackMods) && affix.Tags.Contains(_attackTag)) return 0;
+            if (masterMods.Contains(_noCasterMods) && affix.Tags.Contains(_casterTag)) return 0;
 
             foreach (var spawnWeight in affix.SpawnWeights)
             {

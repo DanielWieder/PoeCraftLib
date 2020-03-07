@@ -4,7 +4,7 @@ namespace PoeCraftLib.Data.Query
 {
     public class FetchEssenceValues : IFetchEssenceValues
     {
-        readonly PoeNinjaHelper _helper = new PoeNinjaHelper();
+        private readonly PoeNinjaHelper _helper = new PoeNinjaHelper();
         public string League { get; set; }
 
         public Dictionary<string, double> Execute()

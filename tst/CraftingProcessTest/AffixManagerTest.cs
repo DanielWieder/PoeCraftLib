@@ -15,10 +15,10 @@ namespace PoeCraftLib.CraftingTest
     [TestClass]
     public class AffixManagerTest
     {
-        private ItemFactory _itemFactory = new ItemFactory();
-        private AffixFactory _affixFactory = new AffixFactory();
+        private readonly ItemFactory _itemFactory = new ItemFactory();
+        private readonly AffixFactory _affixFactory = new AffixFactory();
 
-        private IRandom random = new PoeRandom();
+        private readonly IRandom _random = new PoeRandom();
 
         // This test if for creating a json file with generated affix/group counts
         [TestMethod]
@@ -33,7 +33,7 @@ namespace PoeCraftLib.CraftingTest
 
             List<Affix> affixes = new List<Affix>()
             {
-                getTestAffix("test", "SpecificWeaponColdDamage", null, "specific_weapon", "mace"),
+                GetTestAffix("test", "SpecificWeaponColdDamage", null, "specific_weapon", "mace"),
             };
             List<Fossil> fossils = new List<Fossil>();
 
@@ -47,7 +47,7 @@ namespace PoeCraftLib.CraftingTest
             for (int i = 0; i < count; i++) {
                 for (int x = 0; x < 6; x++)
                 {
-                    generated.Add(affixManager.GetAffix(affixes, EquipmentRarity.Rare, random));
+                    generated.Add(affixManager.GetAffix(affixes, EquipmentRarity.Rare, _random));
                 }
             }
 
@@ -88,7 +88,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < count; i++)
             {
-                allAffixes.Add(getTestAffix("test" + i, "test" + i, new Dictionary<string, int>() {{ defaultTag, 100}}));
+                allAffixes.Add(GetTestAffix("test" + i, "test" + i, new Dictionary<string, int>() {{ defaultTag, 100}}));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
@@ -113,14 +113,14 @@ namespace PoeCraftLib.CraftingTest
             List<Affix> allAffixes = new List<Affix>();
             var fossilAffixes = new List<Affix>();
 
-            var itemAffix = getTestAffix("test_d1", "duplicate", new Dictionary<string, int>() {{defaultTag, 100}});
-            var duplicate = getTestAffix("test_d2", "duplicate", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var itemAffix = GetTestAffix("test_d1", "duplicate", new Dictionary<string, int>() {{defaultTag, 100}});
+            var duplicate = GetTestAffix("test_d2", "duplicate", new Dictionary<string, int>() { { defaultTag, 100 } });
             allAffixes.Add(itemAffix);
             allAffixes.Add(duplicate);
 
             for (int i = 0; i < 4; i++)
             {
-                allAffixes.Add(getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
+                allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
@@ -145,13 +145,13 @@ namespace PoeCraftLib.CraftingTest
             List<Affix> allAffixes = new List<Affix>();
             var fossilAffixes = new List<Affix>();
 
-            var testAffix = getTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 } });
             testAffix.GenerationWeights = new Dictionary<string, int>() { { defaultTag , 200 }};
             allAffixes.Add(testAffix);
 
             for (int i = 0; i < 8; i++)
             {
-                allAffixes.Add(getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
+                allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
@@ -177,7 +177,7 @@ namespace PoeCraftLib.CraftingTest
             List<Affix> allAffixes = new List<Affix>();
             var fossilAffixes = new List<Affix>();
 
-            var testAffix = getTestAffix("test", "test", new Dictionary<string, int>() { { fossilTag, 100 } });
+            var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { fossilTag, 100 } });
             allAffixes.Add(testAffix);
 
             Fossil fossil = new Fossil();
@@ -187,7 +187,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < 8; i++)
             {
-                allAffixes.Add(getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
+                allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
@@ -212,7 +212,7 @@ namespace PoeCraftLib.CraftingTest
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
             List<Affix> allAffixes = new List<Affix>();
 
-            var testAffix = getTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 } });
 
             var fossilAffixes = new List<Affix> { testAffix };
 
@@ -223,7 +223,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < 9; i++)
             {
-                allAffixes.Add(getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
+                allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
@@ -248,12 +248,12 @@ namespace PoeCraftLib.CraftingTest
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
             List<Affix> allAffixes = new List<Affix>();
 
-            var testAffix = getTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 }, { casterTag, 100 } });
-            var metamod = getTestAffix("metamod", "ItemGenerationCannotRollCasterAffixes", new Dictionary<string, int>());
+            var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 }, { casterTag, 100 } });
+            var metamod = GetTestAffix("metamod", "ItemGenerationCannotRollCasterAffixes", new Dictionary<string, int>());
 
             for (int i = 0; i < 9; i++)
             {
-                allAffixes.Add(getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
+                allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
@@ -278,12 +278,12 @@ namespace PoeCraftLib.CraftingTest
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
             List<Affix> allAffixes = new List<Affix>();
 
-            var testAffix = getTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 }, { attackTag, 100 } });
-            var metamod = getTestAffix("metamod", "ItemGenerationCannotRollAttackAffixes", new Dictionary<string, int>());
+            var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 }, { attackTag, 100 } });
+            var metamod = GetTestAffix("metamod", "ItemGenerationCannotRollAttackAffixes", new Dictionary<string, int>());
 
             for (int i = 0; i < 9; i++)
             {
-                allAffixes.Add(getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
+                allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
             AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
@@ -307,9 +307,9 @@ namespace PoeCraftLib.CraftingTest
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
             List<Affix> allAffixes = new List<Affix>();
 
-            var p1 = getTestAffix("test_p1", "test_p1", new Dictionary<string, int>() { { defaultTag, 100 }});
-            var p2 = getTestAffix("test_p2", "test_p2", new Dictionary<string, int>() { { defaultTag, 100 } });
-            var p3 = getTestAffix("test_p3", "test_p3", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var p1 = GetTestAffix("test_p1", "test_p1", new Dictionary<string, int>() { { defaultTag, 100 }});
+            var p2 = GetTestAffix("test_p2", "test_p2", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var p3 = GetTestAffix("test_p3", "test_p3", new Dictionary<string, int>() { { defaultTag, 100 } });
 
             p1.GenerationType = "prefix";
             p2.GenerationType = "prefix";
@@ -320,7 +320,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < 10; i++)
             {
-                Affix affix = getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() {{defaultTag, 100}});
+                Affix affix = GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() {{defaultTag, 100}});
                 affix.GenerationType = i < 5 ? "prefix" : "suffix";
                 allAffixes.Add(affix);
             }
@@ -346,7 +346,7 @@ namespace PoeCraftLib.CraftingTest
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
             List<Affix> allAffixes = new List<Affix>();
 
-            var p1 = getTestAffix("test_p1", "test_p1", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var p1 = GetTestAffix("test_p1", "test_p1", new Dictionary<string, int>() { { defaultTag, 100 } });
 
             p1.GenerationType = "prefix";
 
@@ -355,7 +355,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < 10; i++)
             {
-                Affix affix = getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } });
+                Affix affix = GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } });
                 affix.GenerationType = i < 5 ? "prefix" : "suffix";
                 allAffixes.Add(affix);
             }
@@ -383,7 +383,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < 10; i++)
             {
-                Affix affix = getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } });
+                Affix affix = GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } });
                 affix.GenerationType = i < 5 ? "prefix" : "suffix";
                 allAffixes.Add(affix);
             }
@@ -409,9 +409,9 @@ namespace PoeCraftLib.CraftingTest
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
             List<Affix> allAffixes = new List<Affix>();
 
-            var p1 = getTestAffix("test_p1", "test_p1", new Dictionary<string, int>() { { defaultTag, 100 } });
-            var p2 = getTestAffix("test_p2", "test_p2", new Dictionary<string, int>() { { defaultTag, 100 } });
-            var p3 = getTestAffix("test_p3", "test_p3", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var p1 = GetTestAffix("test_p1", "test_p1", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var p2 = GetTestAffix("test_p2", "test_p2", new Dictionary<string, int>() { { defaultTag, 100 } });
+            var p3 = GetTestAffix("test_p3", "test_p3", new Dictionary<string, int>() { { defaultTag, 100 } });
 
             p1.GenerationType = "suffix";
             p2.GenerationType = "suffix";
@@ -422,7 +422,7 @@ namespace PoeCraftLib.CraftingTest
 
             for (int i = 0; i < 10; i++)
             {
-                Affix affix = getTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } });
+                Affix affix = GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } });
                 affix.GenerationType = i < 5 ? "prefix" : "suffix";
                 allAffixes.Add(affix);
             }
@@ -448,7 +448,7 @@ namespace PoeCraftLib.CraftingTest
             return random;
         }
 
-        private Affix getTestAffix(string name, string group, Dictionary<string, int> spawnTagWeights, params string[] tags)
+        private Affix GetTestAffix(string name, string group, Dictionary<string, int> spawnTagWeights, params string[] tags)
         {
             return new Affix {FullName = name, Name = name, Group = group, Tags = new HashSet<string>(), AddsTags = tags.ToList(), SpawnWeights = spawnTagWeights, GenerationWeights = new Dictionary<string, int>(), GenerationType = "prefix"};
         }

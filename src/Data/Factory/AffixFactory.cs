@@ -16,8 +16,8 @@ namespace PoeCraftLib.Data.Factory
         private readonly IFetchModType _fetchModType = new FetchModType();
 
         private readonly Dictionary<string, ModsJson> _mods;
-        private Dictionary<string, ItemClassJson> _itemClass;
-        private Dictionary<string, HashSet<String>> _modTypeToTags; 
+        private readonly Dictionary<string, ItemClassJson> _itemClass;
+        private readonly Dictionary<string, HashSet<String>> _modTypeToTags; 
 
 
         public AffixFactory()

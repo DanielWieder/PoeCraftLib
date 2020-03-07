@@ -57,14 +57,14 @@ namespace PoeCraftLib.Entities.Items
             }
         }
 
-        static readonly string[] ValidatedProperties =
+        private static readonly string[] ValidatedProperties =
         {
             "ItemBase",
             "ItemType",
             "ItemLevel"
         };
 
-        string GetValidationError(string propertyName)
+        private string GetValidationError(string propertyName)
         {
             if (Array.IndexOf(ValidatedProperties, propertyName) < 0)
                 return null;

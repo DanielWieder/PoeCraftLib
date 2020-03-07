@@ -8,8 +8,8 @@ namespace PoeCraftLib.Currency
 {
     public static class StatFactory
     {
-        private static String PrefixesCannotBeChanged = "ItemGenerationCannotChangePrefixes";
-        private static String SuffixesCannotBeChanged = "ItemGenerationCannotChangeSuffixes";
+        private static readonly String _prefixesCannotBeChanged = "ItemGenerationCannotChangePrefixes";
+        private static readonly String _suffixesCannotBeChanged = "ItemGenerationCannotChangeSuffixes";
 
         public static readonly Dictionary<int, int> RareAffixCountOdds = new Dictionary<int, int>()
         {
@@ -26,8 +26,8 @@ namespace PoeCraftLib.Currency
 
         public static void RemoveExplicit(IRandom random, Equipment item)
         {
-            bool cannotChangePrefixes = ItemHasGroup(item, PrefixesCannotBeChanged);
-            bool cannotChangeSuffixes = ItemHasGroup(item, SuffixesCannotBeChanged);
+            bool cannotChangePrefixes = ItemHasGroup(item, _prefixesCannotBeChanged);
+            bool cannotChangeSuffixes = ItemHasGroup(item, _suffixesCannotBeChanged);
 
             List<Stat> statPool = new List<Stat>();
 
@@ -48,8 +48,8 @@ namespace PoeCraftLib.Currency
 
         public static void RemoveAllExplicits(Equipment item)
         {
-            bool canChangePrefixes = !ItemHasGroup(item, PrefixesCannotBeChanged);
-            bool canChangeSuffixes = !ItemHasGroup(item, SuffixesCannotBeChanged);
+            bool canChangePrefixes = !ItemHasGroup(item, _prefixesCannotBeChanged);
+            bool canChangeSuffixes = !ItemHasGroup(item, _suffixesCannotBeChanged);
 
             if (canChangePrefixes)
             {
@@ -155,12 +155,12 @@ namespace PoeCraftLib.Currency
             if (stat?.Affix == null)
                 return;
 
-            if (stat.Affix.GenerationType == "prefix" && ItemHasGroup(item, PrefixesCannotBeChanged))
+            if (stat.Affix.GenerationType == "prefix" && ItemHasGroup(item, _prefixesCannotBeChanged))
             {
                 return;
             }
 
-            if (stat.Affix.GenerationType == "suffix" && ItemHasGroup(item, SuffixesCannotBeChanged))
+            if (stat.Affix.GenerationType == "suffix" && ItemHasGroup(item, _suffixesCannotBeChanged))
             {
                 return;
             }

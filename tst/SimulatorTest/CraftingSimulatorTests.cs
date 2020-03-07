@@ -12,12 +12,12 @@ namespace PoeCraftLib.SimulatorTest
     [TestClass]
     public class CraftingSimulatorTests
     {
-        private String alchemyName = "Orb of Alchemy";
-        private string transmutationName = "Orb of Transmutation";
-        private string annulmentName = "Orb of Annulment";
-        private String essenceName = "Screaming Essence of Anger";
-        private String fossilName = "Scorched Fossil";
-        private string masterModName = "FireResistance2";
+        private readonly String _alchemyName = "Orb of Alchemy";
+        private readonly string _transmutationName = "Orb of Transmutation";
+        private readonly string _annulmentName = "Orb of Annulment";
+        private readonly String _essenceName = "Screaming Essence of Anger";
+        private readonly String _fossilName = "Scorched Fossil";
+        private readonly string _masterModName = "FireResistance2";
 
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = alchemyName
+                    Name = _alchemyName
                 }
             };
 
@@ -47,8 +47,8 @@ namespace PoeCraftLib.SimulatorTest
             Assert.IsTrue(start.Result.AllGeneratedItems.All(x => x != null));
             Assert.IsTrue(10 < start.Result.AllGeneratedItems.Count);
             Assert.IsTrue(10 <= start.Result.CostInChaos);
-            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(alchemyName));
-            Assert.IsTrue(10 < start.Result.CurrencyUsed[alchemyName]);
+            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(_alchemyName));
+            Assert.IsTrue(10 < start.Result.CurrencyUsed[_alchemyName]);
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = essenceName
+                    Name = _essenceName
                 }
             };
 
@@ -78,8 +78,8 @@ namespace PoeCraftLib.SimulatorTest
             Assert.IsTrue(start.Result.AllGeneratedItems.All(x => x != null));
             Assert.IsTrue(10 < start.Result.AllGeneratedItems.Count);
             Assert.IsTrue(10 <= start.Result.CostInChaos);
-            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(essenceName));
-            Assert.IsTrue(10 < start.Result.CurrencyUsed[essenceName]);
+            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(_essenceName));
+            Assert.IsTrue(10 < start.Result.CurrencyUsed[_essenceName]);
         }
 
         [TestMethod]
@@ -96,7 +96,7 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = "Fossil", SocketedCurrency = new List<string> {fossilName}
+                    Name = "Fossil", SocketedCurrency = new List<string> {_fossilName}
                 }
             };
 
@@ -109,8 +109,8 @@ namespace PoeCraftLib.SimulatorTest
             Assert.IsTrue(start.Result.AllGeneratedItems.All(x => x != null));
             Assert.IsTrue(10 < start.Result.AllGeneratedItems.Count);
             Assert.IsTrue(10 <= start.Result.CostInChaos);
-            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(fossilName));
-            Assert.IsTrue(10 < start.Result.CurrencyUsed[fossilName]);
+            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(_fossilName));
+            Assert.IsTrue(10 < start.Result.CurrencyUsed[_fossilName]);
         }
 
         [TestMethod]
@@ -127,19 +127,19 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = transmutationName
+                    Name = _transmutationName
                 },
                 new CurrencyCraftingStep()
                 {
-                    Name = annulmentName
+                    Name = _annulmentName
                 },
                 new CurrencyCraftingStep()
                 {
-                    Name = annulmentName
+                    Name = _annulmentName
                 },
                 new CurrencyCraftingStep()
                 {
-                    Name = masterModName
+                    Name = _masterModName
                 }
             };
 
@@ -152,9 +152,9 @@ namespace PoeCraftLib.SimulatorTest
             Assert.IsTrue(start.Result.AllGeneratedItems.All(x => x != null));
             Assert.IsTrue(1 <= start.Result.AllGeneratedItems.Count);
             Assert.IsTrue(10 <= start.Result.CostInChaos);
-            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(annulmentName));
-            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(transmutationName));
-            Assert.IsTrue(start.Result.CurrencyUsed.Any(x => x.Key != transmutationName && x.Key != annulmentName));
+            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(_annulmentName));
+            Assert.IsTrue(start.Result.CurrencyUsed.ContainsKey(_transmutationName));
+            Assert.IsTrue(start.Result.CurrencyUsed.Any(x => x.Key != _transmutationName && x.Key != _annulmentName));
         }
 
         [TestMethod]
@@ -175,7 +175,7 @@ namespace PoeCraftLib.SimulatorTest
                 recursiveCraftingStep,
                 new CurrencyCraftingStep()
                 {
-                    Name = transmutationName
+                    Name = _transmutationName
                 }
             };
 
@@ -229,7 +229,7 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = alchemyName
+                    Name = _alchemyName
                 }
             };
 
@@ -254,7 +254,7 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = alchemyName
+                    Name = _alchemyName
                 }
             };
 
@@ -293,7 +293,7 @@ namespace PoeCraftLib.SimulatorTest
             {
                 new CurrencyCraftingStep()
                 {
-                    Name = alchemyName
+                    Name = _alchemyName
                 }
             };
 

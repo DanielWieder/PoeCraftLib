@@ -5,7 +5,7 @@ namespace PoeCraftLib.Data.Query
 {
     public class FetchCurrencyValues : IFetchCurrencyValues
     {
-        readonly PoeNinjaHelper _helper = new PoeNinjaHelper();
+        private readonly PoeNinjaHelper _helper = new PoeNinjaHelper();
 
         public string League { get; set; }
 

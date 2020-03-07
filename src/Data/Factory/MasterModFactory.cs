@@ -8,11 +8,11 @@ namespace PoeCraftLib.Data.Factory
 {
     public class MasterModFactory
     {
-        readonly FetchMasterMods _fetchMasterMods = new FetchMasterMods();
+        private readonly FetchMasterMods _fetchMasterMods = new FetchMasterMods();
 
-        readonly ItemFactory _itemFactory;
+        private readonly ItemFactory _itemFactory;
 
-        readonly AffixFactory _affixFactory;
+        private readonly AffixFactory _affixFactory;
 
         public List<MasterMod> MasterMod { get; }
 

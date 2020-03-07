@@ -8,13 +8,13 @@ namespace PoeCraftLib.DataTest
     [TestClass]
     public class PoeNinjaTest
     {
-        private String defaultLeague = "Standard";
+        private readonly String _defaultLeague = "Standard";
 
         [TestMethod]
         public void FetchCurrencyValuesTest()
         {
             IFetchCurrencyValues currencyValues = new FetchCurrencyValues();
-            currencyValues.League = defaultLeague;
+            currencyValues.League = _defaultLeague;
             var data = currencyValues.Execute();
 
             Assert.IsNotNull(data);
@@ -27,7 +27,7 @@ namespace PoeCraftLib.DataTest
         public void FetchFossilValuesTest()
         {
             IFetchFossilValues fossilValues = new FetchFossilValues();
-            fossilValues.League = defaultLeague;
+            fossilValues.League = _defaultLeague;
             var data = fossilValues.Execute();
 
             Assert.IsNotNull(data);
@@ -40,7 +40,7 @@ namespace PoeCraftLib.DataTest
         public void FetchResonatorValuesTest()
         {
             IFetchResonatorValues currencyValues = new FetchResonatorValues();
-            currencyValues.League = defaultLeague;
+            currencyValues.League = _defaultLeague;
             var data = currencyValues.Execute();
 
             Assert.IsNotNull(data);
@@ -53,7 +53,7 @@ namespace PoeCraftLib.DataTest
         public void FetchEssenceValuesTest()
         {
             IFetchEssenceValues essenceValues = new FetchEssenceValues();
-            essenceValues.League = defaultLeague;
+            essenceValues.League = _defaultLeague;
             var data = essenceValues.Execute();
 
             Assert.IsNotNull(data);

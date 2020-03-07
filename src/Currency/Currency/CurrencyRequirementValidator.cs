@@ -10,7 +10,7 @@ namespace PoeCraftLib.Currency.CurrencyV2
 
     public class CurrencyRequirementValidator
     {
-        private static string MultimodGroup = "ItemGenerationCanHaveMultipleCraftedMods";
+        private static readonly string _multimodGroup = "ItemGenerationCanHaveMultipleCraftedMods";
 
         public Func<Equipment, bool> ValidateRarity(List<RarityOptions> rarityOptions)
         {
@@ -143,7 +143,7 @@ namespace PoeCraftLib.Currency.CurrencyV2
 
         private static bool HasMultiMod(Equipment item)
         {
-            return item.Stats.Any(x => x.Affix.Group == MultimodGroup);
+            return item.Stats.Any(x => x.Affix.Group == _multimodGroup);
         }
 
         public Func<Equipment, bool> ValidateMatchingItemClasses(HashSet<string> itemClasses, GenericOptions genericOptions)
