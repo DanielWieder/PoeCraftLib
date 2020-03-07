@@ -16,7 +16,6 @@ namespace PoeCraftLib.Crafting.CraftingSteps
         Dictionary<string, int> Craft(Equipment equipment, AffixManager affixManager);
 
         bool ShouldVisitChildren(Equipment equipment, int times);
-        void UpdateStatus(ItemStatus metadataCurrentStatus);
         bool ShouldVisitChildren(ItemStatus previousStatus, ItemStatus metadataCurrentStatus);
     }
 }

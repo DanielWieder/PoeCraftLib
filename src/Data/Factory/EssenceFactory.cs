@@ -10,18 +10,19 @@ namespace PoeCraftLib.Data.Factory
     {
         FetchEssences _fetchEssences = new FetchEssences();
 
-        FetchEssenceValues _fetchEssenceValues = new FetchEssenceValues();
+        ItemFactory _itemFactory;
 
-        ItemFactory _itemFactory = new ItemFactory();
-
-        AffixFactory _affixFactory = new AffixFactory();
+        AffixFactory _affixFactory;
 
         private Dictionary<string, ItemBase> essenceItems;
 
         public List<Essence> Essence { get; }
 
-        public EssenceFactory()
+        public EssenceFactory(ItemFactory itemFactory, AffixFactory affixFactory)
         {
+            _itemFactory = itemFactory;
+            _affixFactory = affixFactory;
+
             essenceItems = _itemFactory.Essence.ToDictionary(x => x.Name, x => x);
 
             Essence = _fetchEssences.Execute()
@@ -35,7 +36,7 @@ namespace PoeCraftLib.Data.Factory
             Essence essence = new Essence();
             essence.FullName = essenceJson.FullName;
             essence.Name = essenceJson.Name;
-            essence.RequiredLevel = (int)(essenceJson?.ItemLevelRestriction ?? 100);
+            essence.ItemLevelRestriction = (int)(essenceJson?.ItemLevelRestriction ?? 100);
             essence.Description = essenceItems[essenceJson.Name].Description;
             essence.Tier = (int)essenceJson.Type.Tier;
             essence.Level = (int) essenceJson.Level;

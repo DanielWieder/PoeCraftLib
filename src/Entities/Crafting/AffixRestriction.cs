@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PoeCraftLib.Entities.Crafting
+﻿namespace PoeCraftLib.Entities.Crafting
 {
     // An affix restriction limits what modifiers can be applied to an item
     public class AffixRestriction

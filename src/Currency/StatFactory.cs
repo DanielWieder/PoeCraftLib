@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 

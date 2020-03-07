@@ -31,10 +31,6 @@ namespace PoeCraftLib.Crafting.CraftingSteps
         }
 
         public bool ShouldVisitChildren(Equipment equipment, int times) => false;
-        public void UpdateStatus(Entities.ItemStatus metadataCurrentStatus)
-        { 
-            _currency.GetNextStatus(metadataCurrentStatus);
-        }
 
         public bool ShouldVisitChildren(Entities.ItemStatus previousStatus, Entities.ItemStatus metadataCurrentStatus)
         {

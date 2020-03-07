@@ -11,7 +11,7 @@ namespace PoeCraftLib.Data.Query
         public List<EssenceJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\essences.json", assem);
+            var json = FetchHelper.GetEmbeddedResource("Assets\\ggpk\\essences.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, EssenceJson>>(json);
 
             return deserialized

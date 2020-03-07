@@ -10,9 +10,16 @@ namespace PoeCraftLib.DataTest
     [TestClass]
     public class AffixFactoryTest
     {
-        readonly AffixFactory _affixFactory = new AffixFactory();
-        readonly ItemFactory _itemFactory = new ItemFactory();
-        readonly EssenceFactory _essenceFactory = new EssenceFactory();
+        private readonly AffixFactory _affixFactory;
+        private readonly ItemFactory _itemFactory;
+        private readonly EssenceFactory _essenceFactory;
+
+        public AffixFactoryTest()
+        {
+            _affixFactory = new AffixFactory();
+            _itemFactory = new ItemFactory();
+            _essenceFactory = new EssenceFactory(_itemFactory, _affixFactory);
+        }
 
         [TestMethod]
         public void ShaperItemHasShaperMods()

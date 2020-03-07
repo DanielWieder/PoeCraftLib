@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoeCraftLib.Currency;
-using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data;
 using PoeCraftLib.Data.Factory;
-using PoeCraftLib.Data.Query;
 using PoeCraftLib.Simulator;
 
 namespace PoeCraftLib.SimulatorTest
@@ -16,9 +9,18 @@ namespace PoeCraftLib.SimulatorTest
     [TestClass]
     public class MapperTests
     {
-        private readonly FossilFactory _fossilFactory = new FossilFactory();
-        private readonly MasterModFactory _masterModFactory = new MasterModFactory();
-        private readonly EssenceFactory _essenceFactory = new EssenceFactory();
+        private readonly FossilFactory _fossilFactory;
+        private readonly MasterModFactory _masterModFactory;
+        private readonly EssenceFactory _essenceFactory;
+
+        public MapperTests()
+        {
+            ItemFactory itemFactory = new ItemFactory();
+            AffixFactory affixFactory = new AffixFactory();
+            _fossilFactory = new FossilFactory(affixFactory);
+            _masterModFactory = new MasterModFactory(affixFactory, itemFactory);
+            _essenceFactory = new EssenceFactory(itemFactory, affixFactory);
+        }
 
         [TestMethod]
         public void ClientToDomainMapperTest()

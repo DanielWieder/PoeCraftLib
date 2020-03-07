@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using PoeCraftLib.Data.Entities;
-using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Data.Query
@@ -20,7 +19,7 @@ namespace PoeCraftLib.Data.Query
         public List<ItemClassJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\item_classes.json", assem);
+            var json = FetchHelper.GetEmbeddedResource("Assets\\ggpk\\item_classes.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(json);
 
             return deserialized

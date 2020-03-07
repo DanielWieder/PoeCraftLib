@@ -27,7 +27,7 @@ namespace PoeCraftLib.Data.Query
         public List<ModsJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\mods.json", assem);
+            var json = FetchHelper.GetEmbeddedResource("Assets\\ggpk\\mods.json", assem);
             var temp = JsonConvert.DeserializeObject<Dictionary<string, ModsJson>>(json)
                 .Where(x => !GenerationTypeBlacklist.Contains(x.Value.GenerationType))
                 .Where(x => !DomainBlacklist.Contains(x.Value.Domain))

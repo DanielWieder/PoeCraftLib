@@ -7,15 +7,12 @@ using AutoMapper;
 using PoeCraftLib.Crafting;
 using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
-using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data;
 using PoeCraftLib.Data.Factory;
-using PoeCraftLib.Data.Query;
-using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
 using PoeCraftLib.Simulator.Model.Simulation;
+using CraftingCondition = PoeCraftLib.Entities.Crafting.CraftingCondition;
 using Equipment = PoeCraftLib.Simulator.Model.Items.Equipment;
 
 namespace PoeCraftLib.Simulator
@@ -29,9 +26,9 @@ namespace PoeCraftLib.Simulator
         private readonly CurrencyValueFactory _currencyValueFactory = new CurrencyValueFactory();
         private readonly ConditionResolver _conditionResolution = new ConditionResolver();
 
-        private readonly FossilFactory _fossilFactory = new FossilFactory();
-        private readonly MasterModFactory _masterModFactory = new MasterModFactory();
-        private readonly EssenceFactory _essenceFactory = new EssenceFactory();
+        private readonly FossilFactory _fossilFactory;
+        private readonly MasterModFactory _masterModFactory;
+        private readonly EssenceFactory _essenceFactory;
 
         // Arguments
         private readonly SimFinanceInfo _financeInfo;
@@ -52,6 +49,9 @@ namespace PoeCraftLib.Simulator
         private readonly IMapper _clientToDomain;
         private readonly IMapper _domainToClient;
 
+        // Public
+        public double Progress { get; set; } = 0;
+
         public SimulationStatus Status { get; set; } = SimulationStatus.Stopped;
         public delegate void ProgressUpdateEventHandler(ProgressUpdateEventArgs e);
         public ProgressUpdateEventHandler OnProgressUpdate;
@@ -66,7 +66,13 @@ namespace PoeCraftLib.Simulator
             SimFinanceInfo financeInfo,
             SimCraftingInfo craftingInfo)
         {
-            var currencyFactory = new CurrencyFactory(
+        ItemFactory itemFactory = new ItemFactory();
+        AffixFactory affixFactory = new AffixFactory();
+        _fossilFactory = new FossilFactory(affixFactory);
+        _masterModFactory = new MasterModFactory(affixFactory, itemFactory);
+        _essenceFactory = new EssenceFactory(itemFactory, affixFactory);
+
+        var currencyFactory = new CurrencyFactory(
                 new PoeRandom(), 
                 _essenceFactory,
                 _fossilFactory,
@@ -132,38 +138,47 @@ namespace PoeCraftLib.Simulator
 
             double previousProgress = -1;
 
-            var baseItemDomain = InfluenceToDomain(_baseItemInfo.Influence);
-            var craftingStepsDomain = CraftingStepsToDomain(_craftingInfo.CraftingSteps);
-            var craftingTargetsDomain = CraftingTargetsToDomain(_craftingInfo.CraftingTargets);
+            var baseInfluence = InfluenceToDomain(_baseItemInfo.Influence);
+            var craftingSteps = CraftingStepsToDomain(_craftingInfo.CraftingSteps);
+            var craftingTargets = _craftingInfo.CraftingTargets.Select(x =>
+
+                new PoeCraftLib.Entities.Items.CraftingTarget()
+                {
+                    Name = x.Name,
+                    Value = x.Value,
+                    Condition = ConditionToDomain(x.Condition)
+                }).ToList();
 
             for (ProgressManager progressManager = GetProgressManager(); progressManager.Progress < 100; previousProgress = progressManager.Progress)
             {
 
                 // Craft item
-                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, baseItemDomain);
-                      var results = _craftingManager.Craft(craftingStepsDomain, item, _affixManager, ct, progressManager);
+                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, baseInfluence);
+                      var results = _craftingManager.Craft(craftingSteps, item, _affixManager, ct, progressManager);
       
                       bool saved = false;
-                      // Update item results
-                      foreach (var craftingTarget in craftingTargetsDomain)
-                      {
-                          if (craftingTarget.Condition != null && _conditionResolution.IsValid(craftingTarget.Condition, results.Result))
-                          {
-                              if (!_simulationArtifacts.MatchingGeneratedItems.ContainsKey(craftingTarget.Name))
-                              {
-                                  _simulationArtifacts.MatchingGeneratedItems.Add(craftingTarget.Name, new List<Equipment>());
-                              }
-
-                              _simulationArtifacts.MatchingGeneratedItems[craftingTarget.Name].Add(EquipmentToClient(results.Result));
-                              saved = true;
-                              break;
-                          }
-                      }
-
-                      // No normal items in the generated items list because that just adds to the clutter
+  
+                      // No normal items are evaluated since that would cause a lot of clutter
                       if (results.Result.Rarity != EquipmentRarity.Normal)
                       {
-                          _simulationArtifacts.AllGeneratedItems.Add(EquipmentToClient(results.Result));
+                          var equipment = EquipmentToClient(results.Result);
+                          _simulationArtifacts.AllGeneratedItems.Add(equipment);
+
+                          foreach (var craftingTarget in craftingTargets)
+                          {
+                              if (craftingTarget.Condition != null &&
+                                  _conditionResolution.IsValid(craftingTarget.Condition, results.Result))
+                              {
+                                  if (!_simulationArtifacts.MatchingGeneratedItems.ContainsKey(craftingTarget.Name))
+                                  {
+                                      _simulationArtifacts.MatchingGeneratedItems.Add(craftingTarget.Name, new List<Equipment>());
+                                  }
+
+                                  _simulationArtifacts.MatchingGeneratedItems[craftingTarget.Name].Add(equipment);
+                                  saved = true;
+                                  break;
+                              }
+                          }
                       }
 
                       // Update crafting cost
@@ -268,17 +283,17 @@ namespace PoeCraftLib.Simulator
 
         private List<Influence> InfluenceToDomain(List<Model.Items.Influence> influence)
         {
-            return influence.Select(x => _clientToDomain.Map<Model.Items.Influence, Influence>(x)).ToList();
+            return influence.Select(x => _clientToDomain.Map<Model.Items.Influence, Entities.Items.Influence>(x)).ToList();
         }
 
         private List<ICraftingStep> CraftingStepsToDomain(List<Model.Crafting.Steps.ICraftingStep> craftingSteps)
         {
-            return craftingSteps.Select(x => _clientToDomain.Map<Model.Crafting.Steps.ICraftingStep, ICraftingStep>(x)).ToList();
+            return craftingSteps.Select(x => _clientToDomain.Map<Model.Crafting.Steps.ICraftingStep, Crafting.CraftingSteps.ICraftingStep>(x)).ToList();
         }
 
-        private List<CraftingTarget> CraftingTargetsToDomain(List<Model.Crafting.CraftingTarget> craftingTargets)
+        private CraftingCondition ConditionToDomain(Model.Crafting.CraftingCondition condition)
         {
-            return craftingTargets.Select(x => _clientToDomain.Map<Model.Crafting.CraftingTarget, CraftingTarget>(x)).ToList();
+            return _clientToDomain.Map<Model.Crafting.CraftingCondition, Entities.Crafting.CraftingCondition>(condition);
         }
 
         private Model.Items.Equipment EquipmentToClient(Entities.Items.Equipment equipment)

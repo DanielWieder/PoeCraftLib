@@ -9,12 +9,14 @@ namespace PoeCraftLib.Data.Factory
     public class FossilFactory
     {
         private readonly IFetchFossils _fetchFossils = new FetchFossils();
-        private readonly AffixFactory _affixFactory = new AffixFactory();
+        private readonly AffixFactory _affixFactory;
 
         public List<Fossil> Fossils { get; set; }
 
-        public FossilFactory()
+        public FossilFactory(AffixFactory affixFactory)
         {
+            _affixFactory = affixFactory;
+
             Fossils = _fetchFossils.Execute().Select(CreateFossil).ToList();
         }
 

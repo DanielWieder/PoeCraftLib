@@ -17,7 +17,7 @@ namespace PoeCraftLib.Data.Query
         public List<CraftingBenchJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource($"Assets\\crafting_bench_options.json", assem);
+            var json = FetchHelper.GetEmbeddedResource($"Assets\\ggpk\\crafting_bench_options.json", assem);
             var deserialized = JsonConvert.DeserializeObject<List<CraftingBenchJson>>(json);
 
             return deserialized

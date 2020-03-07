@@ -11,7 +11,7 @@ namespace PoeCraftLib.Data.Query
         public List<FossilJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\fossils.json", assem);
+            var json = FetchHelper.GetEmbeddedResource("Assets\\ggpk\\fossils.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, FossilJson>>(json);
 
             return deserialized
