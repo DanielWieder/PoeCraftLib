@@ -6,8 +6,8 @@ namespace PoeCraftLib.Entities.Items
 {
     public class ItemProperty
     {
-        public string Group;
-        public AffixType Type;
+        public string Type;
+        public AffixType GenerationType;
         public List<int> Values;
     }
 }

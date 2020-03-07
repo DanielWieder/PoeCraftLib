@@ -39,6 +39,7 @@ namespace PoeCraftLib.CraftingTest
 
             Affix affix = new Affix();
             affix.Group = modType;
+            affix.Type = modType;
             affix.GenerationType = "Prefix";
 
             stat.Affix = affix;
@@ -423,7 +424,7 @@ namespace PoeCraftLib.CraftingTest
 
         private static Stat CreateStat(int value, string modType)
         {
-            Affix affix = new Affix {Group = modType, GenerationType = "Prefix"};
+            Affix affix = new Affix {Type = modType, Group = modType, GenerationType = "Prefix"};
             Stat stat = new Stat { Value1 = value, Affix = affix };
             stat.Affix = affix;
             return stat;

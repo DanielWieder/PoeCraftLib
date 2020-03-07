@@ -16,6 +16,7 @@ using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
 using PoeCraftLib.Simulator.Model.Simulation;
+using Equipment = PoeCraftLib.Simulator.Model.Items.Equipment;
 
 namespace PoeCraftLib.Simulator
 {
@@ -50,11 +51,6 @@ namespace PoeCraftLib.Simulator
         //Mappings
         private readonly IMapper _clientToDomain;
         private readonly IMapper _domainToClient;
-
-        // Public
-        public double Progress { get; set; } = 0;
-
-
 
         public SimulationStatus Status { get; set; } = SimulationStatus.Stopped;
         public delegate void ProgressUpdateEventHandler(ProgressUpdateEventArgs e);
@@ -114,7 +110,7 @@ namespace PoeCraftLib.Simulator
             return _task;
         }
 
-        public Task<SimulationArtifacts> Start(int timeout = DefaultTimeout)
+        public Task<SimulationArtifacts> Start(double timeout = DefaultTimeout)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(timeout));
@@ -136,20 +132,29 @@ namespace PoeCraftLib.Simulator
 
             double previousProgress = -1;
 
+            var baseItemDomain = InfluenceToDomain(_baseItemInfo.Influence);
+            var craftingStepsDomain = CraftingStepsToDomain(_craftingInfo.CraftingSteps);
+            var craftingTargetsDomain = CraftingTargetsToDomain(_craftingInfo.CraftingTargets);
+
             for (ProgressManager progressManager = GetProgressManager(); progressManager.Progress < 100; previousProgress = progressManager.Progress)
             {
 
                 // Craft item
-                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, InfluenceToDomain(_baseItemInfo.Influence));
-                      var results = _craftingManager.Craft(CraftingStepsToDomain(_craftingInfo.CraftingSteps), item, _affixManager, ct, progressManager);
+                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, baseItemDomain);
+                      var results = _craftingManager.Craft(craftingStepsDomain, item, _affixManager, ct, progressManager);
       
                       bool saved = false;
                       // Update item results
-                      foreach (var craftingTarget in _craftingInfo.CraftingTargets)
+                      foreach (var craftingTarget in craftingTargetsDomain)
                       {
-                          if (craftingTarget.Condition != null && _conditionResolution.IsValid(ConditionToDomain(craftingTarget.Condition), results.Result))
+                          if (craftingTarget.Condition != null && _conditionResolution.IsValid(craftingTarget.Condition, results.Result))
                           {
-                              _simulationArtifacts.MatchingGeneratedItems[craftingTarget].Add(EquipmentToClient(results.Result));
+                              if (!_simulationArtifacts.MatchingGeneratedItems.ContainsKey(craftingTarget.Name))
+                              {
+                                  _simulationArtifacts.MatchingGeneratedItems.Add(craftingTarget.Name, new List<Equipment>());
+                              }
+
+                              _simulationArtifacts.MatchingGeneratedItems[craftingTarget.Name].Add(EquipmentToClient(results.Result));
                               saved = true;
                               break;
                           }
@@ -225,7 +230,7 @@ namespace PoeCraftLib.Simulator
                 {
                     var args = new ProgressUpdateEventArgs
                     {
-                        Progress = Progress
+                        Progress = i
                     };
 
                     OnProgressUpdate(args);
@@ -263,17 +268,17 @@ namespace PoeCraftLib.Simulator
 
         private List<Influence> InfluenceToDomain(List<Model.Items.Influence> influence)
         {
-            return influence.Select(x => _clientToDomain.Map<Model.Items.Influence, Entities.Items.Influence>(x)).ToList();
+            return influence.Select(x => _clientToDomain.Map<Model.Items.Influence, Influence>(x)).ToList();
         }
 
         private List<ICraftingStep> CraftingStepsToDomain(List<Model.Crafting.Steps.ICraftingStep> craftingSteps)
         {
-            return craftingSteps.Select(x => _clientToDomain.Map<Model.Crafting.Steps.ICraftingStep, Crafting.CraftingSteps.ICraftingStep>(x)).ToList();
+            return craftingSteps.Select(x => _clientToDomain.Map<Model.Crafting.Steps.ICraftingStep, ICraftingStep>(x)).ToList();
         }
 
-        private CraftingCondition ConditionToDomain(Model.Crafting.CraftingCondition condition)
+        private List<CraftingTarget> CraftingTargetsToDomain(List<Model.Crafting.CraftingTarget> craftingTargets)
         {
-            return _clientToDomain.Map<Model.Crafting.CraftingCondition, Entities.Crafting.CraftingCondition>(condition);
+            return craftingTargets.Select(x => _clientToDomain.Map<Model.Crafting.CraftingTarget, CraftingTarget>(x)).ToList();
         }
 
         private Model.Items.Equipment EquipmentToClient(Entities.Items.Equipment equipment)

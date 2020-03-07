@@ -35,9 +35,9 @@ namespace PoeCraftLib.Crafting
         {
             return new ItemProperty()
             {
-                Group = affix.Group,
+                Type = affix.Type,
                 Values = GetTypedValue(affix, valueType, values),
-                Type = (AffixType)Enum.Parse(typeof(AffixType), affix.GenerationType, true)
+                GenerationType = (AffixType)Enum.Parse(typeof(AffixType), affix.GenerationType, true)
             };
         }
 
@@ -61,8 +61,8 @@ namespace PoeCraftLib.Crafting
             if (type == AffixType.Prefix || type == AffixType.Suffix)
             {
                 return a.Affixes
-                           .Where(x => x.Type == type)
-                           .Where(x => x.Group == mod)
+                           .Where(x => x.GenerationType == type)
+                           .Where(x => x.Type == mod)
                            .OrderByDescending(x => x.Values.Count < 1 ? 0 : x.Values[0])
                            .ThenByDescending(x => x.Values.Count < 2 ? 0 : x.Values[1])
                            .ThenByDescending(x => x.Values.Count < 3 ? 0 : x.Values[2])

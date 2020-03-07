@@ -258,6 +258,7 @@ namespace PoeCraftLib.CraftingTest
             stat.Value1 = matchTestCondition ? 5 : -1;
 
             Affix affix = new Affix();
+            affix.Type = "TestMod";
             affix.Group = "TestMod";
             affix.GenerationType = "Prefix";
 

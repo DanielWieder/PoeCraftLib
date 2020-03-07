@@ -17,7 +17,7 @@ namespace PoeCraftLib.Crafting
 
         private readonly Action<int> _onUpdate;
 
-        public double Progress => _spent / _budget;
+        public double Progress => Math.Min(100, _spent / _budget * 100);
 
         public ProgressManager(Dictionary<string, double> currencyValues, double budget, Action<int> onUpdate)
         {
@@ -30,7 +30,7 @@ namespace PoeCraftLib.Crafting
         {
             _spent += value;
 
-            var intProgress = (int)(_spent / _budget * 100);
+            var intProgress = (int)Math.Min(100, _spent / _budget * 100);
 
             if (intProgress > _lastUpdate)
             {

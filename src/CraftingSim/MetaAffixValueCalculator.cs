@@ -12,67 +12,82 @@ namespace PoeCraftLib.Crafting
     {
         public int GetMetaConditionValue(string modType, ConditionContainer a)
         {
-            var prefixes = a.Affixes.Where(x => x.Type == AffixType.Prefix).ToList();
-            var suffixes = a.Affixes.Where(x => x.Type == AffixType.Suffix).ToList();
+            var prefixes = a.Affixes.Where(x => x.GenerationType == AffixType.Prefix).ToList();
+            var suffixes = a.Affixes.Where(x => x.GenerationType == AffixType.Suffix).ToList();
 
-            if (modType.Contains(AffixNames.OpenPrefix))
+            if (modType.Contains(AffixTypes.OpenPrefix))
             {
                 return prefixes.Count > 3 ? 3 : 3 - prefixes.Count;
             }
-            if (modType.Contains(AffixNames.OpenSuffix))
+            if (modType.Contains(AffixTypes.OpenSuffix))
             {
                 return suffixes.Count > 3 ? 3 : 3 - suffixes.Count;
             }
-            if (modType == AffixNames.TotalEnergyShield)
+            if (modType == AffixTypes.TotalEnergyShield)
             {
-                return GetDefenseConditionValue(a, ItemProperties.EnergyShield, AffixNames.LocalEnergyShield, AffixGroupings.EnergyShieldPercent, AffixGroupings.HybridEnergyShieldPercent);
+                return GetDefenseConditionValue(a, ItemProperties.EnergyShield, 
+                    AffixTypesByStat.EnergyShieldFlat, 
+                    AffixTypesByStat.HybridEnergyShieldFlat, 
+                    AffixTypesByStat.EnergyShieldPercent,
+                    AffixTypesByStat.HybridEnergyShieldPercent,
+                    AffixTypesByStat.EnergyShieldPercentSuffix);
             }
-            if (modType == AffixNames.TotalArmor)
+            if (modType == AffixTypes.TotalArmor)
             {
-                return GetDefenseConditionValue(a, ItemProperties.Armour, AffixNames.LocalArmour, AffixGroupings.ArmourPercent, AffixGroupings.HybridArmourPercent);
+                return GetDefenseConditionValue(a, ItemProperties.Armour,
+                    AffixTypesByStat.ArmourFlat,
+                    AffixTypesByStat.HybridArmourFlat,
+                    AffixTypesByStat.ArmourPercent, 
+                    AffixTypesByStat.HybridArmourPercent,
+                    AffixTypesByStat.ArmourPercentSuffix);
             }
-            if (modType == AffixNames.TotalEvasion)
+            if (modType == AffixTypes.TotalEvasion)
             {
-                return GetDefenseConditionValue(a, ItemProperties.Evasion, AffixNames.LocalEvasion, AffixGroupings.EvasionPercent, AffixGroupings.HybridEvasionPercent);
+                return GetDefenseConditionValue(a, ItemProperties.Evasion,
+                    AffixTypesByStat.EvasionFlat,
+                    AffixTypesByStat.HybridEvasionFlat,
+                    AffixTypesByStat.EvasionPercent,
+                    AffixTypesByStat.HybridEvasionPercent,
+                    AffixTypesByStat.EvasionPercentSuffix);
             }
-            if (modType == AffixNames.TotalResistances)
+            if (modType == AffixTypes.TotalResistances)
             {
                 var resList = new List<int>
                 {
-                    GetMaxPropertyValue(suffixes, AffixNames.ColdResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.FireResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.LightningResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.ChaosResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.AllResist) * 3
+                    GetMaxPropertyValue(suffixes, AffixTypes.ColdResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.FireResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.LightningResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.ChaosResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.AllResist) * 3
                 };
 
                 resList = resList.OrderByDescending(x => x).ToList();
                 resList = resList.Take(3).ToList();
                 return resList.Sum();
             }
-            if (modType == AffixNames.TotalElementalResistances)
+            if (modType == AffixTypes.TotalElementalResistances)
             {
                 var resList = new List<int>
                 {
-                    GetMaxPropertyValue(suffixes, AffixNames.ColdResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.FireResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.LightningResist),
-                    GetMaxPropertyValue(suffixes, AffixNames.AllResist) * 3
+                    GetMaxPropertyValue(suffixes, AffixTypes.ColdResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.FireResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.LightningResist),
+                    GetMaxPropertyValue(suffixes, AffixTypes.AllResist) * 3
                 };
 
                 resList = resList.OrderByDescending(x => x).ToList();
                 resList = resList.Take(3).ToList();
                 return resList.Sum();
             }
-            if (modType == AffixNames.TotalDps)
+            if (modType == AffixTypes.TotalDps)
             {
                 return GetDps(GetTotalDamage(a), a);
             }
-            if (modType == AffixNames.TotalElementalDps)
+            if (modType == AffixTypes.TotalElementalDps)
             {
                 return GetDps(GetEleDamage(a), a);
             }
-            if (modType == AffixNames.TotalPhysicalDps)
+            if (modType == AffixTypes.TotalPhysicalDps)
             {
                 return GetDps(GetPhysicalDamage(a), a);
             }
@@ -87,8 +102,9 @@ namespace PoeCraftLib.Crafting
 
         private double GetAttackSpeed(ConditionContainer a)
         {
-            var addedAttackSpeed = 1 + GetMaxPropertyValue(a.Affixes, AffixNames.LocalAttackSpeed) / 100f;
-            var baseAttackSpeed = a.ItemBase.Properties.ContainsKey(ItemProperties.APS) ? a.ItemBase.Properties[ItemProperties.APS] : 0;
+            var addedAttackSpeed = 1 + GetMaxPropertyValue(a.Affixes, AffixTypes.LocalAttackSpeed) / 100f;
+            var baseAttackTime = a.ItemBase.Properties.ContainsKey(ItemProperties.AttackTime) ? a.ItemBase.Properties[ItemProperties.AttackTime] : 0;
+            var baseAttackSpeed = 1000d / baseAttackTime; 
             return baseAttackSpeed * addedAttackSpeed;
         }
 
@@ -115,12 +131,12 @@ namespace PoeCraftLib.Crafting
 
         private double GetPhysicalDamage(ConditionContainer a)
         {
-            var prefixes = a.Affixes.Where(x => x.Type == AffixType.Prefix).ToList();
+            var prefixes = a.Affixes.Where(x => x.GenerationType == AffixType.Prefix).ToList();
 
-            var percentDamage = GetMaxPropertyValue(prefixes, AffixNames.LocalPhysicalPercent) + GetMaxPropertyValue(prefixes, AffixNames.LocalPhysicalHybrid);
+            var percentDamage = GetMaxPropertyValue(prefixes, AffixTypes.LocalPhysicalPercent) + GetMaxPropertyValue(prefixes, AffixTypes.LocalPhysicalHybrid);
 
-            var physical = (GetMaxPropertyValue(prefixes, AffixGroupings.FlatPhysicalDamage) +
-                             GetMaxPropertyValue(prefixes, AffixGroupings.FlatPhysicalDamage, 1)) / 2;
+            var physical = (GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatPhysicalDamage) +
+                             GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatPhysicalDamage, 1)) / 2;
 
             double baseDamage = BaseDamage(a);
 
@@ -136,19 +152,19 @@ namespace PoeCraftLib.Crafting
 
         private double GetEleDamage(ConditionContainer a)
         {
-            var prefixes = a.Affixes.Where(x => x.Type == AffixType.Prefix).ToList();
+            var prefixes = a.Affixes.Where(x => x.GenerationType == AffixType.Prefix).ToList();
 
-            var chaos = (GetMaxPropertyValue(prefixes, AffixGroupings.FlatChaosDamage) +
-                         GetMaxPropertyValue(prefixes, AffixGroupings.FlatChaosDamage, 1)) / 2;
+            var chaos = (GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatChaosDamage) +
+                         GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatChaosDamage, 1)) / 2;
 
-            var cold = (GetMaxPropertyValue(prefixes, AffixGroupings.FlatColdDamage) +
-                         GetMaxPropertyValue(prefixes, AffixGroupings.FlatColdDamage, 1)) / 2;
+            var cold = (GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatColdDamage) +
+                         GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatColdDamage, 1)) / 2;
 
-            var fire = (GetMaxPropertyValue(prefixes, AffixGroupings.FlatFireDamage) +
-                         GetMaxPropertyValue(prefixes, AffixGroupings.FlatFireDamage, 1)) / 2;
+            var fire = (GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatFireDamage) +
+                         GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatFireDamage, 1)) / 2;
 
-            var lightning = (GetMaxPropertyValue(prefixes, AffixGroupings.FlatLightningDamage) +
-                         GetMaxPropertyValue(prefixes, AffixGroupings.FlatLightningDamage, 1)) / 2;
+            var lightning = (GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatLightningDamage) +
+                         GetMaxPropertyValue(prefixes, AffixTypesByStat.FlatLightningDamage, 1)) / 2;
 
             var eleList = new List<int>
             {
@@ -163,25 +179,40 @@ namespace PoeCraftLib.Crafting
             return eleList.Sum();
         }
 
-        private int GetDefenseConditionValue(ConditionContainer a, string propertyName, string flatDefenseName, List<string> percentDefensesNames, List<string> hybridDefenseNames)
+        private int GetDefenseConditionValue(
+            ConditionContainer a, 
+            string propertyName, 
+            List<string> flatDefenseNames, 
+            List<string> flatHybridNames, 
+            List<string> percentDefensesNames, 
+            List<string> hybridDefenseNames,
+            List<string> percentDefenseNamesSuffix)
         {
             var baseDefense = a.ItemBase.Properties.ContainsKey(propertyName) ? a.ItemBase.Properties[propertyName] : 0;
-            var flatDefense = GetMaxPropertyValue(a.Affixes, flatDefenseName);
+            var flatDefense = GetMaxPropertyValue(a.Affixes, flatDefenseNames);
+            var hybridFlatDefense = GetMaxPropertyValue(a.Affixes, flatHybridNames);
             var percentDefense = GetMaxPropertyValue(a.Affixes, percentDefensesNames);
-            var hybridDefense = GetMaxPropertyValue(a.Affixes, hybridDefenseNames);
+            var hybridPercentDefense = GetMaxPropertyValue(a.Affixes, hybridDefenseNames);
+            var percentDefenseSuffix = GetMaxPropertyValue(a.Affixes, percentDefenseNamesSuffix);
 
-            return (int)((baseDefense + flatDefense) * (120 + percentDefense + hybridDefense) / 100);
+            // Take 3 main mods if >3 prefixes are provided
+            if (flatDefense != 0 && hybridPercentDefense != 0 && percentDefense != 0 && hybridPercentDefense != 0)
+            {
+                return (int)((baseDefense + flatDefense) * (120 + percentDefense + hybridPercentDefense) / 100);
+            }
+
+            return (int)((baseDefense + flatDefense + hybridFlatDefense) * (120 + percentDefense + hybridPercentDefense + percentDefenseSuffix) / 100);
         }
 
         private int GetMaxPropertyValue(List<ItemProperty> items, List<string> propertyNames, int index = 0)
         {
-            var properties = items.Where(x => propertyNames.Contains(x.Group)).ToList();
+            var properties = items.Where(x => propertyNames.Contains(x.Type)).ToList();
             return GetMaxPropertyValue(properties, index);
         }
 
         private int GetMaxPropertyValue(List<ItemProperty> items, string property, int index = 0)
         {
-            var properties = items.Where(x => x.Group == property).ToList();
+            var properties = items.Where(x => x.Type == property).ToList();
             return GetMaxPropertyValue(properties, index);
         }
 

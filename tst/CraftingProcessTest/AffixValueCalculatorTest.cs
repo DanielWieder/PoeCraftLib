@@ -220,6 +220,7 @@ namespace PoeCraftLib.CraftingTest
         {
             Affix affix = new Affix();
             affix.Group = modName;
+            affix.Type = modName;
             affix.GenerationType = affixType.ToString();
             return affix;
         }

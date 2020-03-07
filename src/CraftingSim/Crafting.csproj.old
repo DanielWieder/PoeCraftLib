@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputGenerationType>Library</OutputGenerationType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoeCraftLib.Crafting</RootNamespace>
     <AssemblyName>PoeCraftLib.Crafting</AssemblyName>
@@ -15,7 +15,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugGenerationType>full</DebugGenerationType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugGenerationType>pdbonly</DebugGenerationType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>

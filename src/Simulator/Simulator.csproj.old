@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputGenerationType>Library</OutputGenerationType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoeCraftLib.Simulator</RootNamespace>
     <AssemblyName>PoeCraftLib.Simulator</AssemblyName>
@@ -31,7 +31,7 @@
 </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugGenerationType>full</DebugGenerationType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugGenerationType>pdbonly</DebugGenerationType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -76,23 +76,23 @@
     <Compile Include="CraftingSimulator.cs" />
     <Compile Include="ClientToDomainMapper.cs" />
     <Compile Include="Model\Crafting\AffixRestriction.cs" />
-    <Compile Include="Model\Crafting\AffixType.cs" />
+    <Compile Include="Model\Crafting\AffixGenerationType.cs" />
     <Compile Include="Model\Crafting\ConditionAffix.cs" />
     <Compile Include="Model\Crafting\ConditionResolution.cs" />
     <Compile Include="Model\Crafting\CraftingCondition.cs" />
     <Compile Include="Model\Crafting\CraftingStepStatus.cs" />
     <Compile Include="Model\Crafting\CraftingSubcondition.cs" />
     <Compile Include="Model\Crafting\CraftingTarget.cs" />
-    <Compile Include="Model\Crafting\Currency\CraftingEventType.cs" />
+    <Compile Include="Model\Crafting\Currency\CraftingEventGenerationType.cs" />
     <Compile Include="Model\Crafting\Currency\CraftingEvent.cs" />
-    <Compile Include="Model\Crafting\StatValueType.cs" />
+    <Compile Include="Model\Crafting\StatValueGenerationType.cs" />
     <Compile Include="Model\Crafting\Steps\CraftingEventStep.cs" />
     <Compile Include="Model\Crafting\Steps\EndCraftingStep.cs" />
     <Compile Include="Model\Crafting\Steps\ICraftingStep.cs" />
     <Compile Include="Model\Crafting\Steps\IfCraftingStep.cs" />
     <Compile Include="Model\Crafting\Steps\WhileCraftingStep.cs" />
-    <Compile Include="Model\Crafting\SubconditionAggregateType.cs" />
-    <Compile Include="Model\Crafting\TierType.cs" />
+    <Compile Include="Model\Crafting\SubconditionAggregateGenerationType.cs" />
+    <Compile Include="Model\Crafting\TierGenerationType.cs" />
     <Compile Include="Model\Items\Affix.cs" />
     <Compile Include="Model\Items\Equipment.cs" />
     <Compile Include="Model\Items\EquipmentRarity.cs" />

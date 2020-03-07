@@ -18,7 +18,7 @@ namespace PoeCraftLib.CraftingTest
         [TestMethod]
         public void MetamodOpenPrefixesTest()
         {
-            String metaModName = AffixNames.OpenPrefix;
+            String metaModName = AffixTypes.OpenPrefix;
 
             Affix affix = CreateTestAffix("testMod", AffixType.Prefix);
             Stat stat = CreateTestStat(affix, 5, 10);
@@ -37,7 +37,7 @@ namespace PoeCraftLib.CraftingTest
         [TestMethod]
         public void MetamodOpenSuffixesTest()
         {
-            String metaModName = AffixNames.OpenSuffix;
+            String metaModName = AffixTypes.OpenSuffix;
 
             Affix affix = CreateTestAffix("testMod", AffixType.Suffix);
             Stat stat = CreateTestStat(affix, 5, 10);
@@ -56,12 +56,12 @@ namespace PoeCraftLib.CraftingTest
         [TestMethod]
         public void MetamodFlatTotalEnergyShieldTest()
         {
-            String metaModName = AffixNames.TotalEnergyShield;
+            String metaModName = AffixTypes.TotalEnergyShield;
 
             string defenseProperty = ItemProperties.EnergyShield;
-            string localDefense = AffixNames.LocalEnergyShield;
-            List<string> percentDefense = AffixGroupings.EnergyShieldPercent;
-            List<string> hybridDefense = AffixGroupings.HybridEnergyShieldPercent;
+            string localDefense = AffixTypes.LocalEnergyShield;
+            List<string> percentDefense = AffixTypesByStat.EnergyShieldPercent;
+            List<string> hybridDefense = AffixTypesByStat.HybridEnergyShieldPercent;
 
             EvaluateDefenseMetamod(metaModName, defenseProperty, localDefense, percentDefense, hybridDefense);
         }
@@ -69,12 +69,12 @@ namespace PoeCraftLib.CraftingTest
         [TestMethod]
         public void MetamodFlatEvasionTest()
         {
-            String metaModName = AffixNames.TotalEvasion;
+            String metaModName = AffixTypes.TotalEvasion;
 
             string defenseProperty = ItemProperties.Evasion;
-            string localDefense = AffixNames.LocalEvasion;
-            List<string> percentDefense = AffixGroupings.EvasionPercent;
-            List<string> hybridDefense = AffixGroupings.HybridEvasionPercent;
+            string localDefense = AffixTypes.LocalEvasion;
+            List<string> percentDefense = AffixTypesByStat.EvasionPercent;
+            List<string> hybridDefense = AffixTypesByStat.HybridEvasionPercent;
 
             EvaluateDefenseMetamod(metaModName, defenseProperty, localDefense, percentDefense, hybridDefense);
         }
@@ -82,12 +82,12 @@ namespace PoeCraftLib.CraftingTest
         [TestMethod]
         public void MetamodFlatArmourTest()
         {
-            String metaModName = AffixNames.TotalArmor;
+            String metaModName = AffixTypes.TotalArmor;
 
             string defenseProperty = ItemProperties.Armour;
-            string localDefense = AffixNames.LocalArmour;
-            List<string> percentDefense = AffixGroupings.ArmourPercent;
-            List<string> hybridDefense = AffixGroupings.HybridArmourPercent;
+            string localDefense = AffixTypes.LocalArmour;
+            List<string> percentDefense = AffixTypesByStat.ArmourPercent;
+            List<string> hybridDefense = AffixTypesByStat.HybridArmourPercent;
 
             EvaluateDefenseMetamod(metaModName, defenseProperty, localDefense, percentDefense, hybridDefense);
         }
@@ -105,11 +105,11 @@ namespace PoeCraftLib.CraftingTest
             };
             testEquipment.ItemBase = itemBase;
 
-            Affix affix1 = CreateTestAffix(AffixNames.ColdResist, AffixType.Suffix);
-            Affix affix2 = CreateTestAffix(AffixNames.FireResist, AffixType.Suffix);
-            Affix affix3 = CreateTestAffix(AffixNames.LightningResist, AffixType.Suffix);
-            Affix affix4 = CreateTestAffix(AffixNames.ChaosResist, AffixType.Suffix);
-            Affix affix5 = CreateTestAffix(AffixNames.AllResist, AffixType.Suffix);
+            Affix affix1 = CreateTestAffix(AffixTypes.ColdResist, AffixType.Suffix);
+            Affix affix2 = CreateTestAffix(AffixTypes.FireResist, AffixType.Suffix);
+            Affix affix3 = CreateTestAffix(AffixTypes.LightningResist, AffixType.Suffix);
+            Affix affix4 = CreateTestAffix(AffixTypes.ChaosResist, AffixType.Suffix);
+            Affix affix5 = CreateTestAffix(AffixTypes.AllResist, AffixType.Suffix);
 
             Stat stat1 = CreateTestStat(affix1, 20);
             Stat stat2 = CreateTestStat(affix2, 25);
@@ -123,12 +123,12 @@ namespace PoeCraftLib.CraftingTest
             testEquipment.Stats.Add(stat4);
             testEquipment.Stats.Add(stat5);
 
-            List<int> values1 = affixValueCalculator.GetAffixValues(AffixNames.TotalResistances, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> values1 = affixValueCalculator.GetAffixValues(AffixTypes.TotalResistances, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(110, values1[0]);
             Assert.AreEqual(1, values1.Count);
 
-            List<int> values2 = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalResistances, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> values2 = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalResistances, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(95, values2[0]);
             Assert.AreEqual(1, values2.Count);
@@ -143,31 +143,31 @@ namespace PoeCraftLib.CraftingTest
             {
                 { ItemProperties.MinDamage, 10 },
                 { ItemProperties.MaxDamage, 30 },
-                { ItemProperties.APS, 2 }
+                { ItemProperties.AttackTime, 500 }
             };
             testEquipment.ItemBase = itemBase;
 
-            List<int> noModsPhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> noModsTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> noModsElemental = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> noModsPhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> noModsTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> noModsElemental = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(48, noModsPhys[0]);
             Assert.AreEqual(48, noModsTotal[0]);
             Assert.AreEqual(0, noModsElemental[0]);
 
-            Affix affix1 = CreateTestAffix(AffixNames.LocalAttackSpeed, AffixType.Suffix);
+            Affix affix1 = CreateTestAffix(AffixTypes.LocalAttackSpeed, AffixType.Suffix);
             Stat stat1 = CreateTestStat(affix1, 100);
             testEquipment.Stats.Add(stat1);
 
-            List<int> attackSpeedPhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> attackSpeedTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> attackSpeedPhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> attackSpeedTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(96, attackSpeedPhys[0]);
             Assert.AreEqual(96, attackSpeedTotal[0]);
 
-            Affix affix2 = CreateTestAffix(random, AffixGroupings.FlatPhysicalDamage, AffixType.Prefix);
-            Affix affix3 = CreateTestAffix(AffixNames.LocalPhysicalPercent, AffixType.Prefix);
-            Affix affix4 = CreateTestAffix(AffixNames.LocalPhysicalHybrid, AffixType.Prefix);
+            Affix affix2 = CreateTestAffix(random, AffixTypesByStat.FlatPhysicalDamage, AffixType.Prefix);
+            Affix affix3 = CreateTestAffix(AffixTypes.LocalPhysicalPercent, AffixType.Prefix);
+            Affix affix4 = CreateTestAffix(AffixTypes.LocalPhysicalHybrid, AffixType.Prefix);
 
             Stat stat2 = CreateTestStat(affix2, 10, 30);
             testEquipment.Stats.Add(stat2);
@@ -176,8 +176,8 @@ namespace PoeCraftLib.CraftingTest
             Stat stat4 = CreateTestStat(affix4, 20);
             testEquipment.Stats.Add(stat4);
 
-            List<int> fullPhysModsPhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> fullPhysModsTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> fullPhysModsPhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> fullPhysModsTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(352, fullPhysModsPhys[0]);
             Assert.AreEqual(352, fullPhysModsTotal[0]);
@@ -192,14 +192,14 @@ namespace PoeCraftLib.CraftingTest
             {
                 { ItemProperties.MinDamage, 10 },
                 { ItemProperties.MaxDamage, 30 },
-                { ItemProperties.APS, 2 }
+                { ItemProperties.AttackTime, 500 }
             };
             testEquipment.ItemBase = itemBase;
 
-            Affix affix1 = CreateTestAffix(random, AffixGroupings.FlatChaosDamage, AffixType.Prefix);
-            Affix affix2 = CreateTestAffix(random, AffixGroupings.FlatColdDamage, AffixType.Prefix);
-            Affix affix3 = CreateTestAffix(random, AffixGroupings.FlatFireDamage, AffixType.Prefix);
-            Affix affix4 = CreateTestAffix(random, AffixGroupings.FlatLightningDamage, AffixType.Prefix);
+            Affix affix1 = CreateTestAffix(random, AffixTypesByStat.FlatChaosDamage, AffixType.Prefix);
+            Affix affix2 = CreateTestAffix(random, AffixTypesByStat.FlatColdDamage, AffixType.Prefix);
+            Affix affix3 = CreateTestAffix(random, AffixTypesByStat.FlatFireDamage, AffixType.Prefix);
+            Affix affix4 = CreateTestAffix(random, AffixTypesByStat.FlatLightningDamage, AffixType.Prefix);
 
             Stat stat1 = CreateTestStat(affix1, 1, 10);
             testEquipment.Stats.Add(stat1);
@@ -210,21 +210,21 @@ namespace PoeCraftLib.CraftingTest
             Stat stat4 = CreateTestStat(affix4, 20, 30);
             testEquipment.Stats.Add(stat4);
 
-            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(48, eleDamagePhys[0]);
             Assert.AreEqual(120, eleDamageEleDamage[0]);
             Assert.AreEqual(168, eleDamageTotal[0]);
 
-            Affix affix5 = CreateTestAffix(AffixNames.LocalAttackSpeed, AffixType.Suffix);
+            Affix affix5 = CreateTestAffix(AffixTypes.LocalAttackSpeed, AffixType.Suffix);
             Stat stat5 = CreateTestStat(affix5, 100);
             testEquipment.Stats.Add(stat5);
 
-            List<int> eleDamageWithAttackSpeedPhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageWithAttackSpeedEleDamage = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageWithAttackSpeedTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageWithAttackSpeedPhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageWithAttackSpeedEleDamage = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageWithAttackSpeedTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(96, eleDamageWithAttackSpeedPhys[0]);
             Assert.AreEqual(240, eleDamageWithAttackSpeedEleDamage[0]);
@@ -240,18 +240,18 @@ namespace PoeCraftLib.CraftingTest
             {
                 { ItemProperties.MinDamage, 10 },
                 { ItemProperties.MaxDamage, 30 },
-                { ItemProperties.APS, 2 }
+                { ItemProperties.AttackTime, 500 }
             };
             testEquipment.ItemBase = itemBase;
 
-            Affix affix1 = CreateTestAffix(random, AffixGroupings.FlatChaosDamage, AffixType.Prefix);
-            Affix affix2 = CreateTestAffix(random, AffixGroupings.FlatColdDamage, AffixType.Prefix);
-            Affix affix3 = CreateTestAffix(random, AffixGroupings.FlatFireDamage, AffixType.Prefix);
-            Affix affix4 = CreateTestAffix(random, AffixGroupings.FlatLightningDamage, AffixType.Prefix);
-            Affix affix5 = CreateTestAffix(random, AffixGroupings.FlatPhysicalDamage, AffixType.Prefix);
-            Affix affix6 = CreateTestAffix(AffixNames.LocalPhysicalPercent, AffixType.Prefix);
-            Affix affix7 = CreateTestAffix(AffixNames.LocalPhysicalHybrid, AffixType.Prefix);
-            Affix affix8 = CreateTestAffix(AffixNames.LocalAttackSpeed, AffixType.Suffix);
+            Affix affix1 = CreateTestAffix(random, AffixTypesByStat.FlatChaosDamage, AffixType.Prefix);
+            Affix affix2 = CreateTestAffix(random, AffixTypesByStat.FlatColdDamage, AffixType.Prefix);
+            Affix affix3 = CreateTestAffix(random, AffixTypesByStat.FlatFireDamage, AffixType.Prefix);
+            Affix affix4 = CreateTestAffix(random, AffixTypesByStat.FlatLightningDamage, AffixType.Prefix);
+            Affix affix5 = CreateTestAffix(random, AffixTypesByStat.FlatPhysicalDamage, AffixType.Prefix);
+            Affix affix6 = CreateTestAffix(AffixTypes.LocalPhysicalPercent, AffixType.Prefix);
+            Affix affix7 = CreateTestAffix(AffixTypes.LocalPhysicalHybrid, AffixType.Prefix);
+            Affix affix8 = CreateTestAffix(AffixTypes.LocalAttackSpeed, AffixType.Suffix);
 
             Stat stat1 = CreateTestStat(affix1, 1, 10);
             testEquipment.Stats.Add(stat1);
@@ -270,9 +270,9 @@ namespace PoeCraftLib.CraftingTest
             Stat stat8 = CreateTestStat(affix8, 100);
             testEquipment.Stats.Add(stat8);
 
-            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(352, eleDamagePhys[0]);
             Assert.AreEqual(240, eleDamageEleDamage[0]);
@@ -288,18 +288,18 @@ namespace PoeCraftLib.CraftingTest
             {
                 { ItemProperties.MinDamage, 10 },
                 { ItemProperties.MaxDamage, 30 },
-                { ItemProperties.APS, 2 }
+                { ItemProperties.AttackTime, 500 }
             };
             testEquipment.ItemBase = itemBase;
 
-            Affix affix1 = CreateTestAffix(random, AffixGroupings.FlatChaosDamage, AffixType.Prefix);
-            Affix affix2 = CreateTestAffix(random, AffixGroupings.FlatColdDamage, AffixType.Prefix);
-            Affix affix3 = CreateTestAffix(random, AffixGroupings.FlatFireDamage, AffixType.Prefix);
-            Affix affix4 = CreateTestAffix(random, AffixGroupings.FlatLightningDamage, AffixType.Prefix);
-            Affix affix5 = CreateTestAffix(random, AffixGroupings.FlatPhysicalDamage, AffixType.Prefix);
-            Affix affix6 = CreateTestAffix(AffixNames.LocalPhysicalPercent, AffixType.Prefix);
-            Affix affix7 = CreateTestAffix(AffixNames.LocalPhysicalHybrid, AffixType.Prefix);
-            Affix affix8 = CreateTestAffix(AffixNames.LocalAttackSpeed, AffixType.Suffix);
+            Affix affix1 = CreateTestAffix(random, AffixTypesByStat.FlatChaosDamage, AffixType.Prefix);
+            Affix affix2 = CreateTestAffix(random, AffixTypesByStat.FlatColdDamage, AffixType.Prefix);
+            Affix affix3 = CreateTestAffix(random, AffixTypesByStat.FlatFireDamage, AffixType.Prefix);
+            Affix affix4 = CreateTestAffix(random, AffixTypesByStat.FlatLightningDamage, AffixType.Prefix);
+            Affix affix5 = CreateTestAffix(random, AffixTypesByStat.FlatPhysicalDamage, AffixType.Prefix);
+            Affix affix6 = CreateTestAffix(AffixTypes.LocalPhysicalPercent, AffixType.Prefix);
+            Affix affix7 = CreateTestAffix(AffixTypes.LocalPhysicalHybrid, AffixType.Prefix);
+            Affix affix8 = CreateTestAffix(AffixTypes.LocalAttackSpeed, AffixType.Suffix);
 
             Stat stat1 = CreateTestStat(affix1, 1, 10);
             testEquipment.Stats.Add(stat1);
@@ -318,9 +318,9 @@ namespace PoeCraftLib.CraftingTest
             Stat stat8 = CreateTestStat(affix8, 100);
             testEquipment.Stats.Add(stat8);
 
-            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(352, eleDamagePhys[0]);
             Assert.AreEqual(420, eleDamageEleDamage[0]);
@@ -336,14 +336,14 @@ namespace PoeCraftLib.CraftingTest
             {
                 { ItemProperties.MinDamage, 10 },
                 { ItemProperties.MaxDamage, 30 },
-                { ItemProperties.APS, 2 }
+                { ItemProperties.AttackTime, 500 }
             };
             testEquipment.ItemBase = itemBase;
 
-            Affix affix1 = CreateTestAffix(random, AffixGroupings.FlatChaosDamage, AffixType.Prefix);
-            Affix affix6 = CreateTestAffix(AffixNames.LocalPhysicalPercent, AffixType.Prefix);
-            Affix affix7 = CreateTestAffix(AffixNames.LocalPhysicalHybrid, AffixType.Prefix);
-            Affix affix8 = CreateTestAffix(AffixNames.LocalAttackSpeed, AffixType.Suffix);
+            Affix affix1 = CreateTestAffix(random, AffixTypesByStat.FlatChaosDamage, AffixType.Prefix);
+            Affix affix6 = CreateTestAffix(AffixTypes.LocalPhysicalPercent, AffixType.Prefix);
+            Affix affix7 = CreateTestAffix(AffixTypes.LocalPhysicalHybrid, AffixType.Prefix);
+            Affix affix8 = CreateTestAffix(AffixTypes.LocalAttackSpeed, AffixType.Suffix);
 
             Stat stat1 = CreateTestStat(affix1, 30, 50);
             testEquipment.Stats.Add(stat1);
@@ -354,9 +354,9 @@ namespace PoeCraftLib.CraftingTest
             Stat stat8 = CreateTestStat(affix8, 100);
             testEquipment.Stats.Add(stat8);
 
-            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixNames.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixNames.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
-            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixNames.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamagePhys = affixValueCalculator.GetAffixValues(AffixTypes.TotalPhysicalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageEleDamage = affixValueCalculator.GetAffixValues(AffixTypes.TotalElementalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
+            List<int> eleDamageTotal = affixValueCalculator.GetAffixValues(AffixTypes.TotalDps, testEquipment, AffixType.Meta, StatValueType.Flat);
 
             Assert.AreEqual(176, eleDamagePhys[0]);
             Assert.AreEqual(160, eleDamageEleDamage[0]);
@@ -401,6 +401,7 @@ namespace PoeCraftLib.CraftingTest
         {
             Affix affix = new Affix();
             affix.Group = modName;
+            affix.Type = modName;
             affix.GenerationType = affixType.ToString();
             return affix;
         }

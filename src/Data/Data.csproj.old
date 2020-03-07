@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputGenerationType>Library</OutputGenerationType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoeCraftLib.Data</RootNamespace>
     <AssemblyName>PoeCraftLib.Data</AssemblyName>
@@ -15,7 +15,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugGenerationType>full</DebugGenerationType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugGenerationType>pdbonly</DebugGenerationType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -63,7 +63,7 @@
     <Compile Include="Entities\FossilJson.cs" />
     <Compile Include="Entities\ItemClassJson.cs" />
     <Compile Include="Entities\ModsJson.cs" />
-    <Compile Include="Entities\ModTypeJson.cs" />
+    <Compile Include="Entities\ModGenerationTypeJson.cs" />
     <Compile Include="Factory\AffixFactory.cs" />
     <Compile Include="Factory\BeastFactory.cs" />
     <Compile Include="Factory\CurrencyValueFactory.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Query\FetchItemClasses.cs" />
     <Compile Include="Query\FetchItems.cs" />
     <Compile Include="Query\FetchMasterMods.cs" />
-    <Compile Include="Query\FetchModTypes.cs" />
+    <Compile Include="Query\FetchModGenerationTypes.cs" />
     <Compile Include="Query\IQueryObject.cs" />
     <Compile Include="Random.cs" />
   </ItemGroup>

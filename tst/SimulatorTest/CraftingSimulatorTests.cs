@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoeCraftLib.Simulator;
+using PoeCraftLib.Simulator.Model.Crafting;
 using PoeCraftLib.Simulator.Model.Crafting.Steps;
 using PoeCraftLib.Simulator.Model.Simulation;
 
@@ -212,7 +213,125 @@ namespace PoeCraftLib.SimulatorTest
             task.Wait();
 
             throw task.Exception;
+        }
 
+        [TestMethod]
+        [ExpectedException(typeof(AggregateException))]
+        public void TimeoutTest()
+        {
+            SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
+            SimCraftingInfo craftingInfo = new SimCraftingInfo();
+            SimFinanceInfo financeInfo = new SimFinanceInfo();
+
+            baseItemInfo.ItemName = "Fencer Helm";
+            financeInfo.BudgetInChaos = 10000000;
+
+            craftingInfo.CraftingSteps = new List<ICraftingStep>()
+            {
+                new CurrencyCraftingStep()
+                {
+                    Name = alchemyName
+                }
+            };
+
+            CraftingSimulator craftingSimulator = new CraftingSimulator(baseItemInfo, financeInfo, craftingInfo);
+
+            var start = craftingSimulator.Start(.01);
+
+            start.Wait();
+        }
+
+        [TestMethod]
+        public void ProgressTest()
+        {
+            SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
+            SimCraftingInfo craftingInfo = new SimCraftingInfo();
+            SimFinanceInfo financeInfo = new SimFinanceInfo();
+
+            baseItemInfo.ItemName = "Fencer Helm";
+            financeInfo.BudgetInChaos = 100;
+
+            craftingInfo.CraftingSteps = new List<ICraftingStep>()
+            {
+                new CurrencyCraftingStep()
+                {
+                    Name = alchemyName
+                }
+            };
+
+            CraftingSimulator craftingSimulator = new CraftingSimulator(baseItemInfo, financeInfo, craftingInfo);
+
+            double previousProgress = 0;
+
+            List<double> progressList = new List<double>();
+
+            craftingSimulator.OnProgressUpdate = (x) =>
+            {
+                Assert.IsTrue(x.Progress > previousProgress);
+                progressList.Add(x.Progress);
+                previousProgress = x.Progress;
+            };
+
+            var start = craftingSimulator.Start(10000);
+
+            start.Wait();
+            Assert.AreEqual(progressList.Count, 100);
+        }
+
+        [TestMethod]
+        public void MatchingItemsTest()
+        {
+            String targetName = "Total ES Test";
+
+            SimBaseItemInfo baseItemInfo = new SimBaseItemInfo();
+            SimCraftingInfo craftingInfo = new SimCraftingInfo();
+            SimFinanceInfo financeInfo = new SimFinanceInfo();
+
+            baseItemInfo.ItemName = "Vaal Regalia";
+            financeInfo.BudgetInChaos = 1000;
+
+            craftingInfo.CraftingSteps = new List<ICraftingStep>()
+            {
+                new CurrencyCraftingStep()
+                {
+                    Name = alchemyName
+                }
+            };
+
+            craftingInfo.CraftingTargets = new List<CraftingTarget>()
+            {
+                new CraftingTarget()
+                {
+                    Name = targetName,
+                    Condition = new CraftingCondition()
+                    {
+                        CraftingSubConditions = new List<CraftingSubcondition>()
+                        {
+                            new CraftingSubcondition()
+                            {
+                                ValueType = StatValueType.Flat,
+                                AggregateType = SubconditionAggregateType.And,
+                                MetaConditions = new List<ConditionAffix>()
+                                {
+                                    new ConditionAffix()
+                                    {
+                                        ModType = "Total Energy Shield",
+                                        Min1 = 200
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            CraftingSimulator craftingSimulator = new CraftingSimulator(baseItemInfo, financeInfo, craftingInfo);
+
+            var start = craftingSimulator.Start();
+
+            start.Wait();
+
+            Assert.IsTrue(start.Result.MatchingGeneratedItems[targetName].Any());
         }
     }
 }

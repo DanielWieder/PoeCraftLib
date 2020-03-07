@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2F3E944E-78E3-40C6-85B2-197CF43429AA}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputGenerationType>Library</OutputGenerationType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoeCraftLib.Entities</RootNamespace>
     <AssemblyName>PoeCraftLib.Entities</AssemblyName>
@@ -15,7 +15,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugGenerationType>full</DebugGenerationType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugGenerationType>pdbonly</DebugGenerationType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crafting\TierType.cs" />
+    <Compile Include="Crafting\TierGenerationType.cs" />
     <Compile Include="Crafting\AffixRestriction.cs" />
     <Compile Include="Crafting\CraftingConfig.cs" />
     <Compile Include="IRandom.cs" />
@@ -53,14 +53,14 @@
     <Compile Include="Items\Fossil.cs" />
     <Compile Include="Items\Influence.cs" />
     <Compile Include="Items\ItemConfig.cs" />
-    <Compile Include="Constants\AffixGroupings.cs" />
-    <Compile Include="Constants\AffixNames.cs" />
-    <Compile Include="Crafting\AffixType.cs" />
+    <Compile Include="Constants\AffixGenerationTypes.cs" />
+    <Compile Include="Constants\AffixTypes.cs" />
+    <Compile Include="Crafting\AffixGenerationType.cs" />
     <Compile Include="Crafting\ConditionAffix.cs" />
     <Compile Include="ConditionContainer.cs" />
     <Compile Include="Crafting\ConditionResolution.cs" />
     <Compile Include="Constants\CurrencyNames.cs" />
-    <Compile Include="Constants\TypeInfo.cs" />
+    <Compile Include="Constants\GenerationTypeInfo.cs" />
     <Compile Include="Constants\ItemProperties.cs" />
     <Compile Include="Crafting\CraftingCondition.cs" />
     <Compile Include="Crafting\CraftingStepStatus.cs" />
@@ -74,8 +74,8 @@
     <Compile Include="Items\MasterMod.cs" />
     <Compile Include="Items\Resonator.cs" />
     <Compile Include="Items\Stat.cs" />
-    <Compile Include="Crafting\SubconditionAggregateType.cs" />
-    <Compile Include="Crafting\StatValueType.cs" />
+    <Compile Include="Crafting\SubconditionAggregateGenerationType.cs" />
+    <Compile Include="Crafting\StatValueGenerationType.cs" />
     <Compile Include="Items\WeaponEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

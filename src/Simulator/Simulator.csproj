@@ -10,7 +10,7 @@
     <Title>PoeCraftLib</Title>
     <Description>Path of Exile crafting library</Description>
     <ReleaseNotes>New package system</ReleaseNotes>
-	<Version>1.1.0-alpha</Version>
+	<Version>1.1.1-alpha</Version>
     <Authors>Daniel Wieder</Authors>
     <Owners>Daniel Wieder</Owners>
     <Copyright>MIT</Copyright>

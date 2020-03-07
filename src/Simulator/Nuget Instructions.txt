@@ -1,0 +1,6 @@
+https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package-msbuild
+
+1. Open the Developer Command Prompt
+2. Navigate to Github/PoeCraftLib/src/Simulator
+3. Run "nuget pack Simulator.csproj -IncludeReferencedProjects"
+4. Run nuget push PoeCraftLib.Simulator.{{version}}.nupkg {{key}} -Source https://api.nuget.org/v3/index.json
