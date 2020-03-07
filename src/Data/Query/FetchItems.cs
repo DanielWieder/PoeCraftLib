@@ -23,7 +23,7 @@ namespace PoeCraftLib.Data.Query
         public List<BaseItemJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\base_items.json", assem);
+            var json = FetchHelper.GetEmbeddedResource("Assets\\ggpk\\base_items.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, BaseItemJson>>(json);
 
             return deserialized

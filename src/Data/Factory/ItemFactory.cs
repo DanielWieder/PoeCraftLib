@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PoeCraftLib.Data.Entities;
 using PoeCraftLib.Data.Query;
-using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Data.Factory

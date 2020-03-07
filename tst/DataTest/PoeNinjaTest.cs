@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoeCraftLib.Data;
 using PoeCraftLib.Data.Query;
 
 namespace PoeCraftLib.DataTest
@@ -40,7 +39,7 @@ namespace PoeCraftLib.DataTest
         [TestMethod]
         public void FetchResonatorValuesTest()
         {
-            IFetchCurrencyValues currencyValues = new FetchCurrencyValues();
+            IFetchResonatorValues currencyValues = new FetchResonatorValues();
             currencyValues.League = defaultLeague;
             var data = currencyValues.Execute();
 

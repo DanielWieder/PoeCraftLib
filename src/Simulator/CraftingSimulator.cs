@@ -7,15 +7,13 @@ using AutoMapper;
 using PoeCraftLib.Crafting;
 using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
-using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data;
 using PoeCraftLib.Data.Factory;
-using PoeCraftLib.Data.Query;
-using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Crafting;
 using PoeCraftLib.Entities.Items;
+using PoeCraftLib.Simulator.Model.Crafting;
 using PoeCraftLib.Simulator.Model.Simulation;
+using CraftingCondition = PoeCraftLib.Entities.Crafting.CraftingCondition;
 
 namespace PoeCraftLib.Simulator
 {
@@ -53,8 +51,6 @@ namespace PoeCraftLib.Simulator
 
         // Public
         public double Progress { get; set; } = 0;
-
-
 
         public SimulationStatus Status { get; set; } = SimulationStatus.Stopped;
         public delegate void ProgressUpdateEventHandler(ProgressUpdateEventArgs e);
@@ -136,29 +132,42 @@ namespace PoeCraftLib.Simulator
 
             double previousProgress = -1;
 
+            var baseInfluence = InfluenceToDomain(_baseItemInfo.Influence);
+            var craftingSteps = CraftingStepsToDomain(_craftingInfo.CraftingSteps);
+            var craftingTargets = _craftingInfo.CraftingTargets.Select(x =>
+
+                new PoeCraftLib.Entities.Items.CraftingTarget()
+                {
+                    Name = x.Name,
+                    Value = x.Value,
+                    Condition = ConditionToDomain(x.Condition)
+                }).ToList();
+
             for (ProgressManager progressManager = GetProgressManager(); progressManager.Progress < 100; previousProgress = progressManager.Progress)
             {
 
                 // Craft item
-                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, InfluenceToDomain(_baseItemInfo.Influence));
-                      var results = _craftingManager.Craft(CraftingStepsToDomain(_craftingInfo.CraftingSteps), item, _affixManager, ct, progressManager);
+                var item = _itemFactory.ToEquipment(_baseItem, _baseItemInfo.ItemLevel, baseInfluence);
+                      var results = _craftingManager.Craft(craftingSteps, item, _affixManager, ct, progressManager);
       
                       bool saved = false;
-                      // Update item results
-                      foreach (var craftingTarget in _craftingInfo.CraftingTargets)
-                      {
-                          if (craftingTarget.Condition != null && _conditionResolution.IsValid(ConditionToDomain(craftingTarget.Condition), results.Result))
-                          {
-                              _simulationArtifacts.MatchingGeneratedItems[craftingTarget].Add(EquipmentToClient(results.Result));
-                              saved = true;
-                              break;
-                          }
-                      }
-
-                      // No normal items in the generated items list because that just adds to the clutter
+  
+                      // No normal items are evaluated since that would cause a lot of clutter
                       if (results.Result.Rarity != EquipmentRarity.Normal)
                       {
-                          _simulationArtifacts.AllGeneratedItems.Add(EquipmentToClient(results.Result));
+                          var equipment = EquipmentToClient(results.Result);
+                          _simulationArtifacts.AllGeneratedItems.Add(equipment);
+
+                          foreach (var craftingTarget in craftingTargets)
+                          {
+                              if (craftingTarget.Condition != null &&
+                                  _conditionResolution.IsValid(craftingTarget.Condition, results.Result))
+                              {
+                                  _simulationArtifacts.MatchingGeneratedItems[craftingTarget.Name].Add(equipment);
+                                  saved = true;
+                                  break;
+                              }
+                          }
                       }
 
                       // Update crafting cost

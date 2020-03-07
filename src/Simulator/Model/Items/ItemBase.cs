@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace PoeCraftLib.Simulator.Model.Items
+﻿namespace PoeCraftLib.Simulator.Model.Items
 {
     public class ItemBase {
         public string Name { get; set; }

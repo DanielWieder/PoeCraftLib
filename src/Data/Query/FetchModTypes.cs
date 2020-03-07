@@ -11,7 +11,7 @@ namespace PoeCraftLib.Data.Query
         public List<ModTypeJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\mod_types.json", assem);
+            var json = FetchHelper.GetEmbeddedResource("Assets\\ggpk\\mod_types.json", assem);
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, ModTypeJson>>(json);
 
             return deserialized

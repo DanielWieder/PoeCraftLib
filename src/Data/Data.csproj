@@ -7,6 +7,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\currency\default_currency_logic.json" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
@@ -17,13 +20,14 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\base_items.json" />
-    <EmbeddedResource Include="Assets\crafting_bench_options.json" />
-    <EmbeddedResource Include="Assets\essences.json" />
-    <EmbeddedResource Include="Assets\fossils.json" />
-    <EmbeddedResource Include="Assets\item_classes.json" />
-    <EmbeddedResource Include="Assets\mods.json" />
-    <EmbeddedResource Include="Assets\mod_types.json" />
+    <EmbeddedResource Include="Assets\currency\default_currency_logic.json" />
+    <EmbeddedResource Include="Assets\ggpk\base_items.json" />
+    <EmbeddedResource Include="Assets\ggpk\crafting_bench_options.json" />
+    <EmbeddedResource Include="Assets\ggpk\essences.json" />
+    <EmbeddedResource Include="Assets\ggpk\fossils.json" />
+    <EmbeddedResource Include="Assets\ggpk\item_classes.json" />
+    <EmbeddedResource Include="Assets\ggpk\mods.json" />
+    <EmbeddedResource Include="Assets\ggpk\mod_types.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj" />

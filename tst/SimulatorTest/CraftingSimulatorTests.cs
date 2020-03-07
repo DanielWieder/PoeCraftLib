@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoeCraftLib.Simulator;
 using PoeCraftLib.Simulator.Model.Crafting.Steps;
@@ -17,7 +16,7 @@ namespace PoeCraftLib.SimulatorTest
         private string annulmentName = "Orb of Annulment";
         private String essenceName = "Screaming Essence of Anger";
         private String fossilName = "Scorched Fossil";
-        private string masterModName = "FireAndLightningResistance3";
+        private string masterModName = "FireResistance2";
 
 
         [TestMethod]

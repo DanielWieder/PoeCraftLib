@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PoeCraftLib.Entities.Items
 {
@@ -14,7 +11,7 @@ namespace PoeCraftLib.Entities.Items
 
         public string Description { get; set; }
 
-        public int RequiredLevel { get; set; }
+        public int ItemLevelRestriction { get; set; }
 
         public int Tier { get; set; }
         public int Level { get; set; }

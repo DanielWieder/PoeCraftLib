@@ -35,7 +35,7 @@ namespace PoeCraftLib.Data.Factory
             Essence essence = new Essence();
             essence.FullName = essenceJson.FullName;
             essence.Name = essenceJson.Name;
-            essence.RequiredLevel = (int)(essenceJson?.ItemLevelRestriction ?? 100);
+            essence.ItemLevelRestriction = (int)(essenceJson?.ItemLevelRestriction ?? 100);
             essence.Description = essenceItems[essenceJson.Name].Description;
             essence.Tier = (int)essenceJson.Type.Tier;
             essence.Level = (int) essenceJson.Level;

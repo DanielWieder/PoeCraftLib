@@ -6,7 +6,7 @@ namespace PoeCraftLib.Simulator.Model.Simulation
 {
     public class SimulationArtifacts
     {
-        public Dictionary<CraftingTarget, List<Equipment>> MatchingGeneratedItems { get; set; } = new Dictionary<CraftingTarget, List<Equipment>>();
+        public Dictionary<string, List<Equipment>> MatchingGeneratedItems { get; set; } = new Dictionary<string, List<Equipment>>();
 
         public List<Equipment> AllGeneratedItems = new List<Equipment>();
 

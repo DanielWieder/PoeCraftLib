@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace PoeCraftLib.Data
@@ -14,7 +10,14 @@ namespace PoeCraftLib.Data
     {
         public IDictionary<string, object> GetData(string league, string type)
         {
-            string url = $"https://poe.ninja/api/data/itemoverview?league={league}&type={type}";
+            string path = "itemoverview";
+
+            if (type == "Currency")
+            {
+                path = "currencyoverview";
+            }
+
+            string url = $"https://poe.ninja/api/data/{path}?league={league}&type={type}";
 
             Dictionary<string, double> values = new Dictionary<string, double>();
 

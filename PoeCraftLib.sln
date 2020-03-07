@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crafting", "src\CraftingSim\Crafting.csproj", "{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crafting", "src\CraftingSim\Crafting.csproj", "{02D6C6A0-9C17-4FC9-BBDA-DF480089AF07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Currency", "src\Currency\Currency.csproj", "{56788108-8DBD-4B47-B629-66BC3B0B928F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Currency", "src\Currency\Currency.csproj", "{56788108-8DBD-4B47-B629-66BC3B0B928F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "src\Data\Data.csproj", "{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "src\Data\Data.csproj", "{7E67E2A6-DA5F-46A0-824C-A537DB11B3AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "src\Entities\Entities.csproj", "{2F3E944E-78E3-40C6-85B2-197CF43429AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "src\Entities\Entities.csproj", "{2F3E944E-78E3-40C6-85B2-197CF43429AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{492A318D-4230-4F86-BE69-093C9FB9DFFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tst", "tst", "{BC0D1CDF-3C61-4969-903A-F9B4744E4168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CraftingTest", "tst\CraftingProcessTest\CraftingTest.csproj", "{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CraftingTest", "tst\CraftingProcessTest\CraftingTest.csproj", "{FC9A5653-7AA9-41BC-BEE7-5E1A3C715B8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTest", "tst\DataTest\DataTest.csproj", "{316BDC61-4802-4951-9608-6418959AEA7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTest", "tst\DataTest\DataTest.csproj", "{316BDC61-4802-4951-9608-6418959AEA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator", "src\Simulator\Simulator.csproj", "{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulator", "src\Simulator\Simulator.csproj", "{F222175A-5DBA-43FD-A47F-771D2D0AA2AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatorTest", "tst\SimulatorTest\SimulatorTest.csproj", "{FD87DD0E-E507-40F5-861A-52CD42255838}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatorTest", "tst\SimulatorTest\SimulatorTest.csproj", "{FD87DD0E-E507-40F5-861A-52CD42255838}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyTest", "tst\CurrencyTest\CurrencyTest.csproj", "{DC7FEBD8-B78B-4E81-821D-B5E76DB899D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyTest", "tst\CurrencyTest\CurrencyTest.csproj", "{4CDE8875-5C4A-4DCB-8DF6-CA2C670E3843}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +63,10 @@ Global
 		{FD87DD0E-E507-40F5-861A-52CD42255838}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD87DD0E-E507-40F5-861A-52CD42255838}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD87DD0E-E507-40F5-861A-52CD42255838}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC7FEBD8-B78B-4E81-821D-B5E76DB899D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC7FEBD8-B78B-4E81-821D-B5E76DB899D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC7FEBD8-B78B-4E81-821D-B5E76DB899D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC7FEBD8-B78B-4E81-821D-B5E76DB899D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CDE8875-5C4A-4DCB-8DF6-CA2C670E3843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CDE8875-5C4A-4DCB-8DF6-CA2C670E3843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CDE8875-5C4A-4DCB-8DF6-CA2C670E3843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CDE8875-5C4A-4DCB-8DF6-CA2C670E3843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,7 +80,7 @@ Global
 		{316BDC61-4802-4951-9608-6418959AEA7E} = {BC0D1CDF-3C61-4969-903A-F9B4744E4168}
 		{F222175A-5DBA-43FD-A47F-771D2D0AA2AF} = {492A318D-4230-4F86-BE69-093C9FB9DFFA}
 		{FD87DD0E-E507-40F5-861A-52CD42255838} = {BC0D1CDF-3C61-4969-903A-F9B4744E4168}
-		{DC7FEBD8-B78B-4E81-821D-B5E76DB899D6} = {BC0D1CDF-3C61-4969-903A-F9B4744E4168}
+		{4CDE8875-5C4A-4DCB-8DF6-CA2C670E3843} = {BC0D1CDF-3C61-4969-903A-F9B4744E4168}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9CA7B48-654C-41E1-9163-353C80CEF030}

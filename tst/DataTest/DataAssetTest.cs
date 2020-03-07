@@ -75,5 +75,15 @@ namespace PoeCraftLib.DataTest
             Assert.IsNotNull(data);
             Assert.IsTrue(data.Count > 0);
         }
+
+        [TestMethod]
+        public void CanFetchCurrencyLogic()
+        {
+            var fetch = new FetchCurrencyLogic();
+            var data = fetch.Execute();
+
+            Assert.IsNotNull(data);
+            Assert.IsTrue(data.Count > 0);
+        }
     }
 }
