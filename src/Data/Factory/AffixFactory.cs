@@ -97,7 +97,7 @@ namespace PoeCraftLib.Data.Factory
 
         public Dictionary<Influence, string> GetInfluenceSpawnTags(string itemClass)
         {
-            return _itemClass[itemClass].InfluenceTags;
+            return _itemClass.ContainsKey(itemClass) ? _itemClass[itemClass].InfluenceTags : null;
         }
 
         private string GetFactionTags(Influence influence, string itemClass)

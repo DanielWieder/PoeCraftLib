@@ -9,6 +9,14 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class CurrencyStepExecutor
     {
+        private Dictionary<EquipmentRarity, int> _rarityToQualityChange = new Dictionary<EquipmentRarity, int>()
+        {
+            {EquipmentRarity.Normal, 5 },
+            {EquipmentRarity.Magic, 2 },
+            {EquipmentRarity.Rare, 1 },
+            {EquipmentRarity.Unique, 1 }
+        };
+
         private readonly IRandom _random;
 
         public CurrencyStepExecutor(IRandom random)
@@ -213,6 +221,26 @@ namespace PoeCraftLib.Currency.Currency
                         throw new NotImplementedException();
                         break;
                 }
+            };
+        }
+
+        public Action<Equipment, AffixManager, CurrencyModifiers> SetQualityType(QualityType qualityType)
+        {
+            return (item, affixManager, currencyModifier) =>
+            {
+                if (item.QualityType == qualityType) return;
+
+                item.QualityType = qualityType;
+                item.Quality = 0;
+            };
+        }
+
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddQuality()
+        {
+            return (item, affixManager, currencyModifier) =>
+            {
+                item.Quality += _rarityToQualityChange[item.Rarity];
+                item.Quality = Math.Min(20, item.Quality);
             };
         }
     }

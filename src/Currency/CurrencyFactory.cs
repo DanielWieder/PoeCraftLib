@@ -128,7 +128,7 @@ namespace PoeCraftLib.Currency
                     _currencyRequirementValidator.ValidateRarity(RarityOptions.Rare)),
                 _currencyRequirementValidator.ValidateOpenExplicit(explicitOption),
                 _currencyRequirementValidator.ValidateMatchingGroup(group, GenericOptions.None),
-                _currencyRequirementValidator.ValidateMatchingItemClasses(new HashSet<string>(allItemClasses), GenericOptions.Any),
+                _currencyRequirementValidator.ValidateItemClass(new HashSet<string>(allItemClasses), GenericOptions.Any),
                 _currencyRequirementValidator.ValidateCanAddMasterMod(isMultiMod)
             };
 

@@ -25,5 +25,7 @@ namespace PoeCraftLib.Entities.Items
         public bool Corrupted { get; set; } = false;
 
         public List<Influence> Influence { get; set; }
+        public int Quality { get; set; }
+        public QualityType QualityType { get; set; }
     }
 }

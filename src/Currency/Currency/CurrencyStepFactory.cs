@@ -56,6 +56,11 @@ namespace PoeCraftLib.Currency.Currency
                 case "AddInfluence":
                     var addInfluenceArgs = (InfluenceOptions)Enum.Parse(typeof(InfluenceOptions), value.ToString());
                     return _currencyStepExecutor.AddInfluence(addInfluenceArgs);
+                case "SetQualityType":
+                    var setQualityTypeArg = (QualityType)Enum.Parse(typeof(QualityType), value.ToString());
+                    return _currencyStepExecutor.SetQualityType(setQualityTypeArg);
+                case "AddQuality":
+                    return _currencyStepExecutor.AddQuality();
                 default: throw new InvalidOperationException("Unknown currency step");
             }
         }

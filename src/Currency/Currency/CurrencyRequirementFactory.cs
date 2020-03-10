@@ -8,6 +8,35 @@ namespace PoeCraftLib.Currency.Currency
 {
     public class CurrencyRequirementFactory
     {
+        private const string WeaponItemClassAlias = "Weapon";
+        private const string ArmourItemClassAlias = "Armour";
+        private const string FlaskItemClassAlias = "Flask";
+
+        private HashSet<string> ArmourItemClasses = new HashSet<string>()
+        {
+            "Body Armour",
+            "Boots",
+            "Gloves",
+            "Helmet",
+            "Shield"
+        };
+
+        private HashSet<string> WeaponItemClasses = new HashSet<string>()
+        {
+            "Bow", "Claw", "Dagger", "FishingRod", "One Hand Axe", "One Hand Mace", "One Hand Sword", "Rune Dagger",
+            "Sceptre", "Staff", "Thrusting One Hand Sword", "Two Hand Axe", "Two hand Mace", "Two Hand Sword", "Wand",
+            "Warstaff"
+        };
+
+        private HashSet<string> FlaskItemClasses = new HashSet<string>()
+        {
+            "HybridFlask",
+            "LifeFlask",
+            "ManaFlask",
+            "UtilityFlask",
+            "UtilityFlaskCritical"
+        };
+
         private readonly CurrencyRequirementValidator _requirementValidator;
 
         public CurrencyRequirementFactory(CurrencyRequirementValidator requirementValidator)
@@ -48,6 +77,23 @@ namespace PoeCraftLib.Currency.Currency
                 case "HasInfluence":
                     var hasInfluenceArg = (InfluenceOptions)Enum.Parse(typeof(InfluenceOptions), value.ToString());
                     return _requirementValidator.ValidateHasInfluence(hasInfluenceArg);
+                case "HasItemClass":
+                    var hasItemClassArg = value.ToString();
+
+                    switch (hasItemClassArg)
+                    {
+                        case WeaponItemClassAlias:
+                            return _requirementValidator.ValidateItemClass(WeaponItemClasses);
+                        case ArmourItemClassAlias:
+                            return _requirementValidator.ValidateItemClass(ArmourItemClasses);
+                        case FlaskItemClassAlias:
+                            return _requirementValidator.ValidateItemClass(FlaskItemClasses);
+                    }
+
+                    return _requirementValidator.ValidateItemClass(hasItemClassArg);
+                case "CanAddQuality":
+                    var canAddQualityArg = (QualityType)Enum.Parse(typeof(QualityType), value.ToString());
+                    return _requirementValidator.CanAddQuality(canAddQualityArg);
             }
 
             throw new InvalidOperationException("Currency validation requirement not recognized");

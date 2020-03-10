@@ -1,0 +1,163 @@
+[
+  {
+    "Name": "Blacksmith's Whetstone",
+    "Requirements": [
+      {
+        "HasItemClass": "Weapon",
+        "CanAddQuality": "Default"
+            }
+    ],
+    "Steps": [
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Armourer's Scrap",
+    "Requirements": [
+      {
+        "HasItemClass": "Armour",
+        "CanAddQuality": "Default"
+      }
+    ],
+    "Steps": [
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Glassblower's Bauble",
+    "Requirements": [
+      {
+        "HasItemClass": "Flask",
+        "CanAddQuality": "Default"
+      }
+    ],
+    "Steps": [
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Turbulent Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "ElementalDamage"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "ElementalDamage"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Imbued Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "Caster"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "Caster"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Abrasive Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "Attack"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "Attack"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Tempering Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "Defense"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "Defense"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Fertile Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "LifeAndMana"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "LifeAndMana"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Prismatic Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "Resistance"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "Resistance"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  },
+  {
+    "Name": "Intrinsic Catalyst",
+    "Requirements": [
+      {
+        "HasItemClass": "Amulet,Ring",
+        "CanAddQuality": "Attribute"
+      }
+    ],
+    "Steps": [
+      {
+        "SetQualityType": "Attribute"
+      },
+      {
+        "AddQuality": ""
+      }
+    ]
+  }
+]

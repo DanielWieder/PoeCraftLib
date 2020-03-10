@@ -148,7 +148,22 @@ namespace PoeCraftLib.Currency.Currency
             return item.Stats.Any(x => x.Affix.Group == _multimodGroup);
         }
 
-        public Func<Equipment, bool> ValidateMatchingItemClasses(HashSet<string> itemClasses, GenericOptions genericOptions)
+        public Func<Equipment, bool> ValidateHasInfluence(InfluenceOptions hasInfluenceArg)
+        {
+            return (item) =>
+            {
+                switch (hasInfluenceArg)
+                {
+                    case (InfluenceOptions.None):
+                        return item.Influence.Count == 0;
+                    case (InfluenceOptions.One):
+                        return item.Influence.Count == 1;
+                }
+                throw new InvalidOperationException("Invalid matching item class validation");
+            };
+        }
+
+        public Func<Equipment, bool> ValidateItemClass(HashSet<string> itemClasses, GenericOptions genericOptions)
         {
             return (item) =>
             {
@@ -163,19 +178,19 @@ namespace PoeCraftLib.Currency.Currency
             };
         }
 
-        public Func<Equipment, bool> ValidateHasInfluence(InfluenceOptions hasInfluenceArg)
+        public Func<Equipment, bool> ValidateItemClass(HashSet<string> itemClasses)
         {
-            return (item) =>
-            {
-                switch (hasInfluenceArg)
-                {
-                    case (InfluenceOptions.None):
-                        return item.Influence.Count == 0;
-                    case (InfluenceOptions.One):
-                        return item.Influence.Count == 1;
-                }
-                throw new InvalidOperationException("Invalid matching item class validation");
-            };
+            return (item) => itemClasses.Contains(item.ItemBase.ItemClass);
+        }
+
+        public Func<Equipment, bool> ValidateItemClass(string itemClass)
+        {
+            return (item) => item.ItemBase.ItemClass == itemClass;
+        }
+
+        public Func<Equipment, bool> CanAddQuality(QualityType qualityType)
+        {
+            return (item) => item.QualityType != qualityType || item.Quality < 20;
         }
     }
 }
