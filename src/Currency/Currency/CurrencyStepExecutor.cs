@@ -65,6 +65,18 @@ namespace PoeCraftLib.Currency.Currency
                     case ExplicitOptions.Suffix:
                         throw new NotImplementedException();
                         break;
+                    case ExplicitOptions.Crusader:
+                        StatFactory.AddInfluenceExplicit(Influence.Crusader, _random, item, affixManager, currencyModifier);
+                        break;
+                    case ExplicitOptions.Hunter:
+                        StatFactory.AddInfluenceExplicit(Influence.Hunter, _random, item, affixManager, currencyModifier);
+                        break;
+                    case ExplicitOptions.Warlord:
+                        StatFactory.AddInfluenceExplicit(Influence.Warlord, _random, item, affixManager, currencyModifier);
+                        break;
+                    case ExplicitOptions.Redeemer:
+                        StatFactory.AddInfluenceExplicit(Influence.Redeemer, _random, item, affixManager, currencyModifier);
+                        break;
                 }
             };
         }
@@ -175,6 +187,33 @@ namespace PoeCraftLib.Currency.Currency
             return (item, affixManager, currencyModifier) => { 
                 // TODO add when implicit support is added
                 };
+        }
+
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddInfluence(InfluenceOptions addInfluenceArgs)
+        {
+            return (item, affixManager, currencyModifier) => {
+                switch (addInfluenceArgs)
+                {
+                    case InfluenceOptions.Hunter:
+                        item.Influence.Add(Influence.Hunter);
+                        break;
+                    case InfluenceOptions.Crusader:
+                        item.Influence.Add(Influence.Crusader);
+                        break;
+                    case InfluenceOptions.Redeemer:
+                        item.Influence.Add(Influence.Redeemer);
+                        break;
+                    case InfluenceOptions.Warlord:
+                        item.Influence.Add(Influence.Warlord);
+                        break;
+                    case InfluenceOptions.One:
+                        throw new NotImplementedException();
+                        break;
+                    case InfluenceOptions.None:
+                        throw new NotImplementedException();
+                        break;
+                }
+            };
         }
     }
 }

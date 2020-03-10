@@ -43,8 +43,9 @@ namespace PoeCraftLib.CraftingTest
             var allAffixes = _affixFactory.GetAffixesForItem(testItem.Tags, testItem.ItemClass, ilvl).ToList();
 
             var influenceAffixes = _affixFactory.GetAffixesByInfluence(new List<Influence> {influence}, testItem.ItemClass, ilvl);
+            var influenceSpawnTags = _affixFactory.GetInfluenceSpawnTags(testItem.ItemClass);
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, currencyAffixes, influenceAffixes);
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, currencyAffixes, influenceAffixes, influenceSpawnTags);
 
             List<Affix> generated = new List<Affix>();
             for (int i = 0; i < count; i++) {
@@ -99,8 +100,7 @@ namespace PoeCraftLib.CraftingTest
             {
                 allAffixes.Add(GetTestAffix("test" + i, "test" + i, new Dictionary<string, int>() {{ defaultTag, 100}}));
             }
-
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
 
@@ -138,7 +138,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -175,7 +175,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -212,7 +212,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -262,7 +262,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, addedAffixes, new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, addedAffixes, new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -299,7 +299,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -335,7 +335,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -380,7 +380,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -423,7 +423,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -458,7 +458,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
@@ -503,7 +503,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;

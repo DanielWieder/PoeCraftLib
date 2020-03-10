@@ -3,7 +3,7 @@
       "Name":"Orb of Alchemy",
       "Requirements":[
          {
-            "Rarity":"Normal"
+            "HasRarity":"Normal"
          }
       ],
       "Steps":[
@@ -19,7 +19,7 @@
       "Name":"Orb of Alteration",
       "Requirements":[
          {
-            "Rarity":"Magic"
+            "HasRarity":"Magic"
          }
       ],
       "Steps":[
@@ -35,7 +35,7 @@
       "Name":"Orb of Annulment",
       "Requirements":[
          {
-            "Rarity":"Magic, Rare",
+            "HasRarity":"Magic, Rare",
             "HasExplicit": "Any"
          }
       ],
@@ -49,10 +49,10 @@
       "Name":"Orb of Augmentation",
       "Requirements":[
          {
-            "Rarity":"Magic"
+            "HasRarity":"Magic"
          },
          {
-            "OpenExplicit":"Any"
+            "HasOpenExplicit":"Any"
          }
       ],
       "Steps":[
@@ -78,7 +78,7 @@
       "Name":"Orb of Chance",
       "Requirements":[
          {
-            "Rarity":"Normal"
+            "HasRarity":"Normal"
          }
       ],
       "Steps":[
@@ -112,7 +112,7 @@
       "Name":"Chaos Orb",
       "Requirements":[
          {
-            "Rarity":"Rare"
+            "HasRarity":"Rare"
          }
       ],
       "Steps":[
@@ -128,7 +128,7 @@
       "Name":"Divine Orb",
       "Requirements":[
          {
-            "Rarity":"Magic, Rare",
+            "HasRarity":"Magic, Rare",
             "HasExplicit": "Any"
          }
       ],
@@ -142,10 +142,10 @@
       "Name":"Exalted Orb",
       "Requirements":[
          {
-            "Rarity":"Rare"
+            "HasRarity":"Rare"
          },
          {
-            "OpenExplicit":"Any"
+            "HasOpenExplicit":"Any"
          }
       ],
       "Steps":[
@@ -158,7 +158,7 @@
 		"Name":"Regal Orb",
 		"Requirements":[
 			{
-				"Rarity":"Magic"
+				"HasRarity":"Magic"
 			}
 		],
 		"Steps":[
@@ -174,7 +174,7 @@
       "Name":"Orb of Scouring",
       "Requirements":[
          {
-            "Rarity":"Magic, Rare"
+            "HasRarity":"Magic, Rare"
          }
       ],
       "Steps":[
@@ -190,7 +190,7 @@
       "Name":"Orb of Transmutation",
       "Requirements":[
          {
-            "Rarity":"Normal"
+            "HasRarity":"Normal"
          }
       ],
       "Steps":[

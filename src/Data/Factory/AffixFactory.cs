@@ -95,6 +95,11 @@ namespace PoeCraftLib.Data.Factory
                 .ToDictionary(x => x.Influence, x => GetAffixesForItem(new List<string>() {x.Tag}, itemClass, itemLevel));
         }
 
+        public Dictionary<Influence, string> GetInfluenceSpawnTags(string itemClass)
+        {
+            return _itemClass[itemClass].InfluenceTags;
+        }
+
         private string GetFactionTags(Influence influence, string itemClass)
         {
             return _itemClass[itemClass].InfluenceTags[influence];
@@ -143,7 +148,6 @@ namespace PoeCraftLib.Data.Factory
             affix.AddsTags = modsJson.AddsTags;
             affix.SpawnWeights = modsJson.SpawnWeights.ToDictionary(x => x.Tag, x => (int)x.Weight);
             affix.GenerationWeights = modsJson.GenerationWeights.ToDictionary(x => x.Tag, x => (int)x.Weight);
-
 
             if (modsJson.Stats.Count > 0)
             {

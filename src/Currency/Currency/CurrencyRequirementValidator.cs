@@ -12,25 +12,27 @@ namespace PoeCraftLib.Currency.Currency
     {
         private static readonly string _multimodGroup = "ItemGenerationCanHaveMultipleCraftedMods";
 
-        public Func<Equipment, bool> ValidateRarity(List<RarityOptions> rarityOptions)
+        public Func<Equipment, bool> ValidateAny(params Func<Equipment, bool>[] validations)
+        {
+            return (item) => validations.Any(x => x(item));
+        }
+
+        public Func<Equipment, bool> ValidateRarity(RarityOptions rarityOptions)
         {
             return (item) => {
-                foreach (var rarity in rarityOptions)
+                if (item.Rarity == EquipmentRarity.Normal && rarityOptions == RarityOptions.Normal)
                 {
-                    if (item.Rarity == EquipmentRarity.Normal && rarity == RarityOptions.Normal)
-                    {
-                        return true;
-                    }
+                    return true;
+                }
 
-                    if (item.Rarity == EquipmentRarity.Magic && rarity == RarityOptions.Magic)
-                    {
-                        return true;
-                    }
+                if (item.Rarity == EquipmentRarity.Magic && rarityOptions == RarityOptions.Magic)
+                {
+                    return true;
+                }
 
-                    if (item.Rarity == EquipmentRarity.Rare && rarity == RarityOptions.Rare)
-                    {
-                        return true;
-                    }
+                if (item.Rarity == EquipmentRarity.Rare && rarityOptions == RarityOptions.Rare)
+                {
+                    return true;
                 }
 
                 return false;
@@ -156,6 +158,21 @@ namespace PoeCraftLib.Currency.Currency
                         return itemClasses.Contains(item.ItemBase.ItemClass);
                     case (GenericOptions.None):
                         return !itemClasses.Contains(item.ItemBase.ItemClass);
+                }
+                throw new InvalidOperationException("Invalid matching item class validation");
+            };
+        }
+
+        public Func<Equipment, bool> ValidateHasInfluence(InfluenceOptions hasInfluenceArg)
+        {
+            return (item) =>
+            {
+                switch (hasInfluenceArg)
+                {
+                    case (InfluenceOptions.None):
+                        return item.Influence.Count == 0;
+                    case (InfluenceOptions.One):
+                        return item.Influence.Count == 1;
                 }
                 throw new InvalidOperationException("Invalid matching item class validation");
             };

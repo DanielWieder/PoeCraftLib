@@ -285,7 +285,7 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            return new AffixManager(itemBase, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
+            return new AffixManager(itemBase, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>(), new Dictionary<Influence, string>());
 
         }
 

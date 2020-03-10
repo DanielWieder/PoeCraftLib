@@ -107,6 +107,20 @@ namespace PoeCraftLib.Currency
             }
         }
 
+        public static bool AddInfluenceExplicit(Influence influence, IRandom random, Equipment item, AffixManager affixManager, CurrencyModifiers currencyModifiers)
+        {
+            var equipmentModifiers = new EquipmentModifiers(item);
+            var affix = affixManager.GetInfluenceAffix(influence, equipmentModifiers, item.Stats.Select(x => x.Affix).ToList(), item.Rarity, random);
+
+            if (affix == null) return false;
+
+            var stat = AffixToStat(random, item, affix);
+
+            item.Stats.Add(stat);
+
+            return true;
+        }
+
         public static bool AddExplicit(IRandom random, Equipment item, AffixManager affixManager, CurrencyModifiers currencyModifiers)
         {
             var equipmentModifiers = new EquipmentModifiers(item);

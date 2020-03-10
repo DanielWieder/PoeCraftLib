@@ -10,13 +10,17 @@ namespace PoeCraftLib.Data.Query
 {
     public class FetchCurrencyLogic : IFetchFetchCurrencyLogic
     {
+        private List<String> files = new List<string>()
+        {
+            "default_currency_logic.json",
+            "conqueror_currency_logic.json"
+        };
         public List<CurrencyLogicJson> Execute()
         {
             Assembly assem = this.GetType().Assembly;
-            var json = FetchHelper.GetEmbeddedResource("Assets\\currency\\default_currency_logic.json", assem);
-            var deserialized = JsonConvert.DeserializeObject<List<CurrencyLogicJson>>(json, new CurrencyLogicConverter());
-
-            return deserialized.ToList();
+            return files.Select(x => FetchHelper.GetEmbeddedResource("Assets\\currency\\" + x, assem))
+                .SelectMany(x => JsonConvert.DeserializeObject<List<CurrencyLogicJson>>(x, new CurrencyLogicConverter()))
+                .ToList();
         }
     }
 

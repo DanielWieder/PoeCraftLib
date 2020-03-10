@@ -53,6 +53,9 @@ namespace PoeCraftLib.Currency.Currency
                 case "AddImplicit":
                     var addImplicitArgs = (ImplicitTypes)Enum.Parse(typeof(ImplicitTypes), value.ToString());
                     return _currencyStepExecutor.AddImplicits(addImplicitArgs);
+                case "AddInfluence":
+                    var addInfluenceArgs = (InfluenceOptions)Enum.Parse(typeof(InfluenceOptions), value.ToString());
+                    return _currencyStepExecutor.AddInfluence(addInfluenceArgs);
                 default: throw new InvalidOperationException("Unknown currency step");
             }
         }

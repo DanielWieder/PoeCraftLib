@@ -1,0 +1,74 @@
+[
+  {
+    "Name": "Crusader's Exalted Orb",
+    "Requirements": [
+      {
+        "HasRarity": "Rare",
+        "HasInfluence": "None",
+        "HasOpenExplicit": "Any" 
+      }
+    ],
+    "Steps": [
+      {
+        "AddInfluence": "Crusader"
+      },
+      {
+        "AddExplicit": "Crusader"
+      }
+    ]
+  },
+  {
+    "Name": "Hunter's Exalted Orb",
+    "Requirements": [
+      {
+        "HasRarity": "Rare",
+        "HasInfluence": "None",
+        "HasOpenExplicit": "Any"
+      }
+    ],
+    "Steps": [
+      {
+        "AddInfluence": "Hunter"
+      },
+      {
+        "AddExplicit": "Hunter"
+      }
+    ]
+  },
+  {
+    "Name": "Redeemer's Exalted Orb",
+    "Requirements": [
+      {
+        "HasRarity": "Rare",
+        "HasInfluence": "None",
+        "HasOpenExplicit": "Any"
+      }
+    ],
+    "Steps": [
+      {
+        "AddInfluence": "Redeemer"
+      },
+      {
+        "AddExplicit": "Redeemer"
+      }
+    ]
+  },
+  {
+    "Name": "Warlord's Exalted Orb",
+    "Requirements": [
+      {
+        "HasRarity": "Rare",
+        "HasInfluence": "None",
+        "HasOpenExplicit": "Any"
+      }
+    ],
+    "Steps": [
+      {
+        "AddInfluence": "Warlord"
+      },
+      {
+        "AddExplicit": "Warlord"
+      }
+    ]
+  }
+]

@@ -105,11 +105,11 @@ namespace PoeCraftLib.Simulator
 
             var currencyAffixes = fossilAffixes.Union(essenceAffixes).ToList();
 
-            // Todo: Correctly pull affixes by influence
-            // To be added with influence currency
-            var influenceAffixes = new Dictionary<Influence, List<Affix>>();
+            var influences = new List<Influence>((Influence[])Enum.GetValues(typeof(Influence)));
+            var affixesByInfluence = _affixFactory.GetAffixesByInfluence(influences, _baseItem.ItemClass, _baseItemInfo.ItemLevel);
+            var influenceSpawnTag = _affixFactory.GetInfluenceSpawnTags(_baseItem.ItemClass);
 
-            _affixManager = new AffixManager(_baseItem, itemAffixes, currencyAffixes, influenceAffixes);
+            _affixManager = new AffixManager(_baseItem, itemAffixes, currencyAffixes, affixesByInfluence, influenceSpawnTag);
             _currencyValues = _currencyValueFactory.GetCurrencyValues(financeInfo.League);
         }
 

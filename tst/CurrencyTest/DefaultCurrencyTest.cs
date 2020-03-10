@@ -14,12 +14,12 @@ using PoeCraftLib.Entities.Items;
 namespace CurrencyTest
 {
     [TestClass]
-    public class CurrencyTest
+    public class DefaultCurrencyTest
     {
         private readonly int _invalid = -1;
         private readonly CurrencyTestHelper _currencyTestHelper;
 
-        public CurrencyTest()
+        public DefaultCurrencyTest()
         {
             _currencyTestHelper = new CurrencyTestHelper();
         }
@@ -232,6 +232,19 @@ namespace CurrencyTest
             Assert.AreEqual(1, spent[CurrencyNames.ExaltedOrb]);
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
             Assert.AreEqual(affixCount + 1, equipment.Stats.Count);
+        }
+
+        [TestMethod]
+        public void ExaltedOrbTooManyAffixesFailureTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            _currencyTestHelper.TestCurrency(CurrencyNames.ExaltedOrb, equipment);
+            _currencyTestHelper.TestCurrency(CurrencyNames.ExaltedOrb, equipment);
+            int affixCount = equipment.Stats.Count;
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.ExaltedOrb, equipment);
+
+            Assert.IsTrue(!spent.Any());
         }
 
         [TestMethod]

@@ -20,10 +20,16 @@ namespace PoeCraftLib.Currency
         private readonly List<string> _baseTags;
 
         private readonly Dictionary<PoolKey, AffixPool> _poolDic = new Dictionary<PoolKey, AffixPool>();
+
         private readonly Dictionary<string, Affix> _allAffixes;
         private readonly Dictionary<Influence, List<Affix>> _influenceAffixes;
+        private readonly Dictionary<Influence, string> _influenceTags;
 
-        public AffixManager(ItemBase itemBase, List<Affix> itemAffixes, List<Affix> currencyAffixes, Dictionary<Influence, List<Affix>> influenceAffixes)
+        public AffixManager(ItemBase itemBase, 
+            List<Affix> itemAffixes, 
+            List<Affix> currencyAffixes, 
+            Dictionary<Influence, List<Affix>> influenceAffixes,
+            Dictionary<Influence, string> influenceTags)
         {
             _allAffixes = itemAffixes
                 .Union(currencyAffixes)
@@ -35,6 +41,8 @@ namespace PoeCraftLib.Currency
             _itemAffixes = itemAffixes;
             _baseTags = itemBase.Tags;
             _influenceAffixes = influenceAffixes;
+            _influenceTags = influenceTags;
+
         }
 
         public Affix GetAffix(EquipmentModifiers equipmentModifiers, CurrencyModifiers currencyModifiers, List<Affix> affixes, EquipmentRarity rarity, IRandom random)
@@ -59,6 +67,46 @@ namespace PoeCraftLib.Currency
             var targetWeight = random.NextDouble() * (pool.TotalWeight - prefixSkipAmount - suffixSkipAmount);
 
             return GetRandomAffixFromPool(pool, targetWeight, existingGroups, prefixSkipAmount, suffixSkipAmount);
+        }
+
+        public Affix GetInfluenceAffix(Influence influence, EquipmentModifiers equipmentModifiers, List<Affix> affixes, EquipmentRarity rarity, IRandom random)
+        {
+            var existingGroups = new HashSet<string>(affixes.Select(x => x.Group));
+
+            int affixesCount = rarity == EquipmentRarity.Normal ? 0 :
+                rarity == EquipmentRarity.Magic ? 1 :
+                rarity == EquipmentRarity.Rare ? 3 : 0;
+
+            HashSet<string> fullGenTypes = new HashSet<string>();
+            if (affixes.Count(x => x.GenerationType == "suffix") >= affixesCount)
+            {
+                fullGenTypes.Add("suffix");
+            }
+            if (affixes.Count(x => x.GenerationType == "prefix") >= affixesCount)
+            {
+                fullGenTypes.Add("prefix");
+            }
+
+            var pool = _influenceAffixes[influence]
+                .Where(x => x.RequiredLevel <= equipmentModifiers.ItemLevel)
+                .Where(x => !existingGroups.Contains(x.Group))
+                .Where(x => !fullGenTypes.Contains(x.GenerationType))
+                .ToList();
+
+            var tag = _influenceTags[influence];
+
+            var currentWeight = pool.Sum(x => x.SpawnWeights[tag]);
+            var randomValue = random.Next(currentWeight);
+
+            foreach (var affix in pool)
+            {
+                currentWeight -= affix.Weight;
+                if (randomValue < currentWeight)
+                {
+                    return affix;
+                } 
+            }
+            throw new InvalidOperationException("An affix should have been selected");
         }
 
         private static double CalculateSkipAmount(string generationType, 
@@ -151,8 +199,6 @@ namespace PoeCraftLib.Currency
 
         private AffixPool GenerateAffixPool(EquipmentModifiers equipmentModifiers, CurrencyModifiers currencyModifiers)
         {
-            // TODO: Add influence affixes to pool
-
             var tags = new HashSet<string>(_baseTags.Union(equipmentModifiers.AddedTags));
             var masterModSet = new HashSet<string>(equipmentModifiers.MasterMods);
 

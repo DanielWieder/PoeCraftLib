@@ -6,13 +6,30 @@
         None,
     }
 
+    public enum InfluenceOptions
+    {
+        None,
+        One,
+        Crusader,
+        Warlord,
+        Redeemer,
+        Hunter
+    }
+
+
+
     public enum ExplicitOptions
     {
         Any,
         Prefix,
         Suffix,
         None,
-        MasterMod
+        MasterMod,
+        Crusader,
+        Warlord,
+        Redeemer,
+        Hunter,
+
     }
 
     public enum ExplicitsOptions

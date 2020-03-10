@@ -123,7 +123,9 @@ namespace PoeCraftLib.Currency
 
             currency.Requirements = new List<Func<Equipment, bool>>()
             {
-                _currencyRequirementValidator.ValidateRarity(new List<RarityOptions>(){RarityOptions.Magic, RarityOptions.Rare}),
+                _currencyRequirementValidator.ValidateAny(
+                    _currencyRequirementValidator.ValidateRarity(RarityOptions.Magic),
+                    _currencyRequirementValidator.ValidateRarity(RarityOptions.Rare)),
                 _currencyRequirementValidator.ValidateOpenExplicit(explicitOption),
                 _currencyRequirementValidator.ValidateMatchingGroup(group, GenericOptions.None),
                 _currencyRequirementValidator.ValidateMatchingItemClasses(new HashSet<string>(allItemClasses), GenericOptions.Any),
@@ -161,7 +163,9 @@ namespace PoeCraftLib.Currency
 
             currency.Requirements = new List<Func<Equipment, bool>>()
             {
-                _currencyRequirementValidator.ValidateRarity(new List<RarityOptions>(){RarityOptions.Magic, RarityOptions.Rare}),
+                _currencyRequirementValidator.ValidateAny(
+                    _currencyRequirementValidator.ValidateRarity(RarityOptions.Magic),
+                    _currencyRequirementValidator.ValidateRarity(RarityOptions.Rare)),
                 _currencyRequirementValidator.ValidateHasExplicit(ExplicitOptions.MasterMod)
             };
 
@@ -180,7 +184,10 @@ namespace PoeCraftLib.Currency
                 new List<RarityOptions>() {RarityOptions.Normal, RarityOptions.Rare} : 
                 new List<RarityOptions>() { RarityOptions.Normal };
 
-            currency.Requirements.Add(_currencyRequirementValidator.ValidateRarity(rarityRequirement));
+            var rarityValidations = rarityRequirement.Select(x => _currencyRequirementValidator.ValidateRarity(x)).ToArray();
+
+
+            currency.Requirements.Add(_currencyRequirementValidator.ValidateAny(rarityValidations));
 
             currency.CurrencyModifiers = new CurrencyModifiers(null, null, essence.ItemLevelRestriction, null);
 
@@ -213,8 +220,11 @@ namespace PoeCraftLib.Currency
 
             // The cost different between Alchemical resonators and Chaotic resonators
             // compared to the cost of using a scouring orb is minor. I just assume Alchemical + scour if necessary. 
-            var rarityRequirement = new List<RarityOptions>(){RarityOptions.Normal, RarityOptions.Rare};
-            currency.Requirements.Add(_currencyRequirementValidator.ValidateRarity(rarityRequirement));
+            var currencyValidation = _currencyRequirementValidator.ValidateAny(
+                _currencyRequirementValidator.ValidateRarity(RarityOptions.Normal),
+                _currencyRequirementValidator.ValidateRarity(RarityOptions.Rare));
+
+            currency.Requirements.Add(currencyValidation);
 
             var weightModifiers = fossils
                 .SelectMany(x => x.ModWeightModifiers)

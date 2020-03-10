@@ -7,6 +7,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\currency\conqueror_currency_logic.json" />
     <None Remove="Assets\currency\default_currency_logic.json" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\currency\default_currency_logic.json" />
+    <EmbeddedResource Include="Assets\currency\conqueror_currency_logic.json" />
     <EmbeddedResource Include="Assets\ggpk\base_items.json" />
     <EmbeddedResource Include="Assets\ggpk\crafting_bench_options.json" />
     <EmbeddedResource Include="Assets\ggpk\essences.json" />

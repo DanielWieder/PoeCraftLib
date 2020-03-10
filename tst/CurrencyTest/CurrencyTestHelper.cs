@@ -55,7 +55,11 @@ namespace CurrencyTest
 
             var currencyAffixes = essenceAffixes.Union(fossilAffixes).ToList();
 
-            AffixManager affixManager = new AffixManager(equipment.ItemBase, itemAffixes, currencyAffixes, new Dictionary<Influence, List<Affix>>());
+            var influences = new List<Influence>((Influence[])Enum.GetValues(typeof(Influence)));
+            var affixesByInfluence = AffixFactory.GetAffixesByInfluence(influences, equipment.ItemBase.ItemClass, equipment.ItemLevel);
+            var influenceSpawnTags = AffixFactory.GetInfluenceSpawnTags(equipment.ItemBase.ItemClass);
+
+            AffixManager affixManager = new AffixManager(equipment.ItemBase, itemAffixes, currencyAffixes, affixesByInfluence, influenceSpawnTags);
             return affixManager;
         }
 
