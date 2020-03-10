@@ -1,11 +1,11 @@
-﻿using PoeCraftLib.Entities;
-using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Items;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoeCraftLib.Entities;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.Currency.CurrencyV2
+namespace PoeCraftLib.Currency.Currency
 {
     public class CurrencyStepExecutor
     {
@@ -16,9 +16,9 @@ namespace PoeCraftLib.Currency.CurrencyV2
             _random = random;
         }
 
-        public Action<Equipment, AffixManager> SetRarity(RarityOptions rarityOption)
+        public Action<Equipment, AffixManager, CurrencyModifiers> SetRarity(RarityOptions rarityOption)
         {
-            return (item, affixManager) => { 
+            return (item, affixManager, currencyModifier) => { 
                 switch (rarityOption)
                 {
                     case RarityOptions.Normal: 
@@ -34,30 +34,30 @@ namespace PoeCraftLib.Currency.CurrencyV2
             };
         }
 
-        public Action<Equipment, AffixManager> AddExplicits(DistributionOptions distributionOptions)
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddExplicits(DistributionOptions distributionOptions)
         {
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 switch (distributionOptions)
                 {
                     case DistributionOptions.MagicDistribution:
-                        StatFactory.AddExplicits(_random, item, affixManager, StatFactory.MagicAffixCountOdds);
+                        StatFactory.AddExplicits(_random, item, affixManager, StatFactory.MagicAffixCountOdds, currencyModifier);
                         break;
                     case DistributionOptions.RareDistribution:
-                        StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds);
+                        StatFactory.AddExplicits(_random, item, affixManager, StatFactory.RareAffixCountOdds, currencyModifier);
                         break;
                 }
             };
         }
 
-        public Action<Equipment, AffixManager> AddExplicit(ExplicitOptions explicitOptions)
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddExplicit(ExplicitOptions explicitOptions)
         {
             // Todo: Add modifiers that include prefix/suffix blocking
 
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 switch (explicitOptions)
                 {
                     case ExplicitOptions.Any:
-                        StatFactory.AddExplicit(_random, item, affixManager);
+                        StatFactory.AddExplicit(_random, item, affixManager, currencyModifier);
                         break;
                     case ExplicitOptions.Prefix:
                         throw new NotImplementedException();
@@ -69,14 +69,14 @@ namespace PoeCraftLib.Currency.CurrencyV2
             };
         }
 
-        public Action<Equipment, AffixManager> AddExplicit(Affix affix)
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddExplicit(Affix affix)
         {
-            return (item, affixManager) => { StatFactory.AddExplicit(_random, item, affix); };
+            return (item, affixManager, currencyModifier) => { StatFactory.AddExplicit(_random, item, affix); };
         }
 
-        public Action<Equipment, AffixManager> RemoveExplicits(ExplicitsOptions explicitOptions)
+        public Action<Equipment, AffixManager, CurrencyModifiers> RemoveExplicits(ExplicitsOptions explicitOptions)
         {
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 switch (explicitOptions)
                 {
                     case ExplicitsOptions.All:
@@ -96,15 +96,15 @@ namespace PoeCraftLib.Currency.CurrencyV2
             };
         }
 
-        public Action<Equipment, AffixManager> RemoveExplicit(ExplicitOptions explicitOptions)
+        public Action<Equipment, AffixManager, CurrencyModifiers> RemoveExplicit(ExplicitOptions explicitOptions)
         {
             // Todo: Add modifiers that include prefix/suffix blocking
 
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 switch (explicitOptions)
                 {
                     case ExplicitOptions.Any:
-                        StatFactory.RemoveExplicit(_random, item);
+                        StatFactory.RemoveExplicit(_random, item, currencyModifier);
                         break;
                     case ExplicitOptions.Prefix:
                         throw new NotImplementedException();
@@ -116,46 +116,48 @@ namespace PoeCraftLib.Currency.CurrencyV2
             };
         }
 
-        public Action<Equipment, AffixManager> RerollExplicits()
+        public Action<Equipment, AffixManager, CurrencyModifiers> RerollExplicits()
         {
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 foreach (var stat in item.Stats)
                 {
-                    StatFactory.Reroll(_random, item, stat);
+                    StatFactory.Reroll(_random, item, stat, currencyModifier);
                 }
             };
         }
 
-        public Action<Equipment, AffixManager> RerollImplicits()
+        public Action<Equipment, AffixManager, CurrencyModifiers> RerollImplicits()
         {
-            return (item, affixManager) => { StatFactory.Reroll(_random, item, item.Implicit); };
+            return (item, affixManager, currencyModifier) => { StatFactory.Reroll(_random, item, item.Implicit, currencyModifier); };
         }
 
-        public Action<Equipment, AffixManager> RandomSteps(
-            List<KeyValuePair<int, List<Action<Equipment, AffixManager>>>> stepsByChance)
+        public Action<Equipment, AffixManager, CurrencyModifiers> RandomSteps(
+            List<KeyValuePair<int, List<Action<Equipment, AffixManager, CurrencyModifiers>>>> stepsByChance)
         {
-            int randomValue = _random.Next(100);
-
-            foreach (var randomSteps in stepsByChance)
+            return (item, affixManager, currencyModifier) =>
             {
-                if (randomValue < randomSteps.Key)
+                int randomValue = _random.Next(100);
+
+                foreach (var randomSteps in stepsByChance)
                 {
-                    return (item, affixManager) => randomSteps.Value.ForEach(x => x.Invoke(item, affixManager));
+                    if (randomValue < randomSteps.Key)
+                    {
+                        randomSteps.Value.ForEach(x => x.Invoke(item, affixManager, currencyModifier));
+                        break;
+                    }
+                    randomValue -= randomSteps.Key;
                 }
-
-                randomValue -= randomSteps.Key;
-            }
-            return (item, affixManager) => { };
+            };
         }
 
-        public Action<Equipment, AffixManager> Corrupt()
+        public Action<Equipment, AffixManager, CurrencyModifiers> Corrupt()
         {
-            return (item, affixManager) => { item.Corrupted = true; };
+            return (item, affixManager, currencyModifier) => { item.Corrupted = true; };
         }
 
-        public Action<Equipment, AffixManager> AddExplicitByItemClass(Dictionary<string, Affix> explicitsByItemClass)
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddExplicitByItemClass(Dictionary<string, Affix> explicitsByItemClass)
         {
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 if (explicitsByItemClass.ContainsKey(item.ItemBase.ItemClass))
                 {
                     StatFactory.AddExplicit(_random, item, explicitsByItemClass[item.ItemBase.ItemClass]);
@@ -163,14 +165,14 @@ namespace PoeCraftLib.Currency.CurrencyV2
             };
         }
 
-        public Action<Equipment, AffixManager> RemoveImplicits()
+        public Action<Equipment, AffixManager, CurrencyModifiers> RemoveImplicits()
         {
-            return (item, affixManager) => { item.Implicit = null; };
+            return (item, affixManager, currencyModifier) => { item.Implicit = null; };
         }
 
-        public Action<Equipment, AffixManager> AddImplicits(ImplicitTypes addImplicitArgs)
+        public Action<Equipment, AffixManager, CurrencyModifiers> AddImplicits(ImplicitTypes addImplicitArgs)
         {
-            return (item, affixManager) => {
+            return (item, affixManager, currencyModifier) => { 
                 // TODO add when implicit support is added
                 };
         }

@@ -9,6 +9,7 @@ using PoeCraftLib.Crafting.CraftingSteps;
 using PoeCraftLib.Currency;
 using PoeCraftLib.Data;
 using PoeCraftLib.Data.Factory;
+using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities.Items;
 using PoeCraftLib.Simulator.Model.Simulation;
@@ -93,11 +94,22 @@ namespace PoeCraftLib.Simulator
             var itemAffixes = _affixFactory.GetAffixesForItem(
                 _baseItem.Tags,
                 _baseItem.ItemClass,
-                _baseItemInfo.ItemLevel,
-                InfluenceToDomain(_baseItemInfo.Influence));
+                _baseItemInfo.ItemLevel);
 
-            var fossilAffixes = _fossilFactory.Fossils.SelectMany(x => x.AddedAffixes).ToList();
-            _affixManager = new AffixManager(_baseItem, itemAffixes, fossilAffixes);
+            var fossilAffixes = _fossilFactory.Fossils
+                .SelectMany(x => x.AddedAffixes)
+                .ToList();
+
+            var essenceAffixes = _essenceFactory.GetAffixesByItemClass(_baseItem.ItemClass)
+                .ToList();
+
+            var currencyAffixes = fossilAffixes.Union(essenceAffixes).ToList();
+
+            // Todo: Correctly pull affixes by influence
+            // To be added with influence currency
+            var influenceAffixes = new Dictionary<Influence, List<Affix>>();
+
+            _affixManager = new AffixManager(_baseItem, itemAffixes, currencyAffixes, influenceAffixes);
             _currencyValues = _currencyValueFactory.GetCurrencyValues(financeInfo.League);
         }
 

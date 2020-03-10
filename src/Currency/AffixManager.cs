@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
@@ -16,33 +18,32 @@ namespace PoeCraftLib.Currency
 
         private readonly List<Affix> _itemAffixes;
         private readonly List<string> _baseTags;
-        private readonly int _baseLevel;
 
         private readonly Dictionary<PoolKey, AffixPool> _poolDic = new Dictionary<PoolKey, AffixPool>();
         private readonly Dictionary<string, Affix> _allAffixes;
+        private readonly Dictionary<Influence, List<Affix>> _influenceAffixes;
 
-        public AffixManager(ItemBase itemBase, List<Affix> itemAffixes, List<Affix> fossilAffixes)
+        public AffixManager(ItemBase itemBase, List<Affix> itemAffixes, List<Affix> currencyAffixes, Dictionary<Influence, List<Affix>> influenceAffixes)
         {
-            _allAffixes = itemAffixes.Union(fossilAffixes).GroupBy(x => x.FullName).Select(x => x.First()).ToDictionary(x => x.FullName, x => x);
+            _allAffixes = itemAffixes
+                .Union(currencyAffixes)
+                .Union(influenceAffixes.SelectMany(x => x.Value))
+                .GroupBy(x => x.FullName)
+                .Select(x => x.First())
+                .ToDictionary(x => x.FullName, x => x);
+
             _itemAffixes = itemAffixes;
             _baseTags = itemBase.Tags;
-            _baseLevel = itemBase.RequiredLevel;
+            _influenceAffixes = influenceAffixes;
         }
 
-        public Affix GetAffix(List<Affix> affixes, EquipmentRarity rarity, IRandom random, List<Fossil> fossils = null)
+        public Affix GetAffix(EquipmentModifiers equipmentModifiers, CurrencyModifiers currencyModifiers, List<Affix> affixes, EquipmentRarity rarity, IRandom random)
         {
-            if (fossils == null) fossils = new List<Fossil>();
-
-            var addedTags = affixes.SelectMany(x => x.AddsTags).Distinct().ToList();
-            var fossilNames = fossils.Select(x => x.FullName).Distinct().ToList();
-
-            var masterMods = affixes.Where(x => x.Group.Contains(_noAttackMods) || x.Group.Contains(_noCasterMods)).Select(x => x.Group).ToList();
-
-            PoolKey key = new PoolKey(addedTags, fossilNames, masterMods);
+            PoolKey key = new PoolKey(equipmentModifiers, currencyModifiers);
 
             if (!_poolDic.ContainsKey(key))
             {
-                _poolDic.Add(key, GenerateAffixPool(addedTags, fossils, masterMods));
+                _poolDic.Add(key, GenerateAffixPool(equipmentModifiers, currencyModifiers));
             }
 
             AffixPool pool = _poolDic[key];
@@ -52,41 +53,31 @@ namespace PoeCraftLib.Currency
                 rarity == EquipmentRarity.Magic ? 1 :
                 rarity == EquipmentRarity.Rare ? 3 : 0;
 
-            double prefixSkipAmount = 0;
-            double suffixSkipAmount = 0;
+            double prefixSkipAmount = CalculateSkipAmount("prefix", pool.PrefixWeight, pool.PrefixGroupWeights, affixes, affixesCount);
+            double suffixSkipAmount = CalculateSkipAmount("suffix", pool.SuffixWeight, pool.SuffixGroupWeights, affixes, affixesCount);
 
-            if (affixes.Count(x => x.GenerationType == "prefix") >= affixesCount)
-            {
-                prefixSkipAmount = pool.PrefixWeight;
-            }
-            else
-            {
-                prefixSkipAmount = affixes
-                    .Select(x => x.Group)
-                    .Where(x => pool.PrefixGroupWeights.ContainsKey(x))
-                    .Sum(x => pool.PrefixGroupWeights[x]);
-            }
-
-            if (affixes.Count(x => x.GenerationType == "suffix") >= affixesCount)
-            {
-                suffixSkipAmount= pool.SuffixWeight;
-            }
-            else
-            {
-                suffixSkipAmount = affixes
-                    .Select(x => x.Group)
-                    .Where(x => pool.SuffixGroupWeights.ContainsKey(x))
-                    .Sum(x => pool.SuffixGroupWeights[x]);
-            }
-
-            var totalWeight = pool.TotalWeight;
-
-            totalWeight -= prefixSkipAmount;
-            totalWeight -= suffixSkipAmount;
-
-            var targetWeight = random.NextDouble() * totalWeight;
+            var targetWeight = random.NextDouble() * (pool.TotalWeight - prefixSkipAmount - suffixSkipAmount);
 
             return GetRandomAffixFromPool(pool, targetWeight, existingGroups, prefixSkipAmount, suffixSkipAmount);
+        }
+
+        private static double CalculateSkipAmount(string generationType, 
+            double weightForGenType,
+            Dictionary<string, double> groupWeights,
+            List<Affix> affixes,
+            int affixesCount)
+        {
+            if (affixes.Count(x => x.GenerationType == generationType) >= affixesCount)
+            {
+                return weightForGenType;
+            }
+            else
+            {
+                return affixes
+                    .Select(x => x.Group)
+                    .Where(groupWeights.ContainsKey)
+                    .Sum(x => groupWeights[x]);
+            }
         }
 
         private Affix GetRandomAffixFromPool(AffixPool pool,  double targetWeight, HashSet<string> existingGroups, double prefixSkipAmount, double suffixSkipAmount)
@@ -113,8 +104,12 @@ namespace PoeCraftLib.Currency
             return affix;
         }
 
-        private Affix RandomAffixFromPool(double targetWeight, HashSet<string> existingGroups, Dictionary<string, double> groupWeights,
-            double currentWeight, Dictionary<string, List<AffixWeight>> groupToAffixWeights)
+        private Affix RandomAffixFromPool(
+            double targetWeight, 
+            HashSet<string> existingGroups, 
+            Dictionary<string, double> groupWeights,
+            double currentWeight, 
+            Dictionary<string, List<AffixWeight>> groupToAffixWeights)
         {
             foreach (var group in groupWeights)
             {
@@ -154,27 +149,41 @@ namespace PoeCraftLib.Currency
             return null;
         }
 
-        private AffixPool GenerateAffixPool(List<string> addedTags, List<Fossil> fossils, List<string> masterMods)
+        private AffixPool GenerateAffixPool(EquipmentModifiers equipmentModifiers, CurrencyModifiers currencyModifiers)
         {
-            var tags = new HashSet<string>(_baseTags.Union(addedTags));
-            var masterModSet = new HashSet<string>(masterMods);
-            var fossilAffixes = fossils
-                .SelectMany(x => x.AddedAffixes)
-                .Distinct()
-                .Where(x => x.RequiredLevel <= _baseLevel)
+            // TODO: Add influence affixes to pool
+
+            var tags = new HashSet<string>(_baseTags.Union(equipmentModifiers.AddedTags));
+            var masterModSet = new HashSet<string>(equipmentModifiers.MasterMods);
+
+            if (currencyModifiers == null)
+            {
+                currencyModifiers = new CurrencyModifiers(null, null, null, null);
+            }
+
+            var addedAffixes = currencyModifiers.AddedExplicits
+                .Union(equipmentModifiers.Influence.SelectMany(x => _influenceAffixes[x]))
+                .Where(x => x.RequiredLevel <= equipmentModifiers.ItemLevel)
                 .ToList();
 
-            var affixesToEvaluate = _itemAffixes.Union(fossilAffixes).ToList();
+            var affixesToEvaluate = _itemAffixes.Union(addedAffixes).ToList();
 
-            var fossilWeightModifiers = fossils
-                .SelectMany(x => x.ModWeightModifiers)
+            if (currencyModifiers.ItemLevelRestriction != null && currencyModifiers.ItemLevelRestriction < equipmentModifiers.ItemLevel)
+            {
+                affixesToEvaluate = affixesToEvaluate
+                    .Where(x => x.RequiredLevel <= currencyModifiers.ItemLevelRestriction)
+                    .ToList();
+            }
+
+            var weightModifiers = equipmentModifiers.GenerationWeights
+                .Union(currencyModifiers.ExplicitWeightModifiers)
                 .GroupBy(x => x.Key)
                 .ToDictionary(x => x.Key, x => x.Aggregate(1d, (y, z) => y * z.Value / 100d));
 
             AffixPool pool = new AffixPool();
 
-            pool.PrefixGroupToAffixWeights = GroupToAffixWeights(affixesToEvaluate.Where(x => x.GenerationType == "prefix").ToList(), tags, fossilWeightModifiers, masterModSet);
-            pool.SuffixGroupToAffixWeights = GroupToAffixWeights(affixesToEvaluate.Where(x => x.GenerationType == "suffix").ToList(), tags, fossilWeightModifiers, masterModSet);
+            pool.PrefixGroupToAffixWeights = GroupToAffixWeights(affixesToEvaluate.Where(x => x.GenerationType == "prefix").ToList(), tags, weightModifiers, masterModSet);
+            pool.SuffixGroupToAffixWeights = GroupToAffixWeights(affixesToEvaluate.Where(x => x.GenerationType == "suffix").ToList(), tags, weightModifiers, masterModSet);
 
             pool.PrefixGroupWeights = pool.PrefixGroupToAffixWeights.ToDictionary(x => x.Key, x => x.Value.Sum(y => y.Weight));
             pool.SuffixGroupWeights = pool.SuffixGroupToAffixWeights.ToDictionary(x => x.Key, x => x.Value.Sum(y => y.Weight));
@@ -189,20 +198,20 @@ namespace PoeCraftLib.Currency
             return pool;
         }
 
-        private Dictionary<string, List<AffixWeight>> GroupToAffixWeights(List<Affix> affixesToEvaluate, HashSet<string> tags, Dictionary<string, double> fossilWeightModifiers, HashSet<string> masterModSet)
+        private Dictionary<string, List<AffixWeight>> GroupToAffixWeights(List<Affix> affixesToEvaluate, HashSet<string> tags, IReadOnlyDictionary<string, double> currencyWeightModifiers, HashSet<string> masterModSet)
         {
             return affixesToEvaluate
                 .GroupBy(x => x.Group)
                 .ToDictionary(
                     x => x.Key,
-                    x => x.Select(y => new AffixWeight(y.FullName, GetAffixSpawnWeight(y, tags, fossilWeightModifiers, masterModSet), y.GenerationType))
+                    x => x.Select(y => new AffixWeight(y.FullName, GetAffixSpawnWeight(y, tags, currencyWeightModifiers, masterModSet), y.GenerationType))
                         .Where(y => Math.Abs(y.Weight) > .001)
                         .ToList())
                 .Where(x => x.Value.Any())
                 .ToDictionary(x => x.Key, x => x.Value);
         }
 
-        private double GetAffixSpawnWeight(Affix affix, HashSet<string> tags, Dictionary<string, double> fossilWeightModifiers, HashSet<string> masterMods)
+        private double GetAffixSpawnWeight(Affix affix, HashSet<string> tags, IReadOnlyDictionary<string, double> currencyWeightModifiers, HashSet<string> masterMods)
         {
             if (masterMods.Contains(_noAttackMods) && affix.Tags.Contains(_attackTag)) return 0;
             if (masterMods.Contains(_noCasterMods) && affix.Tags.Contains(_casterTag)) return 0;
@@ -215,9 +224,9 @@ namespace PoeCraftLib.Currency
 
                     weight *= affix.GenerationWeights.Where(x => tags.Contains(x.Key)).Aggregate(1d, (y, z) => y * z.Value / 100d);
 
-                    if (fossilWeightModifiers.ContainsKey(spawnWeight.Key))
+                    if (currencyWeightModifiers.ContainsKey(spawnWeight.Key))
                     {
-                        weight *= fossilWeightModifiers[spawnWeight.Key];
+                        weight *= currencyWeightModifiers[spawnWeight.Key];
                     }
 
                     return weight;
@@ -257,15 +266,13 @@ namespace PoeCraftLib.Currency
     // The hashcode is deliberately order invariant for both tags and fossils.
     public class PoolKey
     {
-        public HashSet<string> Tags { get; }
+        public EquipmentModifiers EquipmentModifiers { get; }
 
-        public HashSet<string> Fossils { get; }
-
-        public HashSet<string> MasterMods { get; }
+        public CurrencyModifiers CurrencyModifiers { get; }
 
         protected bool Equals(PoolKey other)
         {
-            return Tags.All(x => other.Tags.Contains(x)) && Fossils.All(x => other.Fossils.Contains(x)) && MasterMods.All(x => other.MasterMods.Contains(x));
+            return EquipmentModifiers.Equals(other.EquipmentModifiers) && CurrencyModifiers.Equals(other.CurrencyModifiers);
         }
 
         public override bool Equals(object obj)
@@ -278,23 +285,27 @@ namespace PoeCraftLib.Currency
 
         public override int GetHashCode()
         {
-            const int seed = 0x2D2816FE;
-            const int prime = 397;
-
             unchecked
             {
-                int tagsHash = Tags != null ? Tags.Aggregate(seed, (x, y) => x ^ y.GetHashCode()) : 0;
-                int fossilsHash = Fossils != null ? Fossils.Aggregate(seed, (x, y) => x ^ y.GetHashCode()) : 0;
-                int masterModHash = MasterMods != null ? MasterMods.Aggregate(seed, (x, y) => x ^ y.GetHashCode()) : 0;
-                return tagsHash * prime + fossilsHash * prime + masterModHash;
+                return ((EquipmentModifiers != null ? EquipmentModifiers.GetHashCode() : 0) * 397) ^ 
+                       (CurrencyModifiers != null ? CurrencyModifiers.GetHashCode() : 0);
             }
         }
 
-        public PoolKey(List<string> tags, List<string> fossils, List<string> masterMods)
+        public static bool operator ==(PoolKey left, PoolKey right)
         {
-            this.Tags = new HashSet<string>(tags);
-            this.Fossils = new HashSet<string>(fossils);
-            this.MasterMods = new HashSet<string>(masterMods);
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(PoolKey left, PoolKey right)
+        {
+            return !Equals(left, right);
+        }
+
+        public PoolKey(EquipmentModifiers equipmentModifiers, CurrencyModifiers currencyModifiers)
+        {
+            this.EquipmentModifiers = equipmentModifiers;
+            this.CurrencyModifiers = currencyModifiers;
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using PoeCraftLib.Currency;
+using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data;
 using PoeCraftLib.Data.Factory;
 using PoeCraftLib.Entities;
@@ -37,17 +38,25 @@ namespace PoeCraftLib.CraftingTest
             };
             List<Fossil> fossils = new List<Fossil>();
 
-            var fossilAffixes = new List<Affix>();
+            var currencyAffixes = new List<Affix>();
             var testItem = _itemFactory.Jewel.First(x => x.Name == item);
-            var allAffixes = _affixFactory.GetAffixesForItem(testItem.Tags, testItem.ItemClass, ilvl, new List<Influence> { influence }).ToList();
+            var allAffixes = _affixFactory.GetAffixesForItem(testItem.Tags, testItem.ItemClass, ilvl).ToList();
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
+            var influenceAffixes = _affixFactory.GetAffixesByInfluence(new List<Influence> {influence}, testItem.ItemClass, ilvl);
+
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, currencyAffixes, influenceAffixes);
 
             List<Affix> generated = new List<Affix>();
             for (int i = 0; i < count; i++) {
                 for (int x = 0; x < 6; x++)
                 {
-                    generated.Add(affixManager.GetAffix(affixes, EquipmentRarity.Rare, _random));
+                    var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                        new List<string>(),
+                        new List<string>(), 
+                        ilvl,
+                        new Dictionary<string, int>());
+
+                    generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), affixes, EquipmentRarity.Rare, _random));
                 }
             }
 
@@ -91,14 +100,20 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test" + i, "test" + i, new Dictionary<string, int>() {{ defaultTag, 100}}));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
 
             IRandom random = SetupRandom().Object;
             for (var i = 0; i < count; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>(), EquipmentRarity.Rare, random));
+                var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                    new List<string>(),
+                    new List<string>(),
+                    100,
+                    new Dictionary<string, int>());
+
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), new List<Affix>(), EquipmentRarity.Rare, _random));
             }
 
             Assert.AreEqual(count, generated.Count);
@@ -123,13 +138,19 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix> { itemAffix }, EquipmentRarity.Rare, random));
+                var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                    new List<string>(),
+                    new List<string>(),
+                    100,
+                    new Dictionary<string, int>());
+
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), new List<Affix> { itemAffix }, EquipmentRarity.Rare, _random));
             }
 
             Assert.IsTrue(!generated.Contains(itemAffix));
@@ -154,13 +175,19 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>(), EquipmentRarity.Rare, random));
+                var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                    new List<string>(),
+                    new List<string>(),
+                    100,
+                    testAffix.GenerationWeights);
+
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), new List<Affix>(), EquipmentRarity.Rare, random));
             }
 
             Assert.AreEqual(generated[0], testAffix);
@@ -168,7 +195,7 @@ namespace PoeCraftLib.CraftingTest
         }
 
         [TestMethod]
-        public void AffixFossilWeightTest()
+        public void CurrencyWeightModifierTest()
         {
             String item = "Murderous Eye Jewel";
             String defaultTag = "abyss_jewel_melee";
@@ -180,23 +207,31 @@ namespace PoeCraftLib.CraftingTest
             var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { fossilTag, 100 } });
             allAffixes.Add(testAffix);
 
-            Fossil fossil = new Fossil();
-            fossil.FullName = "TestFossil";
-            fossil.AddedAffixes = new List<Affix>();
-            fossil.ModWeightModifiers = new Dictionary<string, int>() {{fossilTag, 200}};
-
             for (int i = 0; i < 8; i++)
             {
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes, new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+
+            CurrencyModifiers currencyModifiers = new CurrencyModifiers(
+                null,
+                new Dictionary<string, double>() { { fossilTag, 200 } },
+                null,
+                null);
+
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>(), EquipmentRarity.Rare, random, new List<Fossil>() { fossil }));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, currencyModifiers, new List<Affix>(), EquipmentRarity.Rare, random));
             }
 
             Assert.AreEqual(generated[0], testAffix);
@@ -204,7 +239,7 @@ namespace PoeCraftLib.CraftingTest
         }
 
         [TestMethod]
-        public void AffixFossilAddedModTest()
+        public void AddedAffixesTest()
         {
             String item = "Murderous Eye Jewel";
             String defaultTag = "abyss_jewel_melee";
@@ -214,25 +249,33 @@ namespace PoeCraftLib.CraftingTest
 
             var testAffix = GetTestAffix("test", "test", new Dictionary<string, int>() { { defaultTag, 100 } });
 
-            var fossilAffixes = new List<Affix> { testAffix };
+            var addedAffixes = new List<Affix> { testAffix };
 
-            Fossil fossil = new Fossil();
-            fossil.FullName = "TestFossil";
-            fossil.AddedAffixes = fossilAffixes;
-            fossil.ModWeightModifiers = new Dictionary<string, int>();
+            CurrencyModifiers currencyModifiers = new CurrencyModifiers(
+                addedAffixes, 
+                null,
+                null,
+                null);
 
             for (int i = 0; i < 9; i++)
             {
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, fossilAffixes);
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, addedAffixes, new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>(), EquipmentRarity.Rare, random, new List<Fossil> { fossil }));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, currencyModifiers, new List<Affix>(), EquipmentRarity.Rare, random));
             }
 
             Assert.IsTrue(generated.Contains(testAffix));
@@ -256,13 +299,19 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>() { metamod }, EquipmentRarity.Rare, random, new List<Fossil>()));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), new List<Affix>() {metamod}, EquipmentRarity.Rare, _random));
             }
 
             Assert.IsFalse(generated.Contains(testAffix));
@@ -286,13 +335,19 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(GetTestAffix("test_" + i, "test" + i, new Dictionary<string, int>() { { defaultTag, 100 } }));
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>() { metamod }, EquipmentRarity.Rare, random, new List<Fossil>()));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), new List<Affix>() {metamod}, EquipmentRarity.Rare, _random));
             }
 
             Assert.IsFalse(generated.Contains(testAffix));
@@ -325,14 +380,22 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                    new List<string>(),
+                    new List<string>(),
+                    100,
+                    new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(existing, EquipmentRarity.Rare, random));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), existing, EquipmentRarity.Rare, _random));
             }
+
 
             Assert.IsFalse(generated.Any(x => x.GenerationType == "prefix"));
         }
@@ -360,13 +423,20 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(existing, EquipmentRarity.Magic, random));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), existing, EquipmentRarity.Magic, _random));
             }
 
             Assert.IsFalse(generated.Any(x => x.GenerationType == "prefix"));
@@ -388,13 +458,19 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(new List<Affix>(), EquipmentRarity.Normal, random));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), new List<Affix>(), EquipmentRarity.Normal, _random));
             }
 
             Assert.IsTrue(generated.All(x => x == null));
@@ -427,13 +503,19 @@ namespace PoeCraftLib.CraftingTest
                 allAffixes.Add(affix);
             }
 
-            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>());
+            AffixManager affixManager = new AffixManager(testItem, allAffixes, new List<Affix>(), new Dictionary<Influence, List<Affix>>());
 
             List<Affix> generated = new List<Affix>();
             IRandom random = SetupRandom().Object;
+            var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
+                new List<string>(),
+                new List<string>(),
+                100,
+                new Dictionary<string, int>());
+
             for (var i = 0; i < 10; i++)
             {
-                generated.Add(affixManager.GetAffix(existing, EquipmentRarity.Rare, random));
+                generated.Add(affixManager.GetAffix(equipmentModifiers, CurrencyModifier(), existing, EquipmentRarity.Rare, _random));
             }
 
             Assert.IsFalse(generated.Any(x => x.GenerationType == "suffix"));
@@ -456,6 +538,11 @@ namespace PoeCraftLib.CraftingTest
         private ItemBase GetTestItem()
         {
             return _itemFactory.Armour.First();
+        }
+
+        private static CurrencyModifiers CurrencyModifier()
+        {
+            return new CurrencyModifiers(null, null, null, null);
         }
     }
 }

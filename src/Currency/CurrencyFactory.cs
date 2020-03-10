@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
-using PoeCraftLib.Currency.CurrencyV2;
+using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Data.Factory;
 using PoeCraftLib.Data.Query;
 using PoeCraftLib.Entities;
@@ -13,7 +14,6 @@ namespace PoeCraftLib.Currency
 {
     public class CurrencyFactory
     {
-        private readonly IRandom _random;
         private readonly Dictionary<string, Essence> _essences;
         private readonly Dictionary<string, Fossil> _fossils;
 
@@ -39,6 +39,8 @@ namespace PoeCraftLib.Currency
             {4, "Prime Alchemical Resonator"}
         };
 
+        private string multiMod = "ItemGenerationCanHaveMultipleCraftedMods0";
+
         private readonly List<Essence> _corruptedEssences;
 
         public CurrencyFactory(
@@ -53,8 +55,6 @@ namespace PoeCraftLib.Currency
             _currencyRequirementValidator = new CurrencyRequirementValidator();
             _currencyRequirementFactory =
                 new CurrencyRequirementFactory(_currencyRequirementValidator);
-
-            _random = random;
 
             var currency = GetDefaultCurrency();
             var essenceCurrency = essenceFactory.Essence.Select(EssenceToCurrency);
@@ -89,7 +89,7 @@ namespace PoeCraftLib.Currency
 
         private ICurrency MasterModToCurrency(IGrouping<string, MasterMod> masterMods)
         {
-            CurrencyV2.Currency currency = new CurrencyV2.Currency();
+            Currency.Currency currency = new Currency.Currency();
 
             currency.Name = masterMods.Key;
 
@@ -119,13 +119,15 @@ namespace PoeCraftLib.Currency
                 ? ExplicitOptions.Prefix
                 : ExplicitOptions.Suffix;
 
+            bool isMultiMod = masterMods.Key == multiMod;
+
             currency.Requirements = new List<Func<Equipment, bool>>()
             {
                 _currencyRequirementValidator.ValidateRarity(new List<RarityOptions>(){RarityOptions.Magic, RarityOptions.Rare}),
                 _currencyRequirementValidator.ValidateOpenExplicit(explicitOption),
                 _currencyRequirementValidator.ValidateMatchingGroup(group, GenericOptions.None),
                 _currencyRequirementValidator.ValidateMatchingItemClasses(new HashSet<string>(allItemClasses), GenericOptions.Any),
-                _currencyRequirementValidator.ValidateCanAddMasterMod()
+                _currencyRequirementValidator.ValidateCanAddMasterMod(isMultiMod)
             };
 
             Dictionary<string, Affix> affixesByItemClass = new Dictionary<string, Affix>();
@@ -153,7 +155,7 @@ namespace PoeCraftLib.Currency
         // Todo: Add this to the misc currency file later
         private ICurrency RemoveMasterCrafts()
         {
-            CurrencyV2.Currency currency = new CurrencyV2.Currency();
+            Currency.Currency currency = new Currency.Currency();
 
             currency.Name = "Remove Master Mods";
 
@@ -170,19 +172,19 @@ namespace PoeCraftLib.Currency
 
         private ICurrency EssenceToCurrency(Essence essence)
         {
-            CurrencyV2.Currency currency = new CurrencyV2.Currency();
+            Currency.Currency currency = new Currency.Currency();
 
             currency.Name = essence.Name;
 
-            var rarityRequirement = essence.Tier >= 6 ? 
+            var rarityRequirement = essence.Level >= 6 ? 
                 new List<RarityOptions>() {RarityOptions.Normal, RarityOptions.Rare} : 
                 new List<RarityOptions>() { RarityOptions.Normal };
 
             currency.Requirements.Add(_currencyRequirementValidator.ValidateRarity(rarityRequirement));
 
-            currency.CurrencyModifier.ItemLevelRestriction = essence.ItemLevelRestriction;
+            currency.CurrencyModifiers = new CurrencyModifiers(null, null, essence.ItemLevelRestriction, null);
 
-            currency.Steps = new List<Action<Equipment, AffixManager>>()
+            currency.Steps = new List<Action<Equipment, AffixManager, CurrencyModifiers>>()
             {
                 _currencyStepExecutor.SetRarity(RarityOptions.Rare),
                 _currencyStepExecutor.RemoveExplicits(ExplicitsOptions.All),
@@ -205,7 +207,7 @@ namespace PoeCraftLib.Currency
                 throw new InvalidOperationException("Every fossil must be unique");
             }
 
-            CurrencyV2.Currency currency = new CurrencyV2.Currency();
+            Currency.Currency currency = new Currency.Currency();
 
             currency.Name = fossils.Count == 1 ? fossils[0].Name : "Fossil";
 
@@ -214,20 +216,20 @@ namespace PoeCraftLib.Currency
             var rarityRequirement = new List<RarityOptions>(){RarityOptions.Normal, RarityOptions.Rare};
             currency.Requirements.Add(_currencyRequirementValidator.ValidateRarity(rarityRequirement));
 
-            currency.CurrencyModifier.ExplicitWeightModifiers = fossils
+            var weightModifiers = fossils
                 .SelectMany(x => x.ModWeightModifiers)
                 .GroupBy(x => x.Key)
-                .Select(x => new KeyValuePair<string, int>(
-                        x.Key, 
-                        x.Select(y => y.Value).Aggregate(((product, next) => product * next / 100))))
-                .ToDictionary(x => x.Key, x => x.Value);
+                .ToDictionary(x => x.Key, x => x.Aggregate(1d, (y, z) => y * z.Value / 100d));
 
-            currency.CurrencyModifier.AddedExplicits = fossils
+            var addedAffixes = fossils
                 .SelectMany(x => x.AddedAffixes)
                 .Distinct()
                 .ToList();
 
-            currency.CurrencyModifier.RollsLucky = fossils.Any(x => x.RollsLucky);
+            currency.CurrencyModifiers = new CurrencyModifiers(addedAffixes,
+                new ReadOnlyDictionary<string, double>(weightModifiers), 
+                null,
+                fossils.Any(x => x.RollsLucky));
 
             int corruptedEssenceChance = fossils
                 .Select(x => x.CorruptedEssenceChance)
@@ -265,12 +267,12 @@ namespace PoeCraftLib.Currency
             return currency;
         }
 
-        private Action<Equipment, AffixManager> ChanceToAddRandomEssenceStep(int addEssenceChance, List<Essence> essences)
+        private Action<Equipment, AffixManager, CurrencyModifiers> ChanceToAddRandomEssenceStep(int addEssenceChance, List<Essence> essences)
         {
             int chancePerEssence = (int) (100f / essences.Count);
-            var addRandomEssence = essences.Select(x => new KeyValuePair<int, List<Action<Equipment, AffixManager>>>(
+            var addRandomEssence = essences.Select(x => new KeyValuePair<int, List<Action<Equipment, AffixManager, CurrencyModifiers>>>(
                     chancePerEssence,
-                    new List<Action<Equipment, AffixManager>>()
+                    new List<Action<Equipment, AffixManager, CurrencyModifiers>>()
                     {
                         _currencyStepExecutor.AddExplicitByItemClass(x.ItemClassToMod)
                     }))
@@ -284,11 +286,11 @@ namespace PoeCraftLib.Currency
             }
 
             var addCorruptedEssence = _currencyStepExecutor.RandomSteps(
-                new List<KeyValuePair<int, List<Action<Equipment, AffixManager>>>>()
+                new List<KeyValuePair<int, List<Action<Equipment, AffixManager, CurrencyModifiers>>>>()
                 {
-                    new KeyValuePair<int, List<Action<Equipment, AffixManager>>>(
+                    new KeyValuePair<int, List<Action<Equipment, AffixManager, CurrencyModifiers>>>(
                         addEssenceChance,
-                        new List<Action<Equipment, AffixManager>>()
+                        new List<Action<Equipment, AffixManager, CurrencyModifiers>>()
                         {
                             addRandomEssenceSteps
                         }
@@ -306,7 +308,7 @@ namespace PoeCraftLib.Currency
 
             foreach (var currencyLogic in currencyLogicList)
             {
-                CurrencyV2.Currency currency = new CurrencyV2.Currency
+                Currency.Currency currency = new Currency.Currency
                 {
                     Name = currencyLogic.Name,
                     Requirements = currencyLogic.Requirements

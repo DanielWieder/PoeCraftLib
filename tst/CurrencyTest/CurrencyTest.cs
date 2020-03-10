@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,30 +16,19 @@ namespace CurrencyTest
     [TestClass]
     public class CurrencyTest
     {
-        private readonly CurrencyFactory _currencyFactory;
-        private readonly ItemFactory _itemFactory;
-        private readonly AffixFactory _affixFactory;
-
         private readonly int _invalid = -1;
+        private readonly CurrencyTestHelper _currencyTestHelper;
 
         public CurrencyTest()
         {
-            _itemFactory = new ItemFactory();
-            _affixFactory = new AffixFactory();
-
-            IRandom random = new PoeRandom();
-            _currencyFactory = new CurrencyFactory(
-                random,
-                new EssenceFactory(_itemFactory, _affixFactory), 
-                new FossilFactory(_affixFactory), 
-                new MasterModFactory(_affixFactory, _itemFactory));
+            _currencyTestHelper = new CurrencyTestHelper();
         }
 
         [TestMethod]
         public void AlchemyOrbRarityNormalSuccessTest()
         {
-            var equipment = GetTestItem();
-            var spent = TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.AlchemyOrb]);
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
@@ -47,16 +38,16 @@ namespace CurrencyTest
         [TestMethod]
         public void AlchemyOrbRarityMagicRareFailure()
         {
-            TestRaritiesForFailure(CurrencyNames.AlchemyOrb, EquipmentRarity.Magic, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.AlchemyOrb, EquipmentRarity.Magic, EquipmentRarity.Rare);
         }
 
 
         [TestMethod]
         public void AlterationOrbRarityMagicSuccessTest()
         {
-            var equipment = GetTestItem();
+            var equipment = _currencyTestHelper.GetTestItem();
             equipment.Rarity = EquipmentRarity.Magic;
-            var spent = TestCurrency(CurrencyNames.AlterationOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.AlterationOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.AlterationOrb]);
             Assert.AreEqual(EquipmentRarity.Magic, equipment.Rarity);
@@ -66,15 +57,15 @@ namespace CurrencyTest
         [TestMethod]
         public void AlterationOrbRarityNormalRareFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.AlterationOrb, EquipmentRarity.Normal, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.AlterationOrb, EquipmentRarity.Normal, EquipmentRarity.Rare);
         }
 
         [TestMethod]
         public void AugmentationOrbRarityMagicSuccessTest()
         {
-            var equipment = GetTestItem();
+            var equipment = _currencyTestHelper.GetTestItem();
             equipment.Rarity = EquipmentRarity.Magic;
-            var spent = TestCurrency(CurrencyNames.AugmentationOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.AugmentationOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.AugmentationOrb]);
             Assert.AreEqual(EquipmentRarity.Magic, equipment.Rarity);
@@ -84,17 +75,17 @@ namespace CurrencyTest
         [TestMethod]
         public void AugmentationOrbRarityNormalRareFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.AugmentationOrb, EquipmentRarity.Normal, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.AugmentationOrb, EquipmentRarity.Normal, EquipmentRarity.Rare);
         }
 
         [TestMethod]
         public void AnnulmentOrbRarityRareSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
             int initialStatCount = equipment.Stats.Count;
 
-            var spent = TestCurrency(CurrencyNames.AnnulmentOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.AnnulmentOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.AnnulmentOrb]);
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
@@ -104,12 +95,12 @@ namespace CurrencyTest
         [TestMethod]
         public void AnnulmentOrbRarityMagicSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.TransmuationOrb, equipment);
-            TestCurrency(CurrencyNames.AugmentationOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            _currencyTestHelper.TestCurrency(CurrencyNames.AugmentationOrb, equipment);
             int initialStatCount = equipment.Stats.Count;
 
-            var spent = TestCurrency(CurrencyNames.AnnulmentOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.AnnulmentOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.AnnulmentOrb]);
             Assert.AreEqual(EquipmentRarity.Magic, equipment.Rarity);
@@ -119,7 +110,7 @@ namespace CurrencyTest
         [TestMethod]
         public void AnnulmentOrbRarityNoAffixesFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.AnnulmentOrb, EquipmentRarity.Normal, EquipmentRarity.Magic, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.AnnulmentOrb, EquipmentRarity.Normal, EquipmentRarity.Magic, EquipmentRarity.Rare);
         }
 
         //Todo: Add blessed orb tests here when fully implemented
@@ -127,8 +118,8 @@ namespace CurrencyTest
         [TestMethod]
         public void ChanceOrbRarityNormalSuccessTest()
         {
-            var equipment = GetTestItem();
-            var spent = TestCurrency(CurrencyNames.ChanceOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.ChanceOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.ChanceOrb]);
             Assert.IsTrue(EquipmentRarity.Magic == equipment.Rarity || EquipmentRarity.Rare == equipment.Rarity);
@@ -138,15 +129,15 @@ namespace CurrencyTest
         [TestMethod]
         public void ChanceOrbRarityRarityMagicRareFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.ChanceOrb, EquipmentRarity.Magic, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.ChanceOrb, EquipmentRarity.Magic, EquipmentRarity.Rare);
         }
 
         [TestMethod]
         public void ChaosOrbRarityRareSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.AlchemyOrb, equipment);
-            var spent = TestCurrency(CurrencyNames.ChaosOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.ChaosOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.ChaosOrb]);
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
@@ -156,14 +147,14 @@ namespace CurrencyTest
         [TestMethod]
         public void ChaosOrbRarityRarityNormalMagicFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.ChaosOrb, EquipmentRarity.Normal, EquipmentRarity.Magic);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.ChaosOrb, EquipmentRarity.Normal, EquipmentRarity.Magic);
         }
 
         [TestMethod]
         public void DivineOrbRarityMagicSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
 
             TestDivineOrb(equipment);
 
@@ -173,8 +164,8 @@ namespace CurrencyTest
         [TestMethod]
         public void DivineOrbRarityRareSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
 
             TestDivineOrb(equipment);
 
@@ -191,7 +182,7 @@ namespace CurrencyTest
             if (equipment.Stats[0].Value3 != null)
                 equipment.Stats[0].Value3 = _invalid;
 
-            var spent = TestCurrency(CurrencyNames.DivineOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.DivineOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.DivineOrb]);
 
@@ -207,16 +198,16 @@ namespace CurrencyTest
         [TestMethod]
         public void DivineOrbRarityRarityNoExplicitFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.DivineOrb, EquipmentRarity.Normal, EquipmentRarity.Magic, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.DivineOrb, EquipmentRarity.Normal, EquipmentRarity.Magic, EquipmentRarity.Rare);
         }
 
         [TestMethod]
         public void RegalOrbRarityRareSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
             int affixCount = equipment.Stats.Count;
-            var spent = TestCurrency(CurrencyNames.RegalOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.RegalOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.RegalOrb]);
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
@@ -226,17 +217,17 @@ namespace CurrencyTest
         [TestMethod]
         public void RegalOrbRarityRarityNormalRareFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.RegalOrb, EquipmentRarity.Normal, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.RegalOrb, EquipmentRarity.Normal, EquipmentRarity.Rare);
         }
 
         [TestMethod]
         public void ExaltedOrbRarityRareSuccessTest()
         {
-            var equipment = GetTestItem();
-            TestCurrency(CurrencyNames.TransmuationOrb, equipment);
-            TestCurrency(CurrencyNames.RegalOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            _currencyTestHelper.TestCurrency(CurrencyNames.RegalOrb, equipment);
             int affixCount = equipment.Stats.Count;
-            var spent = TestCurrency(CurrencyNames.ExaltedOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.ExaltedOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.ExaltedOrb]);
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
@@ -246,15 +237,15 @@ namespace CurrencyTest
         [TestMethod]
         public void ExaltedOrbRarityRarityNormalMagicFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.ExaltedOrb, EquipmentRarity.Normal, EquipmentRarity.Magic);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.ExaltedOrb, EquipmentRarity.Normal, EquipmentRarity.Magic);
         }
 
         [TestMethod]
         public void ScouringOrbRarityMagicSuccessTest()
         {
-            var equipment = GetTestItem();
+            var equipment = _currencyTestHelper.GetTestItem();
             equipment.Rarity = EquipmentRarity.Magic;
-            var spent = TestCurrency(CurrencyNames.ScouringOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.ScouringOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.ScouringOrb]);
             Assert.AreEqual(EquipmentRarity.Normal, equipment.Rarity);
@@ -264,9 +255,9 @@ namespace CurrencyTest
         [TestMethod]
         public void ScouringOrbRarityRareSuccessTest()
         {
-            var equipment = GetTestItem();
+            var equipment = _currencyTestHelper.GetTestItem();
             equipment.Rarity = EquipmentRarity.Rare;
-            var spent = TestCurrency(CurrencyNames.ScouringOrb, equipment);
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.ScouringOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.ScouringOrb]);
             Assert.AreEqual(EquipmentRarity.Normal, equipment.Rarity);
@@ -276,14 +267,14 @@ namespace CurrencyTest
         [TestMethod]
         public void ScouringOrbRarityRarityNormalFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.ScouringOrb, EquipmentRarity.Normal);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.ScouringOrb, EquipmentRarity.Normal);
         }
 
         [TestMethod]
         public void TransmutationOrbRarityNormalSuccessTest()
         {
-            var equipment = GetTestItem();
-            var spent = TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.TransmuationOrb]);
             Assert.AreEqual(EquipmentRarity.Magic, equipment.Rarity);
@@ -293,14 +284,14 @@ namespace CurrencyTest
         [TestMethod]
         public void TransmutationOrbRarityRarityMagicRareFailureTest()
         {
-            TestRaritiesForFailure(CurrencyNames.TransmuationOrb, EquipmentRarity.Magic, EquipmentRarity.Rare);
+            _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.TransmuationOrb, EquipmentRarity.Magic, EquipmentRarity.Rare);
         }
 
         [TestMethod]
         public void VaalOrbSuccessTest()
         {
-            var equipment = GetTestItem();
-            var spent = TestCurrency(CurrencyNames.VaalOrb, equipment);
+            var equipment = _currencyTestHelper.GetTestItem();
+            var spent = _currencyTestHelper.TestCurrency(CurrencyNames.VaalOrb, equipment);
 
             Assert.AreEqual(1, spent[CurrencyNames.VaalOrb]);
             Assert.IsTrue(equipment.Corrupted);
@@ -309,11 +300,11 @@ namespace CurrencyTest
         [TestMethod]
         public void CorruptionStopsCurrencyTest()
         {
-            var equipment = GetTestItem();
+            var equipment = _currencyTestHelper.GetTestItem();
             equipment.Corrupted = true;
-            var spent1 = TestCurrency(CurrencyNames.VaalOrb, equipment);
-            var spent2 = TestCurrency(CurrencyNames.AlchemyOrb, equipment);
-            var spent3 = TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            var spent1 = _currencyTestHelper.TestCurrency(CurrencyNames.VaalOrb, equipment);
+            var spent2 = _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            var spent3 = _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
 
             Assert.IsFalse(spent2.ContainsKey(CurrencyNames.AlchemyOrb));
             Assert.IsFalse(spent3.ContainsKey(CurrencyNames.TransmuationOrb));
@@ -321,43 +312,5 @@ namespace CurrencyTest
         }
 
         // Todo: Update vaal orb test when implicits are fully implemented
-
-        private Dictionary<string, int> TestCurrency(String currencyName, Equipment equipment)
-        {
-            var currency = _currencyFactory.GetCurrencyByName(currencyName);
-            var affixManager = GetAffixManager(equipment);
-            var spent = currency.Execute(equipment, affixManager);
-            return spent;
-        }
-
-        private AffixManager GetAffixManager(Equipment equipment)
-        {
-            var itemAffixes = _affixFactory.GetAffixesForItem(equipment.ItemBase.Tags, equipment.ItemBase.ItemClass, 84);
-            AffixManager affixManager = new AffixManager(equipment.ItemBase, itemAffixes, new List<Affix>());
-            return affixManager;
-        }
-
-        private Equipment GetTestItem()
-        {
-            var itemBase = _itemFactory.Armour.First();
-            return _itemFactory.ToEquipment(itemBase, 84, new List<Influence>());
-        }
-
-        private void TestRaritiesForFailure(String currencyName, params EquipmentRarity[] rarities)
-        {
-            var equipment = GetTestItem();
-            TestRaritiesForFailure(currencyName, equipment, rarities);
-        }
-
-        private void TestRaritiesForFailure(String currencyName, Equipment equipment, params EquipmentRarity[] rarities)
-        {
-            foreach (var rarity in rarities)
-            {
-                equipment.Rarity = rarity;
-                var spent = TestCurrency(currencyName, equipment);
-
-                Assert.IsFalse(spent.ContainsKey(currencyName));
-            }
-        }
     }
 }

@@ -1,10 +1,10 @@
-﻿using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Items;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.Currency.CurrencyV2
+namespace PoeCraftLib.Currency.Currency
 {
     public class CurrencyStepFactory
     {
@@ -15,7 +15,7 @@ namespace PoeCraftLib.Currency.CurrencyV2
             this._currencyStepExecutor = currencyStepExecutor;
         }
 
-        public Action<Equipment, AffixManager> GetCurrencyStep(String key, object value)
+        public Action<Equipment, AffixManager, CurrencyModifiers> GetCurrencyStep(String key, object value)
         {
             switch (key)
             {
@@ -36,7 +36,7 @@ namespace PoeCraftLib.Currency.CurrencyV2
                     return _currencyStepExecutor.RemoveExplicit(removeExplicitArgs);
                 case "RandomSteps":
                     var tempArgs = (List<KeyValuePair<int, List<KeyValuePair<string, object>>>>)value;
-                    var randomStepArgs = tempArgs.Select(x => new KeyValuePair<int, List<Action<Equipment, AffixManager>>>(
+                    var randomStepArgs = tempArgs.Select(x => new KeyValuePair<int, List<Action<Equipment, AffixManager, CurrencyModifiers>>>(
                         x.Key,
                         x.Value.Select(y => GetCurrencyStep(y.Key, y.Value)).ToList()
                     )).ToList();

@@ -26,8 +26,9 @@ namespace PoeCraftLib.DataTest
         {
             var item = GetTestItem();
             var influence = new List<Influence> { Influence.Shaper };
-            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, influence);
-            
+            var affixes = _affixFactory.GetAffixesByInfluence(influence, item.ItemClass, 100)
+                .SelectMany(x => x.Value).ToList();
+
             Assert.IsTrue(affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("shaper"))));
             Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("elder"))));
         }
@@ -37,7 +38,8 @@ namespace PoeCraftLib.DataTest
         {
             var item = GetTestItem();
             var influence = new List<Influence> { Influence.Elder };
-            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, influence);
+            var affixes = _affixFactory.GetAffixesByInfluence(influence, item.ItemClass, 100)
+                .SelectMany(x => x.Value).ToList();
 
             Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("shaper"))));
             Assert.IsTrue(affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("elder"))));
@@ -47,7 +49,8 @@ namespace PoeCraftLib.DataTest
         public void FactionlessItemHasNoShaperOrElderMods()
         {
             var item = GetTestItem();
-            var affixes = _affixFactory.GetAffixesForItem(item.Tags, item.ItemClass, 100, new List<Influence>());
+            var affixes = _affixFactory.GetAffixesByInfluence(new List<Influence>(), item.ItemClass, 100)
+                .SelectMany(x => x.Value).ToList();
 
             Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("shaper"))));
             Assert.IsTrue(!affixes.Any(x => x.SpawnWeights.Any(y => y.Key.Contains("elder"))));

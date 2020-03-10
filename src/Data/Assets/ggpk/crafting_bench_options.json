@@ -3831,6 +3831,7 @@
   },
   {
     "bench_group": "LocalLightningDamage",
+    "ItemGenerationCanHaveMultipleCraftedMods0": null,
     "bench_tier": 1,
     "cost": {
       "Metadata/Items/Currency/CurrencyUpgradeToMagic": 4

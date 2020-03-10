@@ -27,12 +27,9 @@ namespace PoeCraftLib.Data.Factory
             _modTypeToTags = _fetchModType.Execute().ToDictionary(x => x.FullName, x => new HashSet<string>(x.ModTags));
         }
 
-        public List<Affix> GetAffixesForItem(List<string> itemTags, String itemClass, int itemLevel = 84, List<Influence> influence = null)
+        public List<Affix> GetAffixesForItem(List<string> itemTags, String itemClass, int itemLevel = 84)
         {
-            List<string> factionTags = GetFactionTags(influence, itemClass);
-
             HashSet<string> itemTagSet = new HashSet<string>(itemTags);
-            itemTagSet.UnionWith(factionTags);
 
             var itemDomain = itemClass == "AbyssJewel" ? "abyss_jewel" : "item";
 
@@ -86,13 +83,21 @@ namespace PoeCraftLib.Data.Factory
             return affixesForItem;
         }
 
-        private List<string> GetFactionTags(List<Influence> influence, string itemClass)
+        public Dictionary<Influence, List<Affix>> GetAffixesByInfluence(List<Influence> influences, string itemClass,
+            int itemLevel)
         {
-            if (influence == null || !_itemClass.ContainsKey(itemClass)) return new List<string>();
+            if (!_itemClass.ContainsKey(itemClass))
+            {
+                return influences.ToDictionary(x => x, x => new List<Affix>());
+            }
 
-            if (influence.Count > 2) throw new ArgumentException("Items cannot have more than two types of influence");
+            return influences.Select(x => new { Influence = x, Tag = _itemClass[itemClass].InfluenceTags[x]})
+                .ToDictionary(x => x.Influence, x => GetAffixesForItem(new List<string>() {x.Tag}, itemClass, itemLevel));
+        }
 
-            return influence.Select(x => _itemClass[itemClass].InfluenceTags[x]).ToList();
+        private string GetFactionTags(Influence influence, string itemClass)
+        {
+            return _itemClass[itemClass].InfluenceTags[influence];
         }
 
         private Dictionary<string, int> GetModTiers(List<ModsJson> itemMods)
@@ -217,11 +222,6 @@ namespace PoeCraftLib.Data.Factory
         public Affix GetMasterAffix(string modName, int tier)
         {
             return ModJsonToAffix(_mods[modName], tier, TierType.Craft);
-        }
-
-        private static bool FilterByItemLevel(int itemLevel, Affix x)
-        {
-            return x.RequiredLevel <= itemLevel;
         }
     }
 }

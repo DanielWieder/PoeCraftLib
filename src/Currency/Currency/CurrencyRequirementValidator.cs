@@ -1,11 +1,11 @@
-﻿using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Items;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities.Crafting;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.Currency.CurrencyV2
+namespace PoeCraftLib.Currency.Currency
 {
 
     public class CurrencyRequirementValidator
@@ -57,12 +57,12 @@ namespace PoeCraftLib.Currency.CurrencyV2
 
                 if (explicitOptions == ExplicitOptions.Prefix)
                 {
-                    return item.Prefixes.Count <= affixCount;
+                    return item.Prefixes.Count < affixCount;
                 }
 
                 if (explicitOptions == ExplicitOptions.Suffix)
                 {
-                    return item.Suffixes.Count <= affixCount;
+                    return item.Suffixes.Count < affixCount;
                 }
 
                 throw new InvalidOperationException("Invalid open explicit validation");
@@ -132,12 +132,12 @@ namespace PoeCraftLib.Currency.CurrencyV2
             throw new InvalidOperationException("Invalid matching group validation");
         }
 
-        public Func<Equipment, bool> ValidateCanAddMasterMod()
+        public Func<Equipment, bool> ValidateCanAddMasterMod(bool addingMultiMod)
         {
             return (item) =>
             {
                 int masterModCount = item.Stats.Count(x => x.Affix.TierType == TierType.Craft);
-                return masterModCount == 0 || (masterModCount <= 2 && HasMultiMod(item));
+                return masterModCount == 0 || (masterModCount <= 2 && (addingMultiMod || HasMultiMod(item)));
             };
         }
 

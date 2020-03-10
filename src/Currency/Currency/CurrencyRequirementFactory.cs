@@ -1,10 +1,10 @@
-﻿using PoeCraftLib.Entities.Constants;
-using PoeCraftLib.Entities.Items;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoeCraftLib.Entities.Constants;
+using PoeCraftLib.Entities.Items;
 
-namespace PoeCraftLib.Currency.CurrencyV2
+namespace PoeCraftLib.Currency.Currency
 {
     public class CurrencyRequirementFactory
     {

@@ -2,6 +2,7 @@
 using System.Linq;
 using PoeCraftLib.Data.Entities;
 using PoeCraftLib.Data.Query;
+using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
 namespace PoeCraftLib.Data.Factory
@@ -29,6 +30,11 @@ namespace PoeCraftLib.Data.Factory
                 .Where(x => x.Name != "Remnant of Corruption")
                 .Select(CreateEssence)
                 .ToList();
+        }
+
+        public List<Affix> GetAffixesByItemClass(string itemClass)
+        {
+            return Essence.Select(x => x.ItemClassToMod[itemClass]).ToList();
         }
 
         private Essence CreateEssence(EssenceJson essenceJson)

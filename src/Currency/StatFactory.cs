@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Entities;
 using PoeCraftLib.Entities.Items;
 
@@ -24,7 +25,7 @@ namespace PoeCraftLib.Currency
             {2, 1}
         };
 
-        public static void RemoveExplicit(IRandom random, Equipment item)
+        public static void RemoveExplicit(IRandom random, Equipment item, CurrencyModifiers currencyModifiers)
         {
             bool cannotChangePrefixes = ItemHasGroup(item, _prefixesCannotBeChanged);
             bool cannotChangeSuffixes = ItemHasGroup(item, _suffixesCannotBeChanged);
@@ -46,7 +47,7 @@ namespace PoeCraftLib.Currency
             item.Stats.Remove(statPool[index]);
         }
 
-        public static void RemoveAllExplicits(Equipment item)
+        public static void RemoveAllExplicits(Equipment item, CurrencyModifiers currencyModifiers)
         {
             bool canChangePrefixes = !ItemHasGroup(item, _prefixesCannotBeChanged);
             bool canChangeSuffixes = !ItemHasGroup(item, _suffixesCannotBeChanged);
@@ -80,7 +81,7 @@ namespace PoeCraftLib.Currency
         /*
          * Add explicits until the item has an amount equal to the selected count
          */
-        public static void AddExplicits(IRandom random, Equipment item, AffixManager affixManager, Dictionary<int, int> affixCountOdds, List<Fossil> fossils = null)
+        public static void AddExplicits(IRandom random, Equipment item, AffixManager affixManager, Dictionary<int, int> affixCountOdds, CurrencyModifiers currencyModifiers)
         {
             var sum = affixCountOdds.Sum(x => x.Value);
             var roll = random.Next(sum);
@@ -100,15 +101,16 @@ namespace PoeCraftLib.Currency
 
             while (item.Stats.Count < affixCount)
             {
-                bool successful = StatFactory.AddExplicit(random, item, affixManager, fossils);
+                bool successful = StatFactory.AddExplicit(random, item, affixManager, currencyModifiers);
 
                 if (!successful) break;
             }
         }
 
-        public static bool AddExplicit(IRandom random, Equipment item, AffixManager affixManager, List<Fossil> fossils = null)
+        public static bool AddExplicit(IRandom random, Equipment item, AffixManager affixManager, CurrencyModifiers currencyModifiers)
         {
-            var affix = affixManager.GetAffix(item.Stats.Select(x => x.Affix).ToList(), item.Rarity, random);
+            var equipmentModifiers = new EquipmentModifiers(item);
+            var affix = affixManager.GetAffix(equipmentModifiers, currencyModifiers, item.Stats.Select(x => x.Affix).ToList(), item.Rarity, random);
 
             if (affix == null) return false;
 
@@ -150,7 +152,7 @@ namespace PoeCraftLib.Currency
        //    item.Implicit = stat;
         }
 
-        public static void Reroll(IRandom random, Equipment item, Stat stat)
+        public static void Reroll(IRandom random, Equipment item, Stat stat, CurrencyModifiers currencyModifiers)
         {
             if (stat?.Affix == null)
                 return;
@@ -179,7 +181,7 @@ namespace PoeCraftLib.Currency
         {
             Stat stat = new Stat();
             stat.Affix = affix;
-            Reroll(random, equipment, stat);
+            Reroll(random, equipment, stat, null);
             return stat;
         }
     }
