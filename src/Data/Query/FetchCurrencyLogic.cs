@@ -14,7 +14,8 @@ namespace PoeCraftLib.Data.Query
         private List<String> files = new List<string>()
         {
             "default_currency_logic.json",
-            "conqueror_currency_logic.json"
+            "conqueror_currency_logic.json",
+            "quality_currency_logic.json"
         };
         public List<CurrencyLogicJson> Execute()
         {

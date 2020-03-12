@@ -26,7 +26,11 @@
         public const string ImbuedCatalyst = "Imbued Catalyst";
         public const string IntrinsicCatalyst = "Intrinsic Catalyst";
         public const string PrismaticCatalyst = "Prismatic Catalyst";
-        public const string TemperingCatalyst = "TemperingCatalyst";
-        public const string TurbulentCatalyst = "TurbulentCatalyst";
+        public const string TemperingCatalyst = "Tempering Catalyst";
+        public const string TurbulentCatalyst = "Turbulent Catalyst";
+
+        public const string BlacksmithsWhetstone = "Blacksmith's Whetstone";
+        public const string ArmourersScrap = "Armourer's Scrap";
+        public const string GlassblowersBauble = "Glassblower's Bauble";
     }
 }
