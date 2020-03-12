@@ -79,6 +79,18 @@ namespace CurrencyTest
         }
 
         [TestMethod]
+        public void AugmentationOrbReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Defense;
+            equipment.Rarity = EquipmentRarity.Magic;
+            _currencyTestHelper.TestCurrency(CurrencyNames.AugmentationOrb, equipment);
+
+            Assert.AreEqual(18, equipment.Quality);
+        }
+
+        [TestMethod]
         public void AnnulmentOrbRarityRareSuccessTest()
         {
             var equipment = _currencyTestHelper.GetTestItem();
@@ -111,6 +123,18 @@ namespace CurrencyTest
         public void AnnulmentOrbRarityNoAffixesFailureTest()
         {
             _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.AnnulmentOrb, EquipmentRarity.Normal, EquipmentRarity.Magic, EquipmentRarity.Rare);
+        }
+
+        [TestMethod]
+        public void AnnulmentOrbReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            _currencyTestHelper.TestCurrency(CurrencyNames.AlchemyOrb, equipment);
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            _currencyTestHelper.TestCurrency(CurrencyNames.AnnulmentOrb, equipment);
+
+            Assert.AreEqual(0, equipment.Quality);
         }
 
         //Todo: Add blessed orb tests here when fully implemented
@@ -221,6 +245,18 @@ namespace CurrencyTest
         }
 
         [TestMethod]
+        public void RegalOrbReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            _currencyTestHelper.TestCurrency(CurrencyNames.TransmuationOrb, equipment);
+            _currencyTestHelper.TestCurrency(CurrencyNames.RegalOrb, equipment);
+
+            Assert.AreEqual(15, equipment.Quality);
+        }
+
+        [TestMethod]
         public void ExaltedOrbRarityRareSuccessTest()
         {
             var equipment = _currencyTestHelper.GetTestItem();
@@ -251,6 +287,19 @@ namespace CurrencyTest
         public void ExaltedOrbRarityRarityNormalMagicFailureTest()
         {
             _currencyTestHelper.TestRaritiesForFailure(CurrencyNames.ExaltedOrb, EquipmentRarity.Normal, EquipmentRarity.Magic);
+        }
+
+        [TestMethod]
+        public void ExaltedOrbReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            equipment.Rarity = EquipmentRarity.Rare;
+
+            _currencyTestHelper.TestCurrency(CurrencyNames.ExaltedOrb, equipment);
+
+            Assert.AreEqual(0, equipment.Quality);
         }
 
         [TestMethod]

@@ -39,9 +39,17 @@
             "HasExplicit": "Any"
          }
       ],
+      "Modifiers": [
+	      {
+		      "QualityAffectsExplicitOdds": ""
+	      }
+      ],
       "Steps":[
          {
             "RemoveExplicit":"Any"
+         },
+         {
+	         "RemoveCatalystQuality": "20"
          }
       ]
    },
@@ -55,9 +63,17 @@
             "HasOpenExplicit":"Any"
          }
       ],
+      "Modifiers": [
+	      {
+		      "QualityAffectsExplicitOdds": ""
+	      }
+      ],
       "Steps":[
          {
             "AddExplicit":"Any"
+         },
+         {
+	         "RemoveCatalystQuality": "2"
          }
       ]
    },
@@ -148,9 +164,17 @@
             "HasOpenExplicit":"Any"
          }
       ],
+      "Modifiers": [
+	      {
+		      "QualityAffectsExplicitOdds": ""
+	      }
+      ],
       "Steps":[
          {
             "AddExplicit":"Any"
+         },
+         {
+	         "RemoveCatalystQuality": "20"
          }
       ]
    },
@@ -161,12 +185,20 @@
 				"HasRarity":"Magic"
 			}
 		],
+		"Modifiers": [
+			{
+				"QualityAffectsExplicitOdds": ""
+			}
+		],
 		"Steps":[
 			{
 				"SetRarity":"Rare"
 			},
 			{
 				"AddExplicit":"Any"
+			},
+			{
+				"RemoveCatalystQuality": "5"
 			}
 		]
 	},

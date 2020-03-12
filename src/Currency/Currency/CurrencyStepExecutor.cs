@@ -243,5 +243,16 @@ namespace PoeCraftLib.Currency.Currency
                 item.Quality = Math.Min(20, item.Quality);
             };
         }
+
+        public Action<Equipment, AffixManager, CurrencyModifiers> RemoveCatalystQuality(int change)
+        {
+            return (item, affixManager, currencyModifier) =>
+            {
+                if (item.QualityType != QualityType.Default && item.Quality > 0)
+                {
+                    item.Quality = Math.Max(item.Quality - change, 0);
+                }
+            };
+        }
     }
 }

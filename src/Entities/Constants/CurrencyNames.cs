@@ -20,5 +20,13 @@
         public const string WarlordsOrb = "Warlord's Exalted Orb";
         public const string HuntersOrb = "Hunter's Exalted Orb";
         public const string RedeemersOrb = "Redeemer's Exalted Orb";
+
+        public const string AbrasiveCatalyst = "Abrasive Catalyst";
+        public const string FertileCatalyst = "Fertile Catalyst";
+        public const string ImbuedCatalyst = "Imbued Catalyst";
+        public const string IntrinsicCatalyst = "Intrinsic Catalyst";
+        public const string PrismaticCatalyst = "Prismatic Catalyst";
+        public const string TemperingCatalyst = "TemperingCatalyst";
+        public const string TurbulentCatalyst = "TurbulentCatalyst";
     }
 }

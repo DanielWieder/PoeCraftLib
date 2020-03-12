@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using PoeCraftLib.Currency.Currency;
 
 namespace PoeCraftLib.Data.Query
 {
@@ -54,8 +55,9 @@ namespace PoeCraftLib.Data.Query
             foreach (var item in token.Children().ToList())
             {
                 String name = null;
-                List<KeyValuePair<string, string>> requirements = null;
                 List<KeyValuePair<string, object>> steps = null;
+                List<KeyValuePair<string, string>> requirements = null;
+                List<KeyValuePair<string, string>> modifiers = null;
 
                 foreach (var property in item.Children<JProperty>().ToList())
                 {
@@ -67,8 +69,11 @@ namespace PoeCraftLib.Data.Query
                         case "Steps":
                             steps = GetSteps(property.Value.Children<JObject>().ToList());
                             break;
+                        case "Modifiers":
+                            modifiers = ParsePropertyList(property.Value.Children<JObject>().ToList());
+                            break;
                         case "Requirements":
-                            requirements = GetRequirements(property.Value.Children<JObject>().ToList());
+                            requirements = ParsePropertyList(property.Value.Children<JObject>().ToList());
                             break;
                     }
                 }
@@ -77,7 +82,8 @@ namespace PoeCraftLib.Data.Query
                 {
                     Name = name,
                     Requirements = requirements,
-                    Steps = steps
+                    Steps = steps,
+                    Modifiers = modifiers
                 };
 
 
@@ -134,18 +140,18 @@ namespace PoeCraftLib.Data.Query
             return steps;
         }
 
-        private static List<KeyValuePair<string, string>> GetRequirements(List<JObject> requirementsJson)
+        private static List<KeyValuePair<string, string>> ParsePropertyList(List<JObject> properties)
         {
-            var requirementsList = new List<KeyValuePair<string, string>>();
-            foreach (JObject content in requirementsJson)
+            var propertyList = new List<KeyValuePair<string, string>>();
+            foreach (JObject content in properties)
             {
                 foreach (JProperty prop in content.Properties())
                 {
-                    requirementsList.Add(new KeyValuePair<string, string>(prop.Name, prop.Value.ToObject<String>()));
+                    propertyList.Add(new KeyValuePair<string, string>(prop.Name, prop.Value.ToObject<String>()));
                 }
             }
 
-            return requirementsList;
+            return propertyList;
         }
 
         public override bool CanRead => true;

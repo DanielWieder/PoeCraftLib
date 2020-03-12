@@ -221,6 +221,7 @@ namespace PoeCraftLib.CraftingTest
                 null,
                 new Dictionary<string, double>() { { fossilTag, 200 } },
                 null,
+                null,
                 null);
 
             var equipmentModifiers = new EquipmentModifiers(new List<Influence>(),
@@ -253,6 +254,7 @@ namespace PoeCraftLib.CraftingTest
 
             CurrencyModifiers currencyModifiers = new CurrencyModifiers(
                 addedAffixes, 
+                null,
                 null,
                 null,
                 null);
@@ -542,7 +544,7 @@ namespace PoeCraftLib.CraftingTest
 
         private static CurrencyModifiers CurrencyModifier()
         {
-            return new CurrencyModifiers(null, null, null, null);
+            return new CurrencyModifiers(null, null, null, null, null);
         }
     }
 }

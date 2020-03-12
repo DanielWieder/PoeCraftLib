@@ -27,7 +27,7 @@ namespace PoeCraftLib.Currency.Currency
             return currencySpent;
         }
 
-        public CurrencyModifiers CurrencyModifiers = new CurrencyModifiers(null, null, null, null);
+        public CurrencyModifiers CurrencyModifiers = new CurrencyModifiers(null, null, null, null, null);
 
         public List<Func<Equipment, bool>> Requirements { get; set; } = new List<Func<Equipment, bool>>();
         public List<Action<Equipment, AffixManager, CurrencyModifiers>> Steps { get; set; } = new List<Action<Equipment, AffixManager, CurrencyModifiers>>();

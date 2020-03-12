@@ -12,6 +12,18 @@ namespace PoeCraftLib.Currency
         private static readonly String _prefixesCannotBeChanged = "ItemGenerationCannotChangePrefixes";
         private static readonly String _suffixesCannotBeChanged = "ItemGenerationCannotChangeSuffixes";
 
+        private static readonly Dictionary<QualityType, string> QualityTags = new Dictionary<QualityType, string>()
+        {
+            {QualityType.Defense, "jewellery_defense"},
+            {QualityType.Resistance, "jewellery_resistance" },
+            {QualityType.Attack, "jewellery_attack" },
+            {QualityType.Attribute, "jewellery_attribute" },
+            {QualityType.Caster, "jewellery_caster" },
+            {QualityType.ElementalDamage, "jewellery_elemental" },
+            {QualityType.LifeAndMana, "jewellery_resource" },
+            {QualityType.Default, "jewellery_quality_ignore" }
+        };
+
         public static readonly Dictionary<int, int> RareAffixCountOdds = new Dictionary<int, int>()
         {
             {4, 8},
@@ -40,6 +52,27 @@ namespace PoeCraftLib.Currency
             if (!cannotChangeSuffixes)
             {
                 statPool.AddRange(item.Suffixes);
+            }
+
+            if (currencyModifiers.QualityAffectsExplicitOdds && item.Quality > 0 &&
+                item.QualityType != QualityType.Default)
+            {
+                var statOdds = statPool.ToDictionary(
+                    x => x,
+                    x => x.Affix.Tags.Contains(QualityTags[item.QualityType]) ? 100 - item.Quality : 100);
+
+                var randomValue = random.Next(statOdds.Sum(x => x.Value));
+
+                foreach (var statOdd in statOdds)
+                {
+                    if (randomValue < statOdd.Value)
+                    {
+                        item.Stats.Remove(statOdd.Key);
+                        break;
+                    }
+
+                    randomValue -= statOdd.Value;
+                }
             }
 
             var index = random.Next(statPool.Count);

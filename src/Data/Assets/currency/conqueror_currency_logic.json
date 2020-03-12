@@ -8,12 +8,20 @@
         "HasOpenExplicit": "Any" 
       }
     ],
+    "Modifiers": [
+	    {
+		    "QualityAffectsExplicitOdds": ""
+	    }
+    ],
     "Steps": [
       {
         "AddInfluence": "Crusader"
       },
       {
         "AddExplicit": "Crusader"
+      },
+      {
+	      "RemoveCatalystQuality": "20"
       }
     ]
   },
@@ -26,12 +34,20 @@
         "HasOpenExplicit": "Any"
       }
     ],
+    "Modifiers": [
+	    {
+		    "QualityAffectsExplicitOdds": ""
+	    }
+    ],
     "Steps": [
       {
         "AddInfluence": "Hunter"
       },
       {
         "AddExplicit": "Hunter"
+      },
+      {
+	      "RemoveCatalystQuality": "20"
       }
     ]
   },
@@ -44,12 +60,20 @@
         "HasOpenExplicit": "Any"
       }
     ],
+    "Modifiers": [
+	    {
+		    "QualityAffectsExplicitOdds": ""
+	    }
+    ],
     "Steps": [
       {
         "AddInfluence": "Redeemer"
       },
       {
         "AddExplicit": "Redeemer"
+      },
+      {
+	      "RemoveCatalystQuality": "20"
       }
     ]
   },
@@ -62,12 +86,20 @@
         "HasOpenExplicit": "Any"
       }
     ],
+    "Modifiers": [
+	    {
+		    "QualityAffectsExplicitOdds": ""
+	    }
+    ],
     "Steps": [
       {
         "AddInfluence": "Warlord"
       },
       {
         "AddExplicit": "Warlord"
+      },
+      {
+	      "RemoveCatalystQuality": "20"
       }
     ]
   }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using PoeCraftLib.Entities.Items;
@@ -12,11 +13,25 @@ namespace PoeCraftLib.Currency
         private static readonly string NoAttackMods = "ItemGenerationCannotRollAttackAffixes";
         private static readonly string NoCasterMods = "ItemGenerationCannotRollCasterAffixes";
 
+        private static readonly Dictionary<QualityType, string> QualityTags = new Dictionary<QualityType, string>()
+        {
+            {QualityType.Defense, "jewellery_defense"},
+            {QualityType.Resistance, "jewellery_resistance" },
+            {QualityType.Attack, "jewellery_attack" },
+            {QualityType.Attribute, "jewellery_attribute" },
+            {QualityType.Caster, "jewellery_caster" },
+            {QualityType.ElementalDamage, "jewellery_elemental" },
+            {QualityType.LifeAndMana, "jewellery_resource" },
+            {QualityType.Default, "jewellery_quality_ignore" }
+        };
+
         public List<Influence> Influence { get; }
         public List<string> AddedTags { get; }
         public List<string> MasterMods { get; }
         public int ItemLevel { get; }
         public IDictionary<string, double> GenerationWeights { get; }
+
+        public KeyValuePair<string, double> QualityGenerationWeight { get; }
 
         public EquipmentModifiers(Equipment equipment)
         {
@@ -37,6 +52,8 @@ namespace PoeCraftLib.Currency
                 .ToList();
 
             ItemLevel = equipment.ItemLevel;
+
+            QualityGenerationWeight = new KeyValuePair<string, double>(QualityTags[equipment.QualityType], 1 + (equipment.Quality / 100));
 
             GenerationWeights = equipment.Stats.SelectMany(x => x.Affix.GenerationWeights)
                 .GroupBy(x => x.Key)
@@ -83,12 +100,17 @@ namespace PoeCraftLib.Currency
                 if (Math.Abs(other.GenerationWeights[weightModifier.Key] - weightModifier.Value) > double.Epsilon) return false;
             }
 
-            return ItemLevel == other.ItemLevel;
+            bool qualityGenAreEqual = Math.Abs(QualityGenerationWeight.Value - other.QualityGenerationWeight.Value) < double.Epsilon &&
+                                      QualityGenerationWeight.Key == other.QualityGenerationWeight.Key;
+
+            return ItemLevel == other.ItemLevel && qualityGenAreEqual;
         }
 
         public int GetHashCode()
         {
             var hashCode = MutateHashCode(ItemLevel);
+            hashCode = MutateHashCode(hashCode, QualityGenerationWeight.Key);
+            hashCode = MutateHashCode(hashCode, QualityGenerationWeight.Value);
 
             foreach (var x in Influence)
             {

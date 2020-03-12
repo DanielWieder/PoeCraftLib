@@ -36,7 +36,7 @@ namespace CurrencyTest
 
             var currency = _currencyTestHelper.CurrencyFactory.GetCurrencyByName("Aberrant Fossil") as PoeCraftLib.Currency.Currency.Currency;
 
-            Assert.IsFalse(currency.CurrencyModifiers.RollsLucky.Value);
+            Assert.IsFalse(currency.CurrencyModifiers.RollsLucky);
             Assert.AreEqual(0, currency.CurrencyModifiers.ExplicitWeightModifiers["lightning"]);
             Assert.AreEqual(10, currency.CurrencyModifiers.ExplicitWeightModifiers["chaos"]);
             Assert.AreEqual(5, currency.CurrencyModifiers.ExplicitWeightModifiers["poison"]);
@@ -70,7 +70,7 @@ namespace CurrencyTest
             Assert.AreEqual(1, spent["Scorched Fossil"]);
             Assert.AreEqual(1, spent["Frigid Fossil"]);
             Assert.AreEqual(1, spent["Potent Alchemical Resonator"]);
-            Assert.IsFalse(currency.CurrencyModifiers.RollsLucky.Value);
+            Assert.IsFalse(currency.CurrencyModifiers.RollsLucky);
             Assert.AreEqual(0, currency.CurrencyModifiers.ExplicitWeightModifiers["cold"]);
             Assert.AreEqual(0, currency.CurrencyModifiers.ExplicitWeightModifiers["fire"]);
             Assert.AreEqual(100, currency.CurrencyModifiers.ItemLevelRestriction);
@@ -81,14 +81,14 @@ namespace CurrencyTest
         public void FossilRollsLuckyModifierTest()
         {
             var currency = _currencyTestHelper.CurrencyFactory.GetCurrencyByName("Sanctified Fossil") as PoeCraftLib.Currency.Currency.Currency;
-            Assert.IsTrue(currency.CurrencyModifiers.RollsLucky.Value);
+            Assert.IsTrue(currency.CurrencyModifiers.RollsLucky);
         }
 
         [TestMethod]
         public void FossilCombinedModifierRollsLuckyTest()
         {
             var currency = _currencyTestHelper.CurrencyFactory.GetFossilCraftByNames(new List<string>() { "Sanctified Fossil", "Frigid Fossil" }) as PoeCraftLib.Currency.Currency.Currency;
-            Assert.IsTrue(currency.CurrencyModifiers.RollsLucky.Value);
+            Assert.IsTrue(currency.CurrencyModifiers.RollsLucky);
         }
 
         [TestMethod]

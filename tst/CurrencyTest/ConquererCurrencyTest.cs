@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PoeCraftLib.Currency;
+using PoeCraftLib.Currency.Currency;
 using PoeCraftLib.Entities.Constants;
 using PoeCraftLib.Entities.Items;
 
@@ -73,6 +75,74 @@ namespace CurrencyTest
             Assert.AreEqual(EquipmentRarity.Rare, equipment.Rarity);
             Assert.IsTrue(equipment.Stats.Count >= 3 && equipment.Stats.Count <= 4);
             Assert.AreEqual(1, equipment.Stats.Count(x => x.Affix.SpawnWeights.ContainsKey("body_armour_eyrie")));
+        }
+
+        [TestMethod]
+        public void HunterReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            equipment.Rarity = EquipmentRarity.Rare;
+
+            _currencyTestHelper.TestCurrency(CurrencyNames.HuntersOrb, equipment);
+
+            Assert.AreEqual(0, equipment.Quality);
+        }
+
+        [TestMethod]
+        public void WarlordReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            equipment.Rarity = EquipmentRarity.Rare;
+
+            _currencyTestHelper.TestCurrency(CurrencyNames.WarlordsOrb, equipment);
+
+            Assert.AreEqual(0, equipment.Quality);
+        }
+
+        [TestMethod]
+        public void RedeemerReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            equipment.Rarity = EquipmentRarity.Rare;
+
+            _currencyTestHelper.TestCurrency(CurrencyNames.RedeemersOrb, equipment);
+
+            Assert.AreEqual(0, equipment.Quality);
+        }
+
+        [TestMethod]
+        public void CrusaderReducesCatalystQualityTest()
+        {
+            var equipment = _currencyTestHelper.GetTestItemByItemClass("Ring");
+            equipment.Quality = 20;
+            equipment.QualityType = QualityType.Resistance;
+            equipment.Rarity = EquipmentRarity.Rare;
+
+            _currencyTestHelper.TestCurrency(CurrencyNames.CrusadersOrb, equipment);
+
+            Assert.AreEqual(0, equipment.Quality);
+        }
+
+        [TestMethod]
+        public void ConquerersCurrencyUsesQualityTest()
+        {
+            Currency hunter = _currencyTestHelper.CurrencyFactory.GetCurrencyByName(CurrencyNames.HuntersOrb) as Currency;
+            Assert.IsTrue(hunter.CurrencyModifiers.QualityAffectsExplicitOdds);
+
+            Currency warlord = _currencyTestHelper.CurrencyFactory.GetCurrencyByName(CurrencyNames.WarlordsOrb) as Currency;
+            Assert.IsTrue(warlord.CurrencyModifiers.QualityAffectsExplicitOdds);
+
+            Currency crusader = _currencyTestHelper.CurrencyFactory.GetCurrencyByName(CurrencyNames.CrusadersOrb) as Currency;
+            Assert.IsTrue(crusader.CurrencyModifiers.QualityAffectsExplicitOdds);
+
+            Currency redeemer = _currencyTestHelper.CurrencyFactory.GetCurrencyByName(CurrencyNames.RedeemersOrb) as Currency;
+            Assert.IsTrue(crusader.CurrencyModifiers.QualityAffectsExplicitOdds);
         }
 
         [TestMethod]

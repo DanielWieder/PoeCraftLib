@@ -13,30 +13,29 @@ namespace PoeCraftLib.Currency.Currency
 
         public IReadOnlyDictionary<string, double> ExplicitWeightModifiers { get; }
 
-        public int? ItemLevelRestriction { get; }
+        public int ItemLevelRestriction { get; }
 
-        public bool? RollsLucky { get; }
+        public bool RollsLucky { get; }
+
+        public bool QualityAffectsExplicitOdds { get; }
 
         private int HashCode { get; }
 
-        public CurrencyModifiers() : this(null, null, null, null)
+        public CurrencyModifiers() : this(null, null, null, null, null)
         {
         }
 
         public CurrencyModifiers(IReadOnlyList<Affix> addedExplicits, 
             IReadOnlyDictionary<string, double> explicitWeightModifiers, 
             int? itemLevelRestriction,
-            bool? rollsLucky)
+            bool? rollsLucky,
+            bool? qualityAffectsExplicitOdds)
         {
-            AddedExplicits = addedExplicits;
-            ExplicitWeightModifiers = explicitWeightModifiers;
-            ItemLevelRestriction = itemLevelRestriction;
-            RollsLucky = rollsLucky;
-
-            if (addedExplicits == null) AddedExplicits = new List<Affix>();
-            if (explicitWeightModifiers == null) ExplicitWeightModifiers = new ReadOnlyDictionary<string, double>(new Dictionary<string, double>());
-            if (itemLevelRestriction == null) ItemLevelRestriction = 100;
-            if (RollsLucky == null) RollsLucky = false;
+            AddedExplicits = addedExplicits ?? new List<Affix>();
+            ExplicitWeightModifiers = explicitWeightModifiers ?? new Dictionary<string, double>();
+            ItemLevelRestriction = itemLevelRestriction ?? 100;
+            RollsLucky = rollsLucky ?? false;
+            QualityAffectsExplicitOdds = qualityAffectsExplicitOdds ?? false;
 
             HashCode = CalculateHashCode();
         }
@@ -59,7 +58,8 @@ namespace PoeCraftLib.Currency.Currency
             }
 
             return ItemLevelRestriction == other.ItemLevelRestriction && 
-                   RollsLucky == other.RollsLucky;
+                   RollsLucky == other.RollsLucky &&
+                QualityAffectsExplicitOdds == other.QualityAffectsExplicitOdds;
         }
 
         public override bool Equals(object obj)
@@ -81,6 +81,7 @@ namespace PoeCraftLib.Currency.Currency
         {
             var hashCode = MutateHashCode(ItemLevelRestriction);
             hashCode = MutateHashCode(hashCode, RollsLucky);
+            hashCode = MutateHashCode(hashCode, QualityAffectsExplicitOdds);
 
             if (AddedExplicits != null)
             {

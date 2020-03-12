@@ -42,6 +42,7 @@ namespace PoeCraftLib.Currency
         private string multiMod = "ItemGenerationCanHaveMultipleCraftedMods0";
 
         private readonly List<Essence> _corruptedEssences;
+        private CurrencyModifiersFactory _currencyModifiersFactory;
 
         public CurrencyFactory(
             IRandom random,
@@ -55,6 +56,7 @@ namespace PoeCraftLib.Currency
             _currencyRequirementValidator = new CurrencyRequirementValidator();
             _currencyRequirementFactory =
                 new CurrencyRequirementFactory(_currencyRequirementValidator);
+            _currencyModifiersFactory = new CurrencyModifiersFactory();
 
             var currency = GetDefaultCurrency();
             var essenceCurrency = essenceFactory.Essence.Select(EssenceToCurrency);
@@ -189,7 +191,7 @@ namespace PoeCraftLib.Currency
 
             currency.Requirements.Add(_currencyRequirementValidator.ValidateAny(rarityValidations));
 
-            currency.CurrencyModifiers = new CurrencyModifiers(null, null, essence.ItemLevelRestriction, null);
+            currency.CurrencyModifiers = new CurrencyModifiers(null, null, essence.ItemLevelRestriction, null, null);
 
             currency.Steps = new List<Action<Equipment, AffixManager, CurrencyModifiers>>()
             {
@@ -239,7 +241,8 @@ namespace PoeCraftLib.Currency
             currency.CurrencyModifiers = new CurrencyModifiers(addedAffixes,
                 new ReadOnlyDictionary<string, double>(weightModifiers), 
                 null,
-                fossils.Any(x => x.RollsLucky));
+                fossils.Any(x => x.RollsLucky),
+                null);
 
             int corruptedEssenceChance = fossils
                 .Select(x => x.CorruptedEssenceChance)
@@ -324,6 +327,7 @@ namespace PoeCraftLib.Currency
                     Requirements = currencyLogic.Requirements
                         .Select(x => _currencyRequirementFactory.GetRequirement(x.Key, x.Value))
                         .ToList(),
+                    CurrencyModifiers = _currencyModifiersFactory.GetCurrencyModifiers(currencyLogic.Modifiers),
                     Steps = currencyLogic.Steps
                         .Select(x => _currencyStepFactory.GetCurrencyStep(x.Key, x.Value))
                         .ToList()

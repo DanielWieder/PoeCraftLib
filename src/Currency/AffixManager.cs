@@ -202,10 +202,6 @@ namespace PoeCraftLib.Currency
             var tags = new HashSet<string>(_baseTags.Union(equipmentModifiers.AddedTags));
             var masterModSet = new HashSet<string>(equipmentModifiers.MasterMods);
 
-            if (currencyModifiers == null)
-            {
-                currencyModifiers = new CurrencyModifiers(null, null, null, null);
-            }
 
             var addedAffixes = currencyModifiers.AddedExplicits
                 .Union(equipmentModifiers.Influence.SelectMany(x => _influenceAffixes[x]))
@@ -221,8 +217,15 @@ namespace PoeCraftLib.Currency
                     .ToList();
             }
 
+            List<KeyValuePair<string, double>> qualityWeightModifiers = new List<KeyValuePair<string, double>>();
+            if (currencyModifiers.QualityAffectsExplicitOdds)
+            {
+                qualityWeightModifiers.Add(equipmentModifiers.QualityGenerationWeight);
+            }
+
             var weightModifiers = equipmentModifiers.GenerationWeights
                 .Union(currencyModifiers.ExplicitWeightModifiers)
+                .Union(qualityWeightModifiers)
                 .GroupBy(x => x.Key)
                 .ToDictionary(x => x.Key, x => x.Aggregate(1d, (y, z) => y * z.Value / 100d));
 
