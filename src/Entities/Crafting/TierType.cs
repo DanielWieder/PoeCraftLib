@@ -5,6 +5,7 @@
         Default,
         Essence,
         Delve,
-        Craft
+        Craft,
+        Implicit
     }
 }

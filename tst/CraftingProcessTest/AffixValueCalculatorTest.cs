@@ -54,7 +54,7 @@ namespace PoeCraftLib.CraftingTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException), "The affix type Implicit is not recognized.")]
+        [ExpectedException(typeof(NotImplementedException), "The affix type Implicits is not recognized.")]
         public void GetFlatImplicitValueNotYetImplementedTest()
         {
             String modName = "testMod";

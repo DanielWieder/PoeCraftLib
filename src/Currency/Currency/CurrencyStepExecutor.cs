@@ -148,7 +148,7 @@ namespace PoeCraftLib.Currency.Currency
 
         public Action<Equipment, AffixManager, CurrencyModifiers> RerollImplicits()
         {
-            return (item, affixManager, currencyModifier) => { StatFactory.Reroll(_random, item, item.Implicit, currencyModifier); };
+            return (item, affixManager, currencyModifier) => { item.Implicits.ForEach(x => StatFactory.Reroll(_random, item, x, currencyModifier)); };
         }
 
         public Action<Equipment, AffixManager, CurrencyModifiers> RandomSteps(
@@ -187,7 +187,7 @@ namespace PoeCraftLib.Currency.Currency
 
         public Action<Equipment, AffixManager, CurrencyModifiers> RemoveImplicits()
         {
-            return (item, affixManager, currencyModifier) => { item.Implicit = null; };
+            return (item, affixManager, currencyModifier) => { item.Implicits = null; };
         }
 
         public Action<Equipment, AffixManager, CurrencyModifiers> AddImplicits(ImplicitTypes addImplicitArgs)
@@ -213,6 +213,12 @@ namespace PoeCraftLib.Currency.Currency
                         break;
                     case InfluenceOptions.Warlord:
                         item.Influence.Add(Influence.Warlord);
+                        break;
+                    case InfluenceOptions.Random:
+                        var influences = (Influence[]) Enum.GetValues(typeof(Influence));
+                        influences = influences.Where(x => !item.Influence.Contains(x)).ToArray();
+                        var index = _random.Next(influences.Length);
+                        item.Influence.Add(influences[index]);
                         break;
                     case InfluenceOptions.One:
                         throw new NotImplementedException();
@@ -252,6 +258,33 @@ namespace PoeCraftLib.Currency.Currency
                 {
                     item.Quality = Math.Max(item.Quality - change, 0);
                 }
+            };
+        }
+
+        public Action<Equipment, AffixManager, CurrencyModifiers> DestroyItem()
+        {
+            return (item, affixManager, currencyModifier) => { 
+                item.Destroyed = true;
+                item.Completed = true;
+                item.Corrupted = true;
+            };
+        }
+
+        public Action<Equipment, AffixManager, CurrencyModifiers> ResetItem()
+        {
+            return (item, affixManager, currencyModifier) =>
+            {
+                item.Influence.Clear();
+                item.Implicits.Clear();
+                item.Rarity = EquipmentRarity.Normal;
+                item.Quality = 0;
+                item.QualityType = QualityType.Default;
+                item.Stats.Clear();
+                item.Destroyed = false;
+                item.Completed = false;
+                item.Corrupted = false;
+
+                item.ItemBase.Implicits.ForEach(x => StatFactory.AddImplicit(_random, item, x));
             };
         }
     }

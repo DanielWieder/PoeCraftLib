@@ -17,7 +17,7 @@ namespace PoeCraftLib.Entities.Items
         public List<Stat> Prefixes => Stats.Where(x => x.Affix.GenerationType == "prefix").ToList();
         public List<Stat> Suffixes => Stats.Where(x => x.Affix.GenerationType == "suffix").ToList();
 
-        public Stat Implicit { get; set; } = null;
+        public List<Stat> Implicits { get; set; } = null;
 
         public int ItemLevel { get; set; } = 84;
 
@@ -27,5 +27,6 @@ namespace PoeCraftLib.Entities.Items
         public List<Influence> Influence { get; set; }
         public int Quality { get; set; }
         public QualityType QualityType { get; set; }
+        public bool Destroyed { get; set; }
     }
 }

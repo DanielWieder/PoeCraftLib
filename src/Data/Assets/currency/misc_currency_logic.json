@@ -1,0 +1,52 @@
+[
+  {
+    "Name": "Temple Corruption",
+    "Requirements": [
+    ],
+    "Steps": [
+      {
+        "RandomSteps": [
+          {
+            "25": [
+              {
+                "ResetItem": ""
+              },
+              {
+                "SetRarity": "Rare"
+              },
+              {
+                "AddInfluence": "Random"
+              },
+              {
+                "AddExplicits": "RareDistribution"
+              },
+              {
+                "AddExplicit": "Any"
+              },
+              {
+                "AddExplicit": "Any"
+              }
+            ],
+            "25": [
+              {
+                "RemoveImplicits": ""
+              },
+              {
+                "AddImplicit": "Vaal"
+              },
+              {
+                "AddImplicit": "Vaal"
+              }
+            ],
+            "25": [
+              {
+                "DestroyItem": ""
+              }
+            ]
+          }
+        ],
+        "Corrupt": ""
+      }
+    ]
+  }
+]

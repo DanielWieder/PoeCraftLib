@@ -64,6 +64,10 @@ namespace PoeCraftLib.Currency.Currency
                 case "RemoveCatalystQuality":
                     var removeCatalystQualityArg = int.Parse(value.ToString());
                     return _currencyStepExecutor.RemoveCatalystQuality(removeCatalystQualityArg);
+                case "DestroyItem":
+                    return _currencyStepExecutor.DestroyItem();
+                case "ResetItem":
+                    return _currencyStepExecutor.ResetItem();
                 default: throw new InvalidOperationException("Unknown currency step");
             }
         }

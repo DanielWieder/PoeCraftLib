@@ -12,14 +12,14 @@ namespace PoeCraftLib.SimulatorTest
         private readonly FossilFactory _fossilFactory;
         private readonly MasterModFactory _masterModFactory;
         private readonly EssenceFactory _essenceFactory;
-
+        private readonly ItemFactory _itemFactory;
         public MapperTests()
         {
-            ItemFactory itemFactory = new ItemFactory();
             AffixFactory affixFactory = new AffixFactory();
+            _itemFactory = new ItemFactory(affixFactory);
             _fossilFactory = new FossilFactory(affixFactory);
-            _masterModFactory = new MasterModFactory(affixFactory, itemFactory);
-            _essenceFactory = new EssenceFactory(itemFactory, affixFactory);
+            _masterModFactory = new MasterModFactory(affixFactory, _itemFactory);
+            _essenceFactory = new EssenceFactory(_itemFactory, affixFactory);
         }
 
         [TestMethod]
@@ -31,9 +31,7 @@ namespace PoeCraftLib.SimulatorTest
                 _fossilFactory,
                 _masterModFactory);
 
-            var itemFactory = new ItemFactory();
-
-            var mapper = new ClientToDomainMapper(itemFactory, currencyFactory);
+            var mapper = new ClientToDomainMapper(_itemFactory, currencyFactory);
             var config = mapper.GenerateMapper();
             config.ConfigurationProvider.AssertConfigurationIsValid();
         }

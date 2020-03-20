@@ -12,7 +12,7 @@ namespace PoeCraftLib.Entities.Items
         public int RequiredLevel { get; set; }
         public string FullName { get; set; }
         public string Description { get; set; }
-        public List<string> Implicits { get; set; }
+        public List<Affix> Implicits { get; set; }
 
         public Dictionary<string, double> Properties = new Dictionary<string, double>();
 

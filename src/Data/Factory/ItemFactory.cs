@@ -11,6 +11,8 @@ namespace PoeCraftLib.Data.Factory
     {
         private readonly IFetchBaseItems _fetchBaseItems = new FetchItems();
 
+        private AffixFactory _affixFactory;
+
         public List<ItemBase> Currency;
 
         public List<ItemBase> Items { get; }
@@ -25,8 +27,9 @@ namespace PoeCraftLib.Data.Factory
         public List<ItemBase> Fossil { get; }
         public List<ItemBase> Jewel { get; }
 
-        public ItemFactory()
+        public ItemFactory(AffixFactory affixFactory)
         {
+            this._affixFactory = affixFactory;
             Items = _fetchBaseItems.Execute().Select(CreateBaseItem).ToList();
 
             Armour = Items.Where(HasTag("armour")).ToList();
@@ -53,7 +56,7 @@ namespace PoeCraftLib.Data.Factory
                 ItemLevel = itemLevel,
                 ItemBase = (ItemBase)itemBase.Clone(),
                 Influence = influence
-                //     Implicit = _itemBase != null ? StatFactory.AffixToStat(_random, _baseImplicit) : null,
+                //     Implicits = _itemBase != null ? StatFactory.AffixToStat(_random, _baseImplicit) : null,
             };
         }
 
@@ -72,7 +75,7 @@ namespace PoeCraftLib.Data.Factory
                 .Where(x => !string.IsNullOrEmpty(x.Value))
                 .Where(x => double.TryParse(x.Value, out _))
                 .ToDictionary(x => x.Key, x => double.Parse(x.Value));
-            itemBase.Implicits = baseItemJson.Implicits;
+            itemBase.Implicits = baseItemJson.Implicits.Select(x => _affixFactory.GetImplicitAffix(x)).ToList();
 
             itemBase.Description = baseItemJson.Properties.ContainsKey("description") ? baseItemJson.Properties["description"] : String.Empty;
             return itemBase;

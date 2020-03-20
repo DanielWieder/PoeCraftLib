@@ -227,5 +227,10 @@ namespace PoeCraftLib.Data.Factory
         {
             return ModJsonToAffix(_mods[modName], tier, TierType.Craft);
         }
+
+        public Affix GetImplicitAffix(String modName)
+        {
+            return ModJsonToAffix(_mods[modName], 0, TierType.Implicit);
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace PoeCraftLib.DataTest
         public AffixFactoryTest()
         {
             _affixFactory = new AffixFactory();
-            _itemFactory = new ItemFactory();
+            _itemFactory = new ItemFactory(_affixFactory);
             _essenceFactory = new EssenceFactory(_itemFactory, _affixFactory);
         }
 

@@ -21,12 +21,12 @@ namespace PoeCraftLib.Simulator
     public class CraftingSimulator
     {
         // Singleton
-        private readonly ItemFactory _itemFactory = new ItemFactory();
         private readonly AffixFactory _affixFactory = new AffixFactory();
         private readonly CraftManager _craftingManager = new CraftManager();
         private readonly CurrencyValueFactory _currencyValueFactory = new CurrencyValueFactory();
         private readonly ConditionResolver _conditionResolution = new ConditionResolver();
 
+        private readonly ItemFactory _itemFactory;
         private readonly FossilFactory _fossilFactory;
         private readonly MasterModFactory _masterModFactory;
         private readonly EssenceFactory _essenceFactory;
@@ -67,14 +67,14 @@ namespace PoeCraftLib.Simulator
             SimFinanceInfo financeInfo,
             SimCraftingInfo craftingInfo)
         {
-        ItemFactory itemFactory = new ItemFactory();
-        AffixFactory affixFactory = new AffixFactory();
-        _fossilFactory = new FossilFactory(affixFactory);
-        _masterModFactory = new MasterModFactory(affixFactory, itemFactory);
-        _essenceFactory = new EssenceFactory(itemFactory, affixFactory);
+            _affixFactory = new AffixFactory();
+            _itemFactory = new ItemFactory(_affixFactory);
+            _fossilFactory = new FossilFactory(_affixFactory);
+            _masterModFactory = new MasterModFactory(_affixFactory, _itemFactory);
+            _essenceFactory = new EssenceFactory(_itemFactory, _affixFactory);
 
-        var currencyFactory = new CurrencyFactory(
-                new PoeRandom(), 
+            var currencyFactory = new CurrencyFactory(
+                new PoeRandom(),
                 _essenceFactory,
                 _fossilFactory,
                 _masterModFactory);
@@ -105,11 +105,13 @@ namespace PoeCraftLib.Simulator
 
             var currencyAffixes = fossilAffixes.Union(essenceAffixes).ToList();
 
-            var influences = new List<Influence>((Influence[])Enum.GetValues(typeof(Influence)));
-            var affixesByInfluence = _affixFactory.GetAffixesByInfluence(influences, _baseItem.ItemClass, _baseItemInfo.ItemLevel);
+            var influences = new List<Influence>((Influence[]) Enum.GetValues(typeof(Influence)));
+            var affixesByInfluence =
+                _affixFactory.GetAffixesByInfluence(influences, _baseItem.ItemClass, _baseItemInfo.ItemLevel);
             var influenceSpawnTag = _affixFactory.GetInfluenceSpawnTags(_baseItem.ItemClass);
 
-            _affixManager = new AffixManager(_baseItem, itemAffixes, currencyAffixes, affixesByInfluence, influenceSpawnTag);
+            _affixManager = new AffixManager(_baseItem, itemAffixes, currencyAffixes, affixesByInfluence,
+                influenceSpawnTag);
             _currencyValues = _currencyValueFactory.GetCurrencyValues(financeInfo.League);
         }
 

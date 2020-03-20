@@ -6,7 +6,7 @@ namespace PoeCraftLib.Entities.Items
     public class Fossil
     {
         // Several properties are unused because they are only used for fossils that use unsupported features
-        // Forced Mods is used for Bloodstained (Implicit) and Hallow (Socket)
+        // Forced Mods is used for Bloodstained (Implicits) and Hallow (Socket)
         // ChangesQuality is used for Perfect (Quality)
         // Mirrors is used for Fractured (Mirror)
 

@@ -242,20 +242,23 @@
          {
 	         "RandomSteps":[
 		         {
-			         "25":[
-				         {
-					         "SetRarity":"Rare"
-				         },
-				         {
-					         "AddExplicits":"RareDistribution"
-				         },
-				         {
-                             "AddExplicit": "Any"
-				         },
-				         {
-					         "AddExplicit": "Any"
-				         }
-			         ],
+              "25": [
+                {
+                  "ResetItem": ""
+                },
+                {
+                  "SetRarity": "Rare"
+                },
+                {
+                  "AddExplicits": "RareDistribution"
+                },
+                {
+                  "AddExplicit": "Any"
+                },
+                {
+                  "AddExplicit": "Any"
+                }
+              ],
 			         "25":[
 				         {
 					         "RemoveImplicits":""

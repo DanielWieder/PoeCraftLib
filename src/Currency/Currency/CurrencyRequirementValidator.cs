@@ -82,22 +82,35 @@ namespace PoeCraftLib.Currency.Currency
             {
                 if (implicitOptions == ImplicitOptions.Any)
                 {
-                    return item.Implicit != null;
+                    return item.Implicits != null;
                 }
 
                 if (implicitOptions == ImplicitOptions.None)
                 {
-                    return item.Implicit == null;
+                    return item.Implicits == null;
                 }
 
                 if (implicitOptions == ImplicitOptions.Variable)
                 {
-                    bool hasImplicit = item.Implicit != null && item.Implicit.Affix != null;
-                    bool isStat1Variable = item.Implicit.Affix.StatName1 != null && item.Implicit.Affix.StatMin1 != item.Implicit.Affix.StatMax1;
-                    bool isStat2Variable = item.Implicit.Affix.StatName2 != null && item.Implicit.Affix.StatMin2 != item.Implicit.Affix.StatMax2;
-                    bool isStat3Variable = item.Implicit.Affix.StatName3 != null && item.Implicit.Affix.StatMin3 != item.Implicit.Affix.StatMax3;
+                    foreach (var stat in item.Implicits)
+                    {
+                        bool hasImplicit = item.Implicits != null && stat != null && stat.Affix != null;
+                        if (hasImplicit)
+                        {
+                            bool isStat1Variable = stat.Affix.StatName1 != null &&
+                                                   stat.Affix.StatMin1 != stat.Affix.StatMax1;
+                            bool isStat2Variable = stat.Affix.StatName2 != null &&
+                                                   stat.Affix.StatMin2 != stat.Affix.StatMax2;
+                            bool isStat3Variable = stat.Affix.StatName3 != null &&
+                                                   stat.Affix.StatMin3 != stat.Affix.StatMax3;
+                            if (isStat1Variable || isStat2Variable || isStat3Variable)
+                            {
+                                return true;
+                            }
+                        }
+                    }
 
-                    return hasImplicit && (isStat1Variable || isStat2Variable || isStat3Variable);
+                    return false;
                 }
                 throw new InvalidOperationException("Invalid implicit validation");
             };

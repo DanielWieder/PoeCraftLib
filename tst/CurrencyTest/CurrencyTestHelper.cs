@@ -24,8 +24,8 @@ namespace CurrencyTest
 
         public CurrencyTestHelper()
         {
-            ItemFactory = new ItemFactory();
             AffixFactory = new AffixFactory();
+            ItemFactory = new ItemFactory(AffixFactory);
             EssenceFactory = new EssenceFactory(ItemFactory, AffixFactory);
             FossilFactory = new FossilFactory(AffixFactory);
             MasterModFactory = new MasterModFactory(AffixFactory, ItemFactory);

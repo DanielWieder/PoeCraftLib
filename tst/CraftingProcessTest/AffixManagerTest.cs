@@ -16,8 +16,14 @@ namespace PoeCraftLib.CraftingTest
     [TestClass]
     public class AffixManagerTest
     {
-        private readonly ItemFactory _itemFactory = new ItemFactory();
-        private readonly AffixFactory _affixFactory = new AffixFactory();
+        private readonly AffixFactory _affixFactory;
+        private readonly ItemFactory _itemFactory;
+
+        public AffixManagerTest()
+        {
+            _affixFactory = new AffixFactory();
+            _itemFactory = new ItemFactory(_affixFactory);
+        }
 
         private readonly IRandom _random = new PoeRandom();
 

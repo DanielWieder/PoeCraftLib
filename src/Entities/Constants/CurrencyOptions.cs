@@ -13,10 +13,9 @@
         Crusader,
         Warlord,
         Redeemer,
-        Hunter
+        Hunter,
+        Random
     }
-
-
 
     public enum ExplicitOptions
     {

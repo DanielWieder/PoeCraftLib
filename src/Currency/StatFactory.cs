@@ -189,6 +189,12 @@ namespace PoeCraftLib.Currency
             return !canAddPrefix && !canAddSuffix;
         }
 
+        public static void AddImplicit(IRandom random, Equipment item, Affix affix)
+        {
+            var stat = AffixToStat(random, item, affix);
+            item.Implicits.Add(stat);
+        }
+
         public static void SetImplicit(IRandom random, Equipment item)
         {
             // TODO: Update implicit handling
@@ -196,7 +202,7 @@ namespace PoeCraftLib.Currency
         //    var affix = SelectAffixFromPool(random, new List<Stat>(), pool, item.TotalWeight);
        //     var stat = AffixToStat(random, item, affix);
 
-       //    item.Implicit = stat;
+       //    item.Implicits = stat;
         }
 
         public static void Reroll(IRandom random, Equipment item, Stat stat, CurrencyModifiers currencyModifiers)
